@@ -1,6 +1,6 @@
 {
-	"name": "Расчёт встречи судов",
-	"short_name": "Встреча судов",
+	"name": "NaviMate",
+	"short_name": "NaviMate",
 	"id": "/",
 	"start_url": ".",
 	"display": "standalone",
