@@ -1,8 +1,10 @@
-const CACHE_NAME = 'vessels-meeting-cache-v3';
+const CACHE_NAME = 'vessels-meeting-cache-v2';
+const OFFLINE_URL = '/offline.html';
 
 const urlsToCache = [
   '/',
   '/index.html',
+  '/offline.html',
   '/css/style.css',
   '/js/script.js',
   '/manifest.json',
@@ -10,15 +12,14 @@ const urlsToCache = [
   '/icons/icon-512.png'
 ];
 
-// Установка
+// Установка Service Worker и кэширование
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
-  self.skipWaiting();
 });
 
-// Активация
+// Активация и удаление старых кэшей
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
@@ -28,16 +29,20 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Перехват запросов
+// Обработка запросов
 self.addEventListener('fetch', event => {
+  // Для HTML-страниц (навигации)
+  if (event.request.mode === 'navigate') {
+    event.respondWith(
+      fetch(event.request).catch(() =>
+        caches.match(OFFLINE_URL)
+      )
+    );
+    return;
+  }
+
+  // Для остальных запросов
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request).catch(() => {
-        // Если это навигационный запрос — отдаём index.html
-        if (event.request.mode === 'navigate') {
-          return caches.match('/index.html');
-        }
-      });
-    })
+    caches.match(event.request).then(response => response || fetch(event.request))
   );
 });
