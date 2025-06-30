@@ -18,17 +18,17 @@
       text-align: center;
       padding: 20px;
     }
+    .icon {
+      font-size: 4rem;
+      margin-bottom: 1rem;
+    }
     h1 {
-      font-size: 2rem;
-      margin-bottom: 0.5em;
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
     }
     p {
       font-size: 1.1rem;
-      margin-bottom: 1em;
-    }
-    .icon {
-      font-size: 4rem;
-      margin-bottom: 1em;
+      margin-bottom: 1.5rem;
     }
     button {
       background-color: #2f5597;
@@ -38,7 +38,6 @@
       font-size: 1rem;
       border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
     button:hover {
       background-color: #244474;
@@ -46,22 +45,9 @@
   </style>
 </head>
 <body>
-  <div id="offline-banner" style="display:none; padding:10px; text-align:center; background:#ffe9e9; color:#a00; font-weight:bold;">
-  ⚠️ Связь с цивилизацией потеряна. Возможны перебои в работе.
-</div>
-
-<script>
-  if (!navigator.onLine) {
-    document.getElementById('offline-banner').style.display = 'block';
-  }
-
-  window.addEventListener('offline', () => {
-    document.getElementById('offline-banner').style.display = 'block';
-  });
-
-  window.addEventListener('online', () => {
-    document.getElementById('offline-banner').style.display = 'none';
-  });
-</script>
+  <div class="icon">📡</div>
+  <h1>Связь с берегом потеряна</h1>
+  <p>Похоже, вы вышли в оффлайн. Проверьте подключение и попробуйте снова.</p>
+  <button onclick="location.reload()">Попробовать снова</button>
 </body>
 </html>
