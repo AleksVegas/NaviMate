@@ -134,3 +134,27 @@ window.addEventListener('online', () => {
   console.log('Интернет появился, обновляем страницу');
   location.reload();
 });
+
+//отслеживание интернета и показ уведомления 
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+}
+
+function showOfflineNotice() {
+  const banner = document.createElement('div');
+  banner.textContent = '⚠️ Связь с цивилизацией потеряна. Некоторые функции могут быть недоступны.';
+  banner.style.position = 'fixed';
+  banner.style.bottom = '0';
+  banner.style.left = '0';
+  banner.style.right = '0';
+  banner.style.backgroundColor = '#d9534f';
+  banner.style.color = 'white';
+  banner.style.padding = '10px';
+  banner.style.textAlign = 'center';
+  banner.style.zIndex = '10000';
+  document.body.appendChild(banner);
+}
+
+if (!navigator.onLine && !isStandalone()) {
+  showOfflineNotice();
+}
