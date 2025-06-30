@@ -1,55 +1,57 @@
-const CACHE_NAME = 'naviMate-cache-v1';
+const CACHE_NAME = 'vessels-meeting-cache-v2';
 const urlsToCache = [
   '/',
   '/index.html',
+  '/offline.html',        // офлайн-страница
   '/css/style.css',
   '/js/script.js',
   '/manifest.json',
-  '/service-worker.js',
   '/icons/icon-192.png',
   '/icons/icon-512.png'
 ];
 
-// При установке кэшируем необходимые файлы
+// Установка: кэшируем файлы
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting()) // сразу активировать воркер
+      .then(() => self.skipWaiting()) // активировать сразу
   );
 });
 
-// При активации — чистим старые кэши, если есть
+// Активация: удаляем старые кэши
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys => 
+    caches.keys().then(keys =>
       Promise.all(
         keys.filter(key => key !== CACHE_NAME)
             .map(key => caches.delete(key))
       )
-    ).then(() => self.clients.claim())
+    ).then(() => self.clients.claim()) // брать контроль
   );
 });
 
-// При запросах отдаём сначала из кэша, если нет — из сети, а если нет сети — тоже из кэша
+// Обработка fetch-запросов
 self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(cachedResponse => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(event.request)
-        .then(networkResponse => {
-          // Кэшируем новые запросы динамически (по желанию)
+  if (event.request.mode === 'navigate') {
+    // Навигация (загрузка страницы)
+    event.respondWith(
+      fetch(event.request)
+        .then(response => {
+          // Обновляем кеш
           return caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, networkResponse.clone());
-            return networkResponse;
+            cache.put(event.request, response.clone());
+            return response;
           });
         })
-        .catch(() => {
-          // Можно добавить fallback, например, картинку "нет связи"
-          // или просто ничего не возвращать
-        });
-    })
-  );
+        .catch(() => caches.match(event.request)
+          .then(cachedResp => cachedResp || caches.match('/offline.html'))
+        )
+    );
+  } else {
+    // Другие запросы (ресурсы)
+    event.respondWith(
+      caches.match(event.request).then(cachedResp => cachedResp || fetch(event.request))
+    );
+  }
 });
