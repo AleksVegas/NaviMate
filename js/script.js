@@ -128,3 +128,9 @@ for (let i = 0; i < 3; i++) {
 document.querySelector('.btn-clear-all').addEventListener('click', () => {
   for (let i = 0; i < 3; i++) clearFields(i);
 });
+
+// Уведомление о наличии интернета 
+window.addEventListener('online', () => {
+  console.log('Интернет появился, обновляем страницу');
+  location.reload();
+});
