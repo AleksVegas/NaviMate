@@ -1,4 +1,4 @@
-const CACHE_NAME = 'navi-cache-v3';
+const CACHE_NAME = 'vessels-meeting-cache-v2'; // измени версию при каждом серьёзном обновлении
 const urlsToCache = [
   '/',
   '/index.html',
@@ -6,43 +6,42 @@ const urlsToCache = [
   '/js/script.js',
   '/manifest.json',
   '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  '/icons/icon-512.png',
 ];
 
-// Установка воркера и кэширование
+// Установка service worker и кэширование файлов
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => {
       return cache.addAll(urlsToCache);
     })
   );
+  self.skipWaiting();
 });
 
-// Активация и очистка старых кэшей
+// Активация — удаление старых кэшей
 self.addEventListener('activate', event => {
   event.waitUntil(
-    caches.keys().then(keys =>
+    caches.keys().then(keys => 
       Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+        keys.filter(key => key !== CACHE_NAME)
+            .map(key => caches.delete(key))
       )
     )
   );
+  self.clients.claim();
 });
 
-// Обработка запросов
+// Обработка fetch — в т.ч. index.html при offline
 self.addEventListener('fetch', event => {
-  // Для навигации (переходы по страницам) — отдаём index.html из кеша
-  if (event.request.mode === 'navigate') {
-    event.respondWith(
-      fetch(event.request).catch(() => caches.match('/index.html'))
-    );
-    return;
-  }
-
-  // Для остальных запросов (CSS, JS, иконки и т.п.)
   event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
+    fetch(event.request).catch(() => {
+      return caches.match(event.request).then(response => {
+        if (response) return response;
+        if (event.request.mode === 'navigate') {
+          return caches.match('/index.html');
+        }
+      });
     })
   );
 });
