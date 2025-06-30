@@ -46,9 +46,22 @@
   </style>
 </head>
 <body>
-  <div class="icon">⚠️🚢</div>
-  <h1>Связь с цивилизацией потеряна... Похоже, ты на другом конце Земли или просто Wi-Fi решил уйти в отпуск. </h1>
-  <p>Проверьте подключение и попробуйте снова.</p>
-  <button onclick="location.reload()">Обновить</button>
+  <div id="offline-banner" style="display:none; padding:10px; text-align:center; background:#ffe9e9; color:#a00; font-weight:bold;">
+  ⚠️ Связь с цивилизацией потеряна. Возможны перебои в работе.
+</div>
+
+<script>
+  if (!navigator.onLine) {
+    document.getElementById('offline-banner').style.display = 'block';
+  }
+
+  window.addEventListener('offline', () => {
+    document.getElementById('offline-banner').style.display = 'block';
+  });
+
+  window.addEventListener('online', () => {
+    document.getElementById('offline-banner').style.display = 'none';
+  });
+</script>
 </body>
 </html>
