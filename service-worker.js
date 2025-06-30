@@ -1,8 +1,7 @@
-const CACHE_NAME = 'vessels-meeting-cache-v2';
+const CACHE_NAME = 'navi-cache-v3';
 const urlsToCache = [
   '/',
   '/index.html',
-  '/offline.html',        // офлайн-страница
   '/css/style.css',
   '/js/script.js',
   '/manifest.json',
@@ -10,48 +9,40 @@ const urlsToCache = [
   '/icons/icon-512.png'
 ];
 
-// Установка: кэшируем файлы
+// Установка воркера и кэширование
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(urlsToCache))
-      .then(() => self.skipWaiting()) // активировать сразу
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(urlsToCache);
+    })
   );
 });
 
-// Активация: удаляем старые кэши
+// Активация и очистка старых кэшей
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys.filter(key => key !== CACHE_NAME)
-            .map(key => caches.delete(key))
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
       )
-    ).then(() => self.clients.claim()) // брать контроль
+    )
   );
 });
 
-// Обработка fetch-запросов
+// Обработка запросов
 self.addEventListener('fetch', event => {
+  // Для навигации (переходы по страницам) — отдаём index.html из кеша
   if (event.request.mode === 'navigate') {
-    // Навигация (загрузка страницы)
     event.respondWith(
-      fetch(event.request)
-        .then(response => {
-          // Обновляем кеш
-          return caches.open(CACHE_NAME).then(cache => {
-            cache.put(event.request, response.clone());
-            return response;
-          });
-        })
-        .catch(() => caches.match(event.request)
-          .then(cachedResp => cachedResp || caches.match('/offline.html'))
-        )
+      fetch(event.request).catch(() => caches.match('/index.html'))
     );
-  } else {
-    // Другие запросы (ресурсы)
-    event.respondWith(
-      caches.match(event.request).then(cachedResp => cachedResp || fetch(event.request))
-    );
+    return;
   }
+
+  // Для остальных запросов (CSS, JS, иконки и т.п.)
+  event.respondWith(
+    caches.match(event.request).then(response => {
+      return response || fetch(event.request);
+    })
+  );
 });
