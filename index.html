@@ -9,26 +9,6 @@
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#2f5597" />
 </head>
-  <!-- Заглушка при потере соединения -->
-<div id="offline-banner"
-     style="display:none; padding:10px; text-align:center; background:#ffe9e9; color:#a00; font-weight:bold; position:fixed; top:0; left:0; width:100%; z-index:9999;">
-  ⚠️ Связь с цивилизацией потеряна. Возможны перебои в работе.
-</div>
-
-<script>
-  function updateConnectionStatus() {
-    const banner = document.getElementById('offline-banner');
-    if (!navigator.onLine) {
-      banner.style.display = 'block';
-    } else {
-      banner.style.display = 'none';
-    }
-  }
-
-  window.addEventListener('load', updateConnectionStatus);
-  window.addEventListener('online', updateConnectionStatus);
-  window.addEventListener('offline', updateConnectionStatus);
-</script>
 <body>
   <header>
     <button id="menu-toggle" aria-label="Открыть меню ☰">☰</button>
@@ -75,5 +55,34 @@
       });
     }
   </script>
+  <body>
+  <!-- основной контент приложения -->
+
+  <div id="offline-banner" style="display:none; padding:10px; text-align:center; background:#ffe9e9; color:#a00; font-weight:bold;">
+    ⚠️ Связь с цивилизацией потеряна. Возможны перебои в работе.
+  </div>
+
+  <script>
+    function isInStandaloneMode() {
+      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+    }
+
+    const offlineBanner = document.getElementById('offline-banner');
+
+    if (!isInStandaloneMode() && !navigator.onLine) {
+      offlineBanner.style.display = 'block';
+    }
+
+    window.addEventListener('offline', () => {
+      if (!isInStandaloneMode()) {
+        offlineBanner.style.display = 'block';
+      }
+    });
+
+    window.addEventListener('online', () => {
+      offlineBanner.style.display = 'none';
+    });
+  </script>
+</body>
 </body>
 </html>
