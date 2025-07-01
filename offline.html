@@ -46,26 +46,27 @@
   </style>
 </head>
 <body>
-  <div id="offline-banner" style="display:none; padding:10px; text-align:center; background:#ffe9e9; color:#a00; font-weight:bold;">
-    ⚠️ Связь с цивилизацией потеряна. Возможны перебои в работе.
-  </div>
-
   <script>
-    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  function isInStandaloneMode() {
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  }
 
-    if (!navigator.onLine && !isStandalone) {
-      document.getElementById('offline-banner').style.display = 'block';
+  const offlineBanner = document.getElementById('offline-banner');
+
+  // Показываем баннер только если это НЕ установленное приложение
+  if (!isInStandaloneMode() && !navigator.onLine) {
+    offlineBanner.style.display = 'block';
+  }
+
+  window.addEventListener('offline', () => {
+    if (!isInStandaloneMode()) {
+      offlineBanner.style.display = 'block';
     }
+  });
 
-    window.addEventListener('offline', () => {
-      if (!isStandalone) {
-        document.getElementById('offline-banner').style.display = 'block';
-      }
-    });
-
-    window.addEventListener('online', () => {
-      document.getElementById('offline-banner').style.display = 'none';
-    });
-  </script>
+  window.addEventListener('online', () => {
+    offlineBanner.style.display = 'none';
+  });
+</script>
 </body>
 </html>
