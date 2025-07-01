@@ -1,8 +1,10 @@
-const CACHE_NAME = 'vessels-meeting-cache-v2';
+const CACHE_NAME = 'navimate-cache-v2';
+const OFFLINE_URL = '/offline.html';
+
 const urlsToCache = [
   '/',
   '/index.html',
-  '/offline.html', // ✅ Обязательно!
+  '/offline.html',
   '/css/style.css',
   '/js/script.js',
   '/manifest.json',
@@ -10,29 +12,36 @@ const urlsToCache = [
   '/icons/icon-512.png'
 ];
 
-// Установка Service Worker и кэширование файлов
+// Установка service worker и кэширование всех нужных файлов
 self.addEventListener('install', event => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(urlsToCache);
+    })
   );
+  self.skipWaiting();
 });
 
-// Активация и удаление старых кэшей
+// Активация: удаляем старые кэши
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
-        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+        keys
+          .filter(key => key !== CACHE_NAME)
+          .map(key => caches.delete(key))
       )
     )
   );
+  self.clients.claim();
 });
 
-// Обработка fetch-запросов
+// Fetch: отдаём из кэша или сеть, при ошибке — offline.html (только для навигации)
 self.addEventListener('fetch', event => {
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request).catch(() => caches.match('/offline.html'))
+      fetch(event.request)
+        .catch(() => caches.match(OFFLINE_URL))
     );
   } else {
     event.respondWith(
