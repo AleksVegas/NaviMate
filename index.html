@@ -56,31 +56,30 @@
     }
   </script>
   <!-- Нету связи -->
+<div id="offline-banner" style="display:none; padding:10px; text-align:center; background:#ffe9e9; color:#a00; font-weight:bold;">
+  ⚠️ Связь с цивилизацией потеряна. Возможны перебои в работе.
+</div>
 
-  <div id="offline-banner" style="display:none; padding:10px; text-align:center; background:#ffe9e9; color:#a00; font-weight:bold;">
-    ⚠️ Связь с цивилизацией потеряна. Возможны перебои в работе.
-  </div>
+<script>
+  function isInStandaloneMode() {
+    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  }
 
-  <script>
-    function isInStandaloneMode() {
-      return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  function updateOfflineBanner() {
+    const banner = document.getElementById('offline-banner');
+    if (!banner) return;
+
+    if (!navigator.onLine && !isInStandaloneMode()) {
+      banner.style.display = 'block';
+    } else {
+      banner.style.display = 'none';
     }
+  }
 
-    const offlineBanner = document.getElementById('offline-banner');
-
-    if (!isInStandaloneMode() && !navigator.onLine) {
-      offlineBanner.style.display = 'block';
-    }
-
-    window.addEventListener('offline', () => {
-      if (!isInStandaloneMode()) {
-        offlineBanner.style.display = 'block';
-      }
-    });
-
-    window.addEventListener('online', () => {
-      offlineBanner.style.display = 'none';
-    });
-  </script>
+  window.addEventListener('load', updateOfflineBanner);
+  window.addEventListener('offline', updateOfflineBanner);
+  window.addEventListener('online', updateOfflineBanner);
+</script>
+  
 </body>
 </html>
