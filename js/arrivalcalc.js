@@ -11,14 +11,16 @@ function calculateArrival() {
   const startTimeStr = document.getElementById("startTimeArrival").value;
   const workHours = parseFloat(document.getElementById("workHoursArrival").value);
 
+  const resultDiv = document.getElementById("resultArrival");
+
   if (isNaN(startKm) || isNaN(endKm) || isNaN(speed) || !startTimeStr) {
-    document.getElementById("resultArrival").innerHTML = "⚠️ Пожалуйста, заполните все поля корректно.";
+    resultDiv.innerHTML = "⚠️ Пожалуйста, заполните все поля корректно.";
     return;
   }
 
   const startTime = new Date(startTimeStr);
   if (isNaN(startTime.getTime())) {
-    document.getElementById("resultArrival").innerHTML = "⚠️ Неверный формат времени начала движения.";
+    resultDiv.innerHTML = "⚠️ Неверный формат времени начала движения.";
     return;
   }
 
@@ -45,7 +47,7 @@ function calculateArrival() {
     travelHours += restTime;
   }
 
-  const arrivalTime = new Date(startTime.getTime() + travelHours * 60 * 60 * 1000);
+  const arrivalTime = new Date(startTime.getTime() + travelHours * 3600 * 1000);
   const formattedArrival = arrivalTime.toLocaleString("ru-RU", {
     day: "2-digit",
     month: "2-digit",
@@ -53,9 +55,9 @@ function calculateArrival() {
     minute: "2-digit"
   });
 
-  let locksInfo = passedLocks.length > 0 ? "<br>" + passedLocks.join("<br>") : "";
+  const locksInfo = passedLocks.length > 0 ? "<br>" + passedLocks.join("<br>") : "";
 
-  document.getElementById("resultArrival").innerHTML = `
+  resultDiv.innerHTML = `
 🚢 <strong>Ожидаемое прибытие:</strong> ${formattedArrival}<br>
 ⏳ <strong>Общая продолжительность:</strong> ${travelHours.toFixed(2)} ч<br>
 📍 <strong>Расстояние:</strong> ${distance} км${locksInfo}
@@ -72,8 +74,10 @@ function calculateRecommendedSpeed() {
   const desiredArrivalStr = document.getElementById("desiredArrivalTimeArrival").value;
   const workHours = parseFloat(document.getElementById("workHoursArrival").value);
 
+  const resultDiv = document.getElementById("requiredSpeedResultArrival");
+
   if (isNaN(startKm) || isNaN(endKm) || !startTimeStr || !desiredArrivalStr) {
-    document.getElementById("requiredSpeedResultArrival").innerHTML = "⚠️ Пожалуйста, заполните все поля корректно.";
+    resultDiv.innerHTML = "⚠️ Пожалуйста, заполните все поля корректно.";
     return;
   }
 
@@ -81,12 +85,12 @@ function calculateRecommendedSpeed() {
   const desiredArrival = new Date(desiredArrivalStr);
 
   if (isNaN(startTime.getTime()) || isNaN(desiredArrival.getTime())) {
-    document.getElementById("requiredSpeedResultArrival").innerHTML = "⚠️ Неверный формат времени.";
+    resultDiv.innerHTML = "⚠️ Неверный формат времени.";
     return;
   }
 
   if (desiredArrival <= startTime) {
-    document.getElementById("requiredSpeedResultArrival").innerHTML = "⚠️ Желаемое время прибытия должно быть позже времени начала движения.";
+    resultDiv.innerHTML = "⚠️ Желаемое время прибытия должно быть позже времени начала движения.";
     return;
   }
 
@@ -116,14 +120,15 @@ function calculateRecommendedSpeed() {
   const effectiveTravelHours = totalAvailableHours - totalLockDelay;
 
   if (effectiveTravelHours <= 0) {
-    document.getElementById("requiredSpeedResultArrival").innerHTML = "⚠️ Невозможно прибыть вовремя с учётом задержек.";
+    resultDiv.innerHTML = "⚠️ Невозможно прибыть вовремя с учётом задержек.";
     return;
   }
 
   const requiredSpeed = distance / effectiveTravelHours;
 
-  document.getElementById("requiredSpeedResultArrival").innerHTML = `
+  resultDiv.innerHTML = `
 🚀 <strong>Рекомендуемая скорость:</strong> ${requiredSpeed.toFixed(2)} км/ч<br>
 (учтены задержки шлюзов ⚓ и рабочий график)
   `;
 }
+
