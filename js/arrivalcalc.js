@@ -1,4 +1,3 @@
-<script>
 const locks = [
   { name: "Габчиково", km: [1818, 1819], delay: 1 },
   { name: "Железные ворота II", km: [863, 864], delay: 1 },
@@ -134,5 +133,4 @@ function calculateArrival() {
 (учтены задержки шлюзов ⚓ и рабочий график)
     `;
   }
-</script>
 
