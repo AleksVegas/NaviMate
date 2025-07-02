@@ -1,8 +1,20 @@
 const locks = [
   { name: "Габчиково", km: [1818, 1819], delay: 1 },
   { name: "Железные ворота II", km: [863, 864], delay: 1 },
-  { name: "Железные ворота I", km: [943, 944], delay: 2.5 }
+  { name: "Железные ворота I", km: [943, 944], delay: 2.5 },
+
+  // Австрийские шлюзы:
+  { name: "Фройденау", km: [1919, 1919.5], delay: 1.5 },
+  { name: "Грайфенштайн", km: [1948, 1948.5], delay: 1 },
+  { name: "Альтенвёрт", km: [1980, 1980.5], delay: 1 },
+  { name: "Мельк", km: [2038, 2038.5], delay: 1 },
+  { name: "Иббс", km: [2060, 2060.5], delay: 1 },
+  { name: "Валлзее", km: [2095, 2095.5], delay: 1 },
+  { name: "Абвинден", km: [2119, 2120], delay: 1 },
+  { name: "Оттенсхайм", km: [2147, 2147.5], delay: 1 },
+  { name: "Ашах", km: [2163, 2163.5], delay: 1 } 
 ];
+
 
 function calculateArrival() {
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
