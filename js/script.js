@@ -74,6 +74,12 @@ function calculate(index) {
   const op = parseFloat(document.getElementById(`our_pos_${index}`).value);
   const os = parseFloat(document.getElementById(`our_speed_${index}`).value);
 
+  // Проверка на допустимые значения скорости
+if (os <= 0 || os > 50 || es <= 0 || es > 50) {
+  result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 50 км/ч.";
+  return;
+}
+
   const result = document.getElementById(`result_${index}`);
 
   if (isNaN(ep) || isNaN(es) || isNaN(op) || isNaN(os)) {
