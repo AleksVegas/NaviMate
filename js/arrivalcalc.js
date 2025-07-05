@@ -20,6 +20,12 @@ function calculateArrival() {
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   const speed = parseFloat(document.getElementById("speedArrival").value);
+
+  if (speed <= 0 || speed > 50) {
+  document.getElementById("resultArrival").innerHTML = "⚠️ Скорость должна быть от 0.1 до 50 км/ч.";
+  return;
+  }
+  
   const startTimeStr = document.getElementById("startTimeArrival").value;
   const workHours = parseFloat(document.getElementById("workHoursArrival").value);
 
@@ -121,6 +127,11 @@ function calculateRecommendedSpeed() {
   });
 
   const totalAvailableMs = desiredArrival - startTime;
+  
+  if (totalAvailableMs < 60 * 60 * 1000 || totalAvailableMs > 14 * 24 * 60 * 60 * 1000) {
+  document.getElementById("requiredSpeedResult").innerHTML = "⚠️ Интервал между началом и желаемым временем должен быть от 1 часа до 14 суток.";
+  return;
+  }
   let totalAvailableHours = totalAvailableMs / (1000 * 60 * 60);
 
   if (workHours < 24) {
@@ -144,3 +155,7 @@ function calculateRecommendedSpeed() {
   `;
 }
 
+if (requiredSpeed <= 0 || requiredSpeed > 50) {
+  document.getElementById("requiredSpeedResult").innerHTML = "⚠️ Не удаётся рассчитать реалистичную скорость (0.1–50 км/ч). Проверьте данные.";
+  return;
+}
