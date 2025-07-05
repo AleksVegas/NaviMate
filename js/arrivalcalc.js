@@ -28,6 +28,11 @@ function calculateArrival() {
   if (isNaN(startKm) || isNaN(endKm) || isNaN(speed) || !startTimeStr) {
     resultDiv.innerHTML = "⚠️ Пожалуйста, заполните все поля корректно.";
     return;
+
+    if (speed < 0.1 || speed > 100) {
+  resultDiv.innerHTML = "⚠️ Скорость должна быть от 0.1 до 100 км/ч.";
+  return;
+    }
   }
 
   const startTime = new Date(startTimeStr);
@@ -137,6 +142,16 @@ function calculateRecommendedSpeed() {
   }
 
   const requiredSpeed = distance / effectiveTravelHours;
+
+  if (requiredSpeed < 0.1) {
+  resultDiv.innerHTML = "⚠️ Требуемая скорость слишком мала. Проверьте данные.";
+  return;
+}
+
+if (requiredSpeed > 100) {
+  resultDiv.innerHTML = "⚠️ Требуемая скорость слишком велика. Невозможно прибыть вовремя.";
+  return;
+}
 
   resultDiv.innerHTML = `
 🚀 <strong>Рекомендуемая скорость:</strong> ${requiredSpeed.toFixed(2)} км/ч<br>
