@@ -167,5 +167,4 @@ if (!navigator.onLine && !isStandalone()) {
 
 document.getElementById("toggle-theme").addEventListener("click", () => {
   document.body.classList.toggle("dark");
-  // Можно сохранять в localStorage
 });
