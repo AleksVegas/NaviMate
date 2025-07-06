@@ -1,4 +1,4 @@
-.// Управление меню
+// Управление меню
 const menuToggleBtn = document.getElementById('menu-toggle');
 const sidebar = document.getElementById('sidebar');
 const navButtons = document.querySelectorAll('nav#sidebar button.nav-btn');
