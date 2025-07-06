@@ -297,6 +297,6 @@ label {
   font-weight: 600;
 }
 
-input[type="number"] {
-  outline: 2px solid red !important;
+.section:not(.active) input {
+  display: none;
 }
