@@ -296,7 +296,3 @@ label {
   color: var(--label-color);
   font-weight: 600;
 }
-
-.section:not(.active) input {
-  display: none;
-}
