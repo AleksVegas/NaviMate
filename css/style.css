@@ -219,6 +219,7 @@ select {
   --output-bg: #e2efda;
   --output-text: #1b3e72; /* ← для светлой темы */
   --input-border: #ccc;
+  --label-color: #333;     /* Светлая тема */
 }
 
 /* Тёмная тема */
@@ -238,6 +239,7 @@ body.dark {
   --output-bg: #1b3e72;
   --output-text: #ffffff; /* ← для тёмной темы */
   --input-border: #444;	
+  --label-color: #ffffff;  /* Ярко-белый на тёмной */
 }
 
 /* Использование переменных */
@@ -286,4 +288,11 @@ input::placeholder, textarea::placeholder {
 
 input, select, textarea {
   border: 1px solid var(--input-border);
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--label-color);
+  font-weight: 600;
 }
