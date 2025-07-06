@@ -217,6 +217,8 @@ select {
   --btn-success: #4caf50;
   --btn-primary: #2f5597;
   --output-bg: #e2efda;
+  --output-text: #1b3e72; /* ← для светлой темы */
+  --input-border: #ccc;
 }
 
 /* Тёмная тема */
@@ -234,6 +236,8 @@ body.dark {
   --btn-success: #388e3c;
   --btn-primary: #3f51b5;
   --output-bg: #1b3e72;
+  --output-text: #ffffff; /* ← для тёмной темы */
+  --input-border: #444;	
 }
 
 /* Использование переменных */
@@ -266,5 +270,20 @@ button.btn-clear-all {
 }
 .output {
   background: var(--output-bg);
-  color: var(--text); /* ← универсально, будет работать в обеих темах */
+  color: var(--output-text);
+}
+
+input, select, textarea {
+  background: var(--card-bg);
+  color: var(--text);
+  border: 1px solid var(--card-border);
+}
+
+input::placeholder, textarea::placeholder {
+  color: color-mix(in srgb, var(--text) 50%, transparent); /* или вручную подобрать */
+  opacity: 0.6;
+}
+
+input, select, textarea {
+  border: 1px solid var(--input-border);
 }
