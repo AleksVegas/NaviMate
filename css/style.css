@@ -266,5 +266,5 @@ button.btn-clear-all {
 }
 .output {
   background: var(--output-bg);
-  color: white;
+  color: var(--text); /* ← универсально, будет работать в обеих темах */
 }
