@@ -1,4 +1,4 @@
-// Управление меню
+.// Управление меню
 const menuToggleBtn = document.getElementById('menu-toggle');
 const sidebar = document.getElementById('sidebar');
 const navButtons = document.querySelectorAll('nav#sidebar button.nav-btn');
@@ -164,3 +164,8 @@ function showOfflineNotice() {
 if (!navigator.onLine && !isStandalone()) {
   showOfflineNotice();
 }
+
+document.getElementById("toggle-theme").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+  // Можно сохранять в localStorage
+});
