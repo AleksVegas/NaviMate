@@ -60,6 +60,25 @@ function calculateArrival() {
     }
   });
 
+  // Пограничные задержки
+const borderDelaysSection = document.getElementById("borderDelaysSection");
+let borderDelayTotal = 0;
+let passedBorders = [];
+
+if (borderDelaysSection) {
+  const inputs = borderDelaysSection.querySelectorAll("input[type='number']");
+  inputs.forEach((input, i) => {
+    const delay = parseFloat(input.value);
+    if (!isNaN(delay) && delay > 0) {
+      borderDelayTotal += delay;
+      const label = borderDelaysSection.querySelectorAll("label")[i];
+      const name = label ? label.textContent : `Граница ${i + 1}`;
+      passedBorders.push(`🛃 ${name} — задержка ${delay} час${delay > 1 ? 'а' : ''}`);
+    }
+  });
+  travelHours += borderDelayTotal;
+}
+
   if (workHours < 24) {
     const fullShifts = Math.floor(travelHours / workHours);
     const restTime = fullShifts * (24 - workHours);
@@ -75,12 +94,13 @@ function calculateArrival() {
   });
 
   const locksInfo = passedLocks.length > 0 ? "<br>" + passedLocks.join("<br>") : "";
+  const bordersInfo = passedBorders.length > 0 ? "<br>" + passedBorders.join("<br>") : "";
 
   resultDiv.innerHTML = `
 🚢 <strong>Ожидаемое прибытие:</strong> ${formattedArrival}<br>
 ⏳ <strong>Общая продолжительность:</strong> ${travelHours.toFixed(2)} ч<br>
-📍 <strong>Расстояние:</strong> ${distance} км${locksInfo}
-  `;
+📍 <strong>Расстояние:</strong> ${distance} км${locksInfo}${bordersInfo}
+`;
 
   document.getElementById("desiredBlockArrival").style.display = "block";
   document.getElementById("requiredSpeedResultArrival").innerHTML = "";
