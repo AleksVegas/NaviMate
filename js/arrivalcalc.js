@@ -41,6 +41,8 @@ function calculateArrival() {
     return;
   }
 
+  showBorderDelays(startKm, endKm);
+  
   const direction = endKm > startKm ? 1 : -1;
   const distance = Math.abs(endKm - startKm);
   let travelHours = distance / speed;
@@ -157,4 +159,57 @@ if (requiredSpeed > 100) {
 🚀 <strong>Рекомендуемая скорость:</strong> ${requiredSpeed.toFixed(2)} км/ч<br>
 (учтены задержки шлюзов ⚓ и рабочий график)
   `;
+}
+
+const borderPoints = [
+  { name: "Граница Румынии Галац", km: 150, defaultDelay: 2 },
+  { name: "Граница Румынии Джурджу", km: 497, defaultDelay: 0 },
+  { name: "Граница Болгарии Русе", km: 495, defaultDelay: 0 },
+  { name: "Граница Румынии Турну - Северин", km: 931, defaultDelay: 0 },
+  { name: "Граница Сербии Велико-Градиште", km: 1050, defaultDelay: 2 },
+  { name: "Граница Сербии Бездан", km: 1433, defaultDelay: 2 },
+  { name: "Граница Венгрии Мохач", km: 1446, defaultDelay: 2 },
+];
+
+function showBorderDelays(startKm, endKm) {
+  const container = document.getElementById("borderDelaysSection");
+  container.innerHTML = ""; // очистка
+
+  const relevantBorders = borderPoints.filter(b =>
+    (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
+    (startKm > endKm && b.km <= startKm && b.km >= endKm)
+  );
+
+  if (relevantBorders.length === 0) return;
+
+  const title = document.createElement("h3");
+  title.textContent = "🛃 Пограничные задержки на маршруте:";
+  container.appendChild(title);
+
+  relevantBorders.forEach((border, i) => {
+    const block = document.createElement("div");
+    block.style.marginBottom = "10px";
+
+    const label = document.createElement("label");
+    label.textContent = `${border.name} (км ${border.km}):`;
+    label.style.display = "block";
+    label.style.marginBottom = "4px";
+
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = "0";
+    input.step = "0.1";
+    input.value = border.defaultDelay;
+    input.id = `borderDelay_${i}`;
+    input.style.width = "100px";
+    input.style.marginRight = "10px";
+
+    const span = document.createElement("span");
+    span.textContent = "ч";
+
+    block.appendChild(label);
+    block.appendChild(input);
+    block.appendChild(span);
+    container.appendChild(block);
+  });
 }
