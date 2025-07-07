@@ -16,6 +16,25 @@ function toggleTheme() {
   document.body.classList.toggle("dark");
   const theme = document.body.classList.contains("dark") ? "dark" : "light";
   localStorage.setItem("theme", theme);
+
+  // Обновить иконку и текст на кнопке в настройках
+  const btnSettings = document.getElementById("toggle-theme-settings");
+  if (btnSettings) {
+    btnSettings.innerText = theme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
+  }
+
+  // Обновить иконку в хедере
+  const btnHeader = document.getElementById("toggle-theme");
+  if (btnHeader) {
+    btnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
+  }
+}
+
+// Инициализация кнопки при загрузке 
+const savedTheme = localStorage.getItem("theme");
+const btnSettings = document.getElementById("toggle-theme-settings");
+if (btnSettings) {
+  btnSettings.innerText = savedTheme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
 }
 
 // Переключение разделов
