@@ -224,6 +224,10 @@ function showBorderDelays(startKm, endKm) {
     input.style.width = "100px";
     input.style.marginRight = "10px";
 
+    input.addEventListener("input", () => {
+  calculateArrival(); // автоматический пересчёт
+});
+
     const span = document.createElement("span");
     span.textContent = "ч";
 
