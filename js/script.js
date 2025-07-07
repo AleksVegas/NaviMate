@@ -1,3 +1,7 @@
+// Применить сохранённую тему при загрузке
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark");
+}
 // Управление меню
 const menuToggleBtn = document.getElementById('menu-toggle');
 const sidebar = document.getElementById('sidebar');
@@ -7,6 +11,12 @@ const sections = document.querySelectorAll('main .section');
 menuToggleBtn.addEventListener('click', () => {
   sidebar.classList.toggle('open');
 });
+
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+  const theme = document.body.classList.contains("dark") ? "dark" : "light";
+  localStorage.setItem("theme", theme);
+}
 
 // Переключение разделов
 navButtons.forEach(btn => {
@@ -163,9 +173,11 @@ function showOfflineNotice() {
 
 if (!navigator.onLine && !isStandalone()) {
   showOfflineNotice();
-}
 
-document.getElementById("toggle-theme").addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  // Можно сохранять в localStorage
-});
+document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
+
+// Если есть вторая кнопка (в настройках)
+const themeBtnSettings = document.getElementById("toggle-theme-settings");
+if (themeBtnSettings) {
+  themeBtnSettings.addEventListener("click", toggleTheme);
+}
