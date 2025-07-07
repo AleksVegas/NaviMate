@@ -173,7 +173,9 @@ function showOfflineNotice() {
 
 if (!navigator.onLine && !isStandalone()) {
   showOfflineNotice();
+}
 
+// 🎯 Назначение переключения темы
 document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
 
 // Если есть вторая кнопка (в настройках)
