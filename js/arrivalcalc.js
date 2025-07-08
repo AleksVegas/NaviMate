@@ -219,7 +219,7 @@ function calculateRecommendedSpeed() {
 
 function showBorderDelays(startKm, endKm) {
   const container = document.getElementById("borderDelaysSection");
-  container.innerHTML = "";
+  container.innerHTML = ""; // Очистка
 
   const relevantBorders = borderPoints.filter(b =>
     (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
@@ -230,40 +230,51 @@ function showBorderDelays(startKm, endKm) {
 
   const title = document.createElement("h3");
   title.textContent = "🛃 Пограничные задержки:";
+  title.style.marginBottom = "8px";
   container.appendChild(title);
 
   const table = document.createElement("table");
   table.style.borderCollapse = "collapse";
   table.style.width = "100%";
-  table.style.maxWidth = "400px";
+  table.style.maxWidth = "380px";
 
   relevantBorders.forEach((border, i) => {
     const row = document.createElement("tr");
 
     const nameCell = document.createElement("td");
-    const label = document.createElement("label");
-    label.textContent = border.name.replace("Граница ", "");
-    label.setAttribute("for", `borderDelay_${i}`);
-    nameCell.appendChild(label);
-    nameCell.style.padding = "6px";
-    nameCell.style.fontWeight = "500";
+    nameCell.textContent = border.name.replace("Граница ", "");
+    nameCell.style.padding = "4px 6px";
+    nameCell.style.fontSize = "14px";
+    nameCell.style.whiteSpace = "nowrap";
 
     const inputCell = document.createElement("td");
+
     const input = document.createElement("input");
     input.type = "number";
     input.min = "0";
     input.step = "0.1";
     input.value = border.defaultDelay;
     input.id = `borderDelay_${i}`;
-    input.style.width = "60px";
-    input.style.marginRight = "6px";
+
+    // Стили для компактности
+    input.style.width = "45px";
+    input.style.fontSize = "13px";
+    input.style.padding = "2px 4px";
+    input.style.height = "26px";
+    input.style.boxSizing = "border-box";
+    input.style.marginRight = "4px";
 
     input.addEventListener("input", () => {
-      calculateArrival();
+      calculateArrival(); // Автоматический перерасчёт
     });
 
+    const label = document.createElement("span");
+    label.textContent = "ч";
+    label.style.fontSize = "13px";
+    label.style.color = "#555";
+
     inputCell.appendChild(input);
-    inputCell.appendChild(document.createTextNode(" ч"));
+    inputCell.appendChild(label);
 
     row.appendChild(nameCell);
     row.appendChild(inputCell);
