@@ -248,25 +248,33 @@ function showBorderDelays(startKm, endKm) {
     nameCell.style.whiteSpace = "nowrap";
 
     const inputCell = document.createElement("td");
-const input = document.createElement("input");
-input.type = "number";
-input.min = "0";
-input.step = "0.1";
-input.value = border.defaultDelay;
-input.id = `borderDelay_${i}`;
-input.style.width = "50px";
-input.style.marginRight = "4px";
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = "0";
+    input.step = "0.1";
+    input.value = border.defaultDelay;
+    input.id = `borderDelay_${i}`;
+    input.style.width = "50px";
+    input.style.marginRight = "4px";
 
-input.addEventListener("input", () => {
-  calculateArrival(); // Автоматический перерасчёт
-});
+    input.addEventListener("input", () => {
+      calculateArrival(); // Автоматический перерасчёт
+    });
 
-inputCell.appendChild(input);
+    inputCell.appendChild(input);
 
-const label = document.createElement("span");
-label.textContent = "ч";
-label.style.fontSize = "13px";
-label.style.opacity = "0.7";
-label.style.marginLeft = "2px";
+    const label = document.createElement("span");
+    label.textContent = "ч";
+    label.style.fontSize = "13px";
+    label.style.opacity = "0.7";
+    label.style.marginLeft = "2px";
+    label.style.userSelect = "none"; // чтобы нельзя было выделить
+    inputCell.appendChild(label);
 
-inputCell.appendChild(label);
+    row.appendChild(nameCell);
+    row.appendChild(inputCell);
+    table.appendChild(row);
+  });
+
+  container.appendChild(table);
+}
