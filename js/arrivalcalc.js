@@ -11,8 +11,6 @@ const locks = [
   { name: "Габчиково", km: [1818, 1819], delay: 1 },
   { name: "Железные ворота II", km: [863, 864], delay: 1 },
   { name: "Железные ворота I", km: [943, 944], delay: 2.5 },
-
-  // Австрийские шлюзы:
   { name: "Фройденау", km: [1919, 1920], delay: 1.5 },
   { name: "Грайфенштайн", km: [1948, 1949], delay: 1 },
   { name: "Альтенвёрт", km: [1980, 1981], delay: 1 },
@@ -21,7 +19,17 @@ const locks = [
   { name: "Валлзее", km: [2095, 2096], delay: 1 },
   { name: "Абвинден", km: [2119, 2120], delay: 1 },
   { name: "Оттенсхайм", km: [2147, 2148], delay: 1 },
-  { name: "Ашах", km: [2163, 2164], delay: 1 } 
+  { name: "Ашах", km: [2163, 2164], delay: 1 }
+];
+
+const borderPoints = [
+  { name: "Граница Румынии Галац", km: 150, defaultDelay: 2 },
+  { name: "Граница Румынии Джурджу", km: 497, defaultDelay: 0 },
+  { name: "Граница Болгарии Русе", km: 495, defaultDelay: 0 },
+  { name: "Граница Румынии Турну - Северин", km: 931, defaultDelay: 0 },
+  { name: "Граница Сербии Велико-Градиште", km: 1050, defaultDelay: 2 },
+  { name: "Граница Сербии Бездан", km: 1433, defaultDelay: 2 },
+  { name: "Граница Венгрии Мохач", km: 1446, defaultDelay: 2 },
 ];
 
 let borderDelaysInitialized = false;
@@ -35,22 +43,15 @@ function calculateArrival() {
   const startTimeStr = document.getElementById("startTimeArrival").value;
   const workHours = parseFloat(document.getElementById("workHoursArrival").value);
 
-  if (prevStartKm !== startKm || prevEndKm !== endKm) {
-  borderDelaysInitialized = false;
-  prevStartKm = startKm;
-  prevEndKm = endKm;
-  }
-  
   const resultDiv = document.getElementById("resultArrival");
 
   if (isNaN(startKm) || isNaN(endKm) || isNaN(speed) || !startTimeStr) {
     resultDiv.innerHTML = "⚠️ Пожалуйста, заполните все поля корректно.";
     return;
-
-    if (speed < 0.1 || speed > 100) {
-  resultDiv.innerHTML = "⚠️ Скорость должна быть от 0.1 до 100 км/ч.";
-  return;
-    }
+  }
+  if (speed < 0.1 || speed > 100) {
+    resultDiv.innerHTML = "⚠️ Скорость должна быть от 0.1 до 100 км/ч.";
+    return;
   }
 
   const startTime = new Date(startTimeStr);
@@ -59,17 +60,22 @@ function calculateArrival() {
     return;
   }
 
-  if (!borderDelaysInitialized) {
-  showBorderDelays(startKm, endKm);
-  borderDelaysInitialized = true;
+  if (prevStartKm !== startKm || prevEndKm !== endKm) {
+    borderDelaysInitialized = false;
+    prevStartKm = startKm;
+    prevEndKm = endKm;
   }
-  
+
+  if (!borderDelaysInitialized) {
+    showBorderDelays(startKm, endKm);
+    borderDelaysInitialized = true;
+  }
+
   const direction = endKm > startKm ? 1 : -1;
   const distance = Math.abs(endKm - startKm);
   let travelHours = distance / speed;
 
   let passedLocks = [];
-
   locks.forEach(lock => {
     const [km1, km2] = lock.km;
     if (
@@ -81,28 +87,27 @@ function calculateArrival() {
     }
   });
 
-  // Пограничные задержки
-const borderDelaysSection = document.getElementById("borderDelaysSection");
-let borderDelayTotal = 0;
-let passedBorders = [];
+  const borderDelaysSection = document.getElementById("borderDelaysSection");
+  let borderDelayTotal = 0;
+  let passedBorders = [];
+
+  if (borderDelaysSection) {
+    const inputs = borderDelaysSection.querySelectorAll("input[type='number']");
+    inputs.forEach((input, i) => {
+      const delay = parseFloat(input.value);
+      if (!isNaN(delay) && delay > 0) {
+        borderDelayTotal += delay;
+        const label = borderDelaysSection.querySelectorAll("label")[i];
+        const name = label ? label.textContent : `Граница ${i + 1}`;
+        passedBorders.push(`${name.trim()} — ${delay} ${pluralizeHours(delay)}`);
+      }
+    });
+    travelHours += borderDelayTotal;
+  }
 
   const bordersInfo = passedBorders.length > 0
-  ? "<br><strong>🛃 Пограничные задержки:</strong><br>" + passedBorders.join("<br>")
-  : "";
-  
-if (borderDelaysSection) {
-  const inputs = borderDelaysSection.querySelectorAll("input[type='number']");
-  inputs.forEach((input, i) => {
-    const delay = parseFloat(input.value);
-    if (!isNaN(delay) && delay > 0) {
-      borderDelayTotal += delay;
-      const label = borderDelaysSection.querySelectorAll("label")[i];
-      const name = label ? label.textContent : `Граница ${i + 1}`;
-
-      passedBorders.push(`${name.trim()} — ${delay} ${pluralizeHours(delay)}`);
-  });
-  travelHours += borderDelayTotal;
-}
+    ? "<br><strong>🛃 Пограничные задержки:</strong><br>" + passedBorders.join("<br>")
+    : "";
 
   if (workHours < 24) {
     const fullShifts = Math.floor(travelHours / workHours);
@@ -124,7 +129,7 @@ if (borderDelaysSection) {
 🚢 <strong>Ожидаемое прибытие:</strong> ${formattedArrival}<br>
 ⏳ <strong>Общая продолжительность:</strong> ${travelHours.toFixed(2)} ч<br>
 📍 <strong>Расстояние:</strong> ${distance} км${locksInfo}${bordersInfo}
-`;
+  `;
 
   document.getElementById("desiredBlockArrival").style.display = "block";
   document.getElementById("requiredSpeedResultArrival").innerHTML = "";
@@ -190,14 +195,14 @@ function calculateRecommendedSpeed() {
   const requiredSpeed = distance / effectiveTravelHours;
 
   if (requiredSpeed < 0.1) {
-  resultDiv.innerHTML = "⚠️ Требуемая скорость слишком мала. Проверьте данные.";
-  return;
-}
+    resultDiv.innerHTML = "⚠️ Требуемая скорость слишком мала. Проверьте данные.";
+    return;
+  }
 
-if (requiredSpeed > 100) {
-  resultDiv.innerHTML = "⚠️ Требуемая скорость слишком велика. Невозможно прибыть вовремя.";
-  return;
-}
+  if (requiredSpeed > 100) {
+    resultDiv.innerHTML = "⚠️ Требуемая скорость слишком велика. Невозможно прибыть вовремя.";
+    return;
+  }
 
   resultDiv.innerHTML = `
 🚀 <strong>Рекомендуемая скорость:</strong> ${requiredSpeed.toFixed(2)} км/ч<br>
@@ -205,19 +210,9 @@ if (requiredSpeed > 100) {
   `;
 }
 
-const borderPoints = [
-  { name: "Граница Румынии Галац", km: 150, defaultDelay: 2 },
-  { name: "Граница Румынии Джурджу", km: 497, defaultDelay: 0 },
-  { name: "Граница Болгарии Русе", km: 495, defaultDelay: 0 },
-  { name: "Граница Румынии Турну - Северин", km: 931, defaultDelay: 0 },
-  { name: "Граница Сербии Велико-Градиште", km: 1050, defaultDelay: 2 },
-  { name: "Граница Сербии Бездан", km: 1433, defaultDelay: 2 },
-  { name: "Граница Венгрии Мохач", km: 1446, defaultDelay: 2 },
-];
-
 function showBorderDelays(startKm, endKm) {
   const container = document.getElementById("borderDelaysSection");
-  container.innerHTML = ""; // Очистка
+  container.innerHTML = "";
 
   const relevantBorders = borderPoints.filter(b =>
     (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
@@ -253,12 +248,17 @@ function showBorderDelays(startKm, endKm) {
     input.style.width = "60px";
     input.style.marginRight = "6px";
 
+    const label = document.createElement("label");
+    label.style.display = "none"; // скрытая метка
+    label.textContent = border.name;
+
     input.addEventListener("input", () => {
-      calculateArrival(); // Автоматический перерасчёт
+      calculateArrival();
     });
 
     inputCell.appendChild(input);
     inputCell.appendChild(document.createTextNode(" ч"));
+    inputCell.appendChild(label);
 
     row.appendChild(nameCell);
     row.appendChild(inputCell);
