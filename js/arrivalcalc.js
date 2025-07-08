@@ -219,7 +219,7 @@ function calculateRecommendedSpeed() {
 
 function showBorderDelays(startKm, endKm) {
   const container = document.getElementById("borderDelaysSection");
-  container.innerHTML = ""; // Очистка
+  container.innerHTML = "";
 
   const relevantBorders = borderPoints.filter(b =>
     (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
@@ -246,6 +246,7 @@ function showBorderDelays(startKm, endKm) {
     nameCell.style.padding = "4px 6px";
     nameCell.style.fontSize = "14px";
     nameCell.style.whiteSpace = "nowrap";
+    nameCell.style.color = "var(--text-color, #222)";
 
     const inputCell = document.createElement("td");
 
@@ -256,17 +257,18 @@ function showBorderDelays(startKm, endKm) {
     input.value = border.defaultDelay;
     input.id = `borderDelay_${i}`;
 
-    // ✅ Минималистичные стили
-    input.style.width = "42px";
+    // ✅ Универсальные стили под тёмную/светлую темы
+    input.style.width = "45px";
     input.style.padding = "3px 4px";
     input.style.fontSize = "13px";
     input.style.borderRadius = "4px";
-    input.style.border = "1px solid #ccc";
+    input.style.border = "1px solid var(--border-color, #888)";
     input.style.backgroundColor = "var(--input-bg, #fff)";
-    input.style.color = "inherit";
+    input.style.color = "var(--text-color, #000)";
+    input.style.caretColor = "auto";
 
     input.addEventListener("input", () => {
-      calculateArrival(); // Автоматический перерасчёт
+      calculateArrival();
     });
 
     const label = document.createElement("span");
@@ -274,7 +276,7 @@ function showBorderDelays(startKm, endKm) {
     label.style.fontSize = "13px";
     label.style.opacity = "0.7";
     label.style.marginLeft = "4px";
-    label.style.color = "inherit";
+    label.style.color = "var(--text-color, #aaa)";
 
     inputCell.appendChild(input);
     inputCell.appendChild(label);
