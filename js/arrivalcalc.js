@@ -248,38 +248,25 @@ function showBorderDelays(startKm, endKm) {
     nameCell.style.whiteSpace = "nowrap";
 
     const inputCell = document.createElement("td");
+const input = document.createElement("input");
+input.type = "number";
+input.min = "0";
+input.step = "0.1";
+input.value = border.defaultDelay;
+input.id = `borderDelay_${i}`;
+input.style.width = "50px";
+input.style.marginRight = "4px";
 
-    const input = document.createElement("input");
-    input.type = "number";
-    input.min = "0";
-    input.step = "0.1";
-    input.value = border.defaultDelay;
-    input.id = `borderDelay_${i}`;
+input.addEventListener("input", () => {
+  calculateArrival(); // Автоматический перерасчёт
+});
 
-    // Стили для компактности
-    input.style.width = "45px";
-    input.style.fontSize = "13px";
-    input.style.padding = "2px 4px";
-    input.style.height = "26px";
-    input.style.boxSizing = "border-box";
-    input.style.marginRight = "4px";
+inputCell.appendChild(input);
 
-    input.addEventListener("input", () => {
-      calculateArrival(); // Автоматический перерасчёт
-    });
+const label = document.createElement("span");
+label.textContent = "ч";
+label.style.fontSize = "13px";
+label.style.opacity = "0.7";
+label.style.marginLeft = "2px";
 
-    const label = document.createElement("span");
-    label.textContent = "ч";
-    label.style.fontSize = "13px";
-    label.style.color = "#555";
-
-    inputCell.appendChild(input);
-    inputCell.appendChild(label);
-
-    row.appendChild(nameCell);
-    row.appendChild(inputCell);
-    table.appendChild(row);
-  });
-
-  container.appendChild(table);
-}
+inputCell.appendChild(label);
