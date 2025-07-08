@@ -92,7 +92,7 @@ function calculateArrival() {
 
   if (borderDelaysSection) {
     const inputs = borderDelaysSection.querySelectorAll("input[type='number']");
-    const labels = borderDelaysSection.querySelectorAll("label");
+    const labels = borderDelaysSection.querySelectorAll("td:first-child");
     inputs.forEach((input, i) => {
       const delay = parseFloat(input.value);
       if (!isNaN(delay) && delay > 0) {
@@ -219,7 +219,7 @@ function calculateRecommendedSpeed() {
 
 function showBorderDelays(startKm, endKm) {
   const container = document.getElementById("borderDelaysSection");
-  container.innerHTML = ""; // Очистка
+  container.innerHTML = "";
 
   const relevantBorders = borderPoints.filter(b =>
     (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
@@ -268,7 +268,8 @@ function showBorderDelays(startKm, endKm) {
     label.style.fontSize = "13px";
     label.style.opacity = "0.7";
     label.style.marginLeft = "2px";
-    label.style.userSelect = "none"; // чтобы нельзя было выделить
+    label.style.userSelect = "none";
+
     inputCell.appendChild(label);
 
     row.appendChild(nameCell);
