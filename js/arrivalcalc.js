@@ -42,7 +42,6 @@ function calculateArrival() {
   const speed = parseFloat(document.getElementById("speedArrival").value);
   const startTimeStr = document.getElementById("startTimeArrival").value;
   const workHours = parseFloat(document.getElementById("workHoursArrival").value);
-
   const resultDiv = document.getElementById("resultArrival");
 
   if (isNaN(startKm) || isNaN(endKm) || isNaN(speed) || !startTimeStr) {
@@ -93,12 +92,12 @@ function calculateArrival() {
 
   if (borderDelaysSection) {
     const inputs = borderDelaysSection.querySelectorAll("input[type='number']");
+    const labels = borderDelaysSection.querySelectorAll("label");
     inputs.forEach((input, i) => {
       const delay = parseFloat(input.value);
       if (!isNaN(delay) && delay > 0) {
         borderDelayTotal += delay;
-        const label = borderDelaysSection.querySelectorAll("label")[i];
-        const name = label ? label.textContent : `Граница ${i + 1}`;
+        const name = labels[i] ? labels[i].textContent : `Граница ${i + 1}`;
         passedBorders.push(`${name.trim()} — ${delay} ${pluralizeHours(delay)}`);
       }
     });
@@ -135,13 +134,12 @@ function calculateArrival() {
   document.getElementById("requiredSpeedResultArrival").innerHTML = "";
 }
 
-    function calculateRecommendedSpeed() {
+function calculateRecommendedSpeed() {
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   const startTimeStr = document.getElementById("startTimeArrival").value;
   const desiredArrivalStr = document.getElementById("desiredArrivalTimeArrival").value;
   const workHours = parseFloat(document.getElementById("workHoursArrival").value);
-
   const resultDiv = document.getElementById("requiredSpeedResultArrival");
 
   if (isNaN(startKm) || isNaN(endKm) || !startTimeStr || !desiredArrivalStr) {
@@ -151,12 +149,10 @@ function calculateArrival() {
 
   const startTime = new Date(startTimeStr);
   const desiredArrival = new Date(desiredArrivalStr);
-
   if (isNaN(startTime.getTime()) || isNaN(desiredArrival.getTime())) {
     resultDiv.innerHTML = "⚠️ Неверный формат времени.";
     return;
   }
-
   if (desiredArrival <= startTime) {
     resultDiv.innerHTML = "⚠️ Желаемое время прибытия должно быть позже времени начала движения.";
     return;
@@ -165,7 +161,6 @@ function calculateArrival() {
   const direction = endKm > startKm ? 1 : -1;
   const distance = Math.abs(endKm - startKm);
 
-  // Задержки на шлюзах
   let totalLockDelay = 0;
   locks.forEach(lock => {
     const [km1, km2] = lock.km;
@@ -177,10 +172,8 @@ function calculateArrival() {
     }
   });
 
-  // Задержки на границах
   const borderDelaysSection = document.getElementById("borderDelaysSection");
   let borderDelayTotal = 0;
-
   if (borderDelaysSection) {
     const inputs = borderDelaysSection.querySelectorAll("input[type='number']");
     inputs.forEach(input => {
@@ -194,7 +187,6 @@ function calculateArrival() {
   const totalAvailableMs = desiredArrival - startTime;
   let totalAvailableHours = totalAvailableMs / (1000 * 60 * 60);
 
-  // Учёт рабочего времени (например, 12 ч в день)
   if (workHours < 24) {
     const cycles = Math.floor(totalAvailableHours / 24);
     const remainder = totalAvailableHours % 24;
@@ -210,12 +202,10 @@ function calculateArrival() {
   }
 
   const requiredSpeed = distance / effectiveTravelHours;
-
   if (requiredSpeed < 0.1) {
     resultDiv.innerHTML = "⚠️ Требуемая скорость слишком мала. Проверьте данные.";
     return;
   }
-
   if (requiredSpeed > 100) {
     resultDiv.innerHTML = "⚠️ Требуемая скорость слишком велика. Невозможно прибыть вовремя.";
     return;
@@ -225,4 +215,60 @@ function calculateArrival() {
 🚀 <strong>Рекомендуемая скорость:</strong> ${requiredSpeed.toFixed(2)} км/ч<br>
 (учтены задержки шлюзов ⚓, границ 🛃 и рабочий график 🕒)
   `;
+}
+
+function showBorderDelays(startKm, endKm) {
+  const container = document.getElementById("borderDelaysSection");
+  container.innerHTML = "";
+
+  const relevantBorders = borderPoints.filter(b =>
+    (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
+    (startKm > endKm && b.km <= startKm && b.km >= endKm)
+  );
+
+  if (relevantBorders.length === 0) return;
+
+  const title = document.createElement("h3");
+  title.textContent = "🛃 Пограничные задержки:";
+  container.appendChild(title);
+
+  const table = document.createElement("table");
+  table.style.borderCollapse = "collapse";
+  table.style.width = "100%";
+  table.style.maxWidth = "400px";
+
+  relevantBorders.forEach((border, i) => {
+    const row = document.createElement("tr");
+
+    const nameCell = document.createElement("td");
+    const label = document.createElement("label");
+    label.textContent = border.name.replace("Граница ", "");
+    label.setAttribute("for", `borderDelay_${i}`);
+    nameCell.appendChild(label);
+    nameCell.style.padding = "6px";
+    nameCell.style.fontWeight = "500";
+
+    const inputCell = document.createElement("td");
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = "0";
+    input.step = "0.1";
+    input.value = border.defaultDelay;
+    input.id = `borderDelay_${i}`;
+    input.style.width = "60px";
+    input.style.marginRight = "6px";
+
+    input.addEventListener("input", () => {
+      calculateArrival();
+    });
+
+    inputCell.appendChild(input);
+    inputCell.appendChild(document.createTextNode(" ч"));
+
+    row.appendChild(nameCell);
+    row.appendChild(inputCell);
+    table.appendChild(row);
+  });
+
+  container.appendChild(table);
 }
