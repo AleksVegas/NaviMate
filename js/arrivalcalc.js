@@ -1,3 +1,12 @@
+function pluralizeHours(n) {
+  n = Math.abs(n);
+  if (Number.isInteger(n)) {
+    if (n % 10 === 1 && n % 100 !== 11) return 'час';
+    if ([2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100)) return 'часа';
+  }
+  return 'часов';
+}
+
 const locks = [
   { name: "Габчиково", km: [1818, 1819], delay: 1 },
   { name: "Железные ворота II", km: [863, 864], delay: 1 },
