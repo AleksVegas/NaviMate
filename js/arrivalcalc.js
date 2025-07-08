@@ -77,7 +77,7 @@ function calculateArrival() {
       (direction === -1 && startKm >= km1 && endKm <= km2)
     ) {
       travelHours += lock.delay;
-      passedLocks.push(`⚓ Учтён шлюз <strong>${lock.name}</strong> — задержка ${lock.delay} час${lock.delay > 1 ? 'а' : ''}`);
+      passedLocks.push(`⚓ Учтён шлюз <strong>${lock.name}</strong> — задержка ${lock.delay} ${pluralizeHours(lock.delay)}`);
     }
   });
 
@@ -94,7 +94,7 @@ if (borderDelaysSection) {
       borderDelayTotal += delay;
       const label = borderDelaysSection.querySelectorAll("label")[i];
       const name = label ? label.textContent : `Граница ${i + 1}`;
-      passedBorders.push(`🛃 ${name} — задержка ${delay} час${delay > 1 ? 'а' : ''}`);
+      passedBorders.push(`🛃 ${name} — задержка ${delay} ${pluralizeHours(delay)}`);
     }
   });
   travelHours += borderDelayTotal;
