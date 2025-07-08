@@ -2,6 +2,12 @@
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
 }
+
+const themeBtnHeader = document.getElementById("toggle-theme");
+if (themeBtnHeader) {
+  themeBtnHeader.innerText = localStorage.getItem("theme") === "dark" ? "☀️" : "🌙";
+}
+
 // Управление меню
 const menuToggleBtn = document.getElementById('menu-toggle');
 const sidebar = document.getElementById('sidebar');
