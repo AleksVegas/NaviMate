@@ -290,12 +290,12 @@ function showBorderDelays(startKm, endKm) {
 }
 
 
-    (function () {
+(function () {
   const style = document.createElement("style");
   style.innerHTML = `
     @media (prefers-color-scheme: dark) {
-      #borderDelaysSection td:first-child {
-        color: #ddd;
+      #borderDelaysSection td {
+        color: #eee !important;
       }
     }
   `;
