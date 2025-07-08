@@ -205,7 +205,15 @@ const borderPoints = [
 
 function showBorderDelays(startKm, endKm) {
   const container = document.getElementById("borderDelaysSection");
-  container.innerHTML = ""; // очистка
+
+  // 🧠 Сохраняем текущие значения, если есть
+  const previousValues = {};
+  const existingInputs = container.querySelectorAll("input[type='number']");
+  existingInputs.forEach((input, i) => {
+    previousValues[i] = input.value;
+  });
+
+  container.innerHTML = ""; // очищаем
 
   const relevantBorders = borderPoints.filter(b =>
     (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
@@ -231,14 +239,17 @@ function showBorderDelays(startKm, endKm) {
     input.type = "number";
     input.min = "0";
     input.step = "0.1";
-    input.value = border.defaultDelay;
+
+    // ⚠️ Используем сохранённое значение, если оно было
+    input.value = previousValues[i] !== undefined ? previousValues[i] : border.defaultDelay;
+
     input.id = `borderDelay_${i}`;
     input.style.width = "100px";
     input.style.marginRight = "10px";
 
     input.addEventListener("input", () => {
-  calculateArrival(); // автоматический пересчёт
-});
+      calculateArrival(); // автообновление
+    });
 
     const span = document.createElement("span");
     span.textContent = "ч";
