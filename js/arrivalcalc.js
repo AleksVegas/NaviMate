@@ -219,7 +219,7 @@ function calculateRecommendedSpeed() {
 
 function showBorderDelays(startKm, endKm) {
   const container = document.getElementById("borderDelaysSection");
-  container.innerHTML = "";
+  container.innerHTML = ""; // Очистка
 
   const relevantBorders = borderPoints.filter(b =>
     (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
@@ -248,28 +248,35 @@ function showBorderDelays(startKm, endKm) {
     nameCell.style.whiteSpace = "nowrap";
 
     const inputCell = document.createElement("td");
+
     const input = document.createElement("input");
     input.type = "number";
     input.min = "0";
     input.step = "0.1";
     input.value = border.defaultDelay;
     input.id = `borderDelay_${i}`;
-    input.style.width = "50px";
-    input.style.marginRight = "4px";
+
+    // ✅ Минималистичные стили
+    input.style.width = "42px";
+    input.style.padding = "3px 4px";
+    input.style.fontSize = "13px";
+    input.style.borderRadius = "4px";
+    input.style.border = "1px solid #ccc";
+    input.style.backgroundColor = "var(--input-bg, #fff)";
+    input.style.color = "inherit";
 
     input.addEventListener("input", () => {
       calculateArrival(); // Автоматический перерасчёт
     });
 
-    inputCell.appendChild(input);
-
     const label = document.createElement("span");
     label.textContent = "ч";
     label.style.fontSize = "13px";
     label.style.opacity = "0.7";
-    label.style.marginLeft = "2px";
-    label.style.userSelect = "none";
+    label.style.marginLeft = "4px";
+    label.style.color = "inherit";
 
+    inputCell.appendChild(input);
     inputCell.appendChild(label);
 
     row.appendChild(nameCell);
