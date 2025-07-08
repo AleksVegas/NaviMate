@@ -86,6 +86,10 @@ const borderDelaysSection = document.getElementById("borderDelaysSection");
 let borderDelayTotal = 0;
 let passedBorders = [];
 
+  const bordersInfo = passedBorders.length > 0
+  ? "<br><strong>🛃 Пограничные задержки:</strong><br>" + passedBorders.join("<br>")
+  : "";
+  
 if (borderDelaysSection) {
   const inputs = borderDelaysSection.querySelectorAll("input[type='number']");
   inputs.forEach((input, i) => {
@@ -94,8 +98,8 @@ if (borderDelaysSection) {
       borderDelayTotal += delay;
       const label = borderDelaysSection.querySelectorAll("label")[i];
       const name = label ? label.textContent : `Граница ${i + 1}`;
-      passedBorders.push(`🛃 ${name} — задержка ${delay} ${pluralizeHours(delay)}`);
-    }
+
+      passedBorders.push(`${name.trim()} — ${delay} ${pluralizeHours(delay)}`);
   });
   travelHours += borderDelayTotal;
 }
@@ -115,7 +119,6 @@ if (borderDelaysSection) {
   });
 
   const locksInfo = passedLocks.length > 0 ? "<br>" + passedLocks.join("<br>") : "";
-  const bordersInfo = passedBorders.length > 0 ? "<br>" + passedBorders.join("<br>") : "";
 
   resultDiv.innerHTML = `
 🚢 <strong>Ожидаемое прибытие:</strong> ${formattedArrival}<br>
@@ -214,15 +217,7 @@ const borderPoints = [
 
 function showBorderDelays(startKm, endKm) {
   const container = document.getElementById("borderDelaysSection");
-
-  // 🧠 Сохраняем текущие значения, если есть
-  const previousValues = {};
-  const existingInputs = container.querySelectorAll("input[type='number']");
-  existingInputs.forEach((input, i) => {
-    previousValues[i] = input.value;
-  });
-
-  container.innerHTML = ""; // очищаем
+  container.innerHTML = ""; // Очистка
 
   const relevantBorders = borderPoints.filter(b =>
     (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
@@ -232,40 +227,43 @@ function showBorderDelays(startKm, endKm) {
   if (relevantBorders.length === 0) return;
 
   const title = document.createElement("h3");
-  title.textContent = "🛃 Пограничные задержки на маршруте:";
+  title.textContent = "🛃 Пограничные задержки:";
   container.appendChild(title);
 
+  const table = document.createElement("table");
+  table.style.borderCollapse = "collapse";
+  table.style.width = "100%";
+  table.style.maxWidth = "400px";
+
   relevantBorders.forEach((border, i) => {
-    const block = document.createElement("div");
-    block.style.marginBottom = "10px";
+    const row = document.createElement("tr");
 
-    const label = document.createElement("label");
-    label.textContent = `${border.name} (км ${border.km}):`;
-    label.style.display = "block";
-    label.style.marginBottom = "4px";
+    const nameCell = document.createElement("td");
+    nameCell.textContent = border.name.replace("Граница ", "");
+    nameCell.style.padding = "6px";
+    nameCell.style.fontWeight = "500";
 
+    const inputCell = document.createElement("td");
     const input = document.createElement("input");
     input.type = "number";
     input.min = "0";
     input.step = "0.1";
-
-    // ⚠️ Используем сохранённое значение, если оно было
-    input.value = previousValues[i] !== undefined ? previousValues[i] : border.defaultDelay;
-
+    input.value = border.defaultDelay;
     input.id = `borderDelay_${i}`;
-    input.style.width = "100px";
-    input.style.marginRight = "10px";
+    input.style.width = "60px";
+    input.style.marginRight = "6px";
 
     input.addEventListener("input", () => {
-      calculateArrival(); // автообновление
+      calculateArrival(); // Автоматический перерасчёт
     });
 
-    const span = document.createElement("span");
-    span.textContent = "ч";
+    inputCell.appendChild(input);
+    inputCell.appendChild(document.createTextNode(" ч"));
 
-    block.appendChild(label);
-    block.appendChild(input);
-    block.appendChild(span);
-    container.appendChild(block);
+    row.appendChild(nameCell);
+    row.appendChild(inputCell);
+    table.appendChild(row);
   });
+
+  container.appendChild(table);
 }
