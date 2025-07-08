@@ -15,6 +15,9 @@ const locks = [
   { name: "Ашах", km: [2163, 2164], delay: 1 } 
 ];
 
+let borderDelaysInitialized = false;
+let prevStartKm = null;
+let prevEndKm = null;
 
 function calculateArrival() {
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
@@ -23,6 +26,12 @@ function calculateArrival() {
   const startTimeStr = document.getElementById("startTimeArrival").value;
   const workHours = parseFloat(document.getElementById("workHoursArrival").value);
 
+  if (prevStartKm !== startKm || prevEndKm !== endKm) {
+  borderDelaysInitialized = false;
+  prevStartKm = startKm;
+  prevEndKm = endKm;
+  }
+  
   const resultDiv = document.getElementById("resultArrival");
 
   if (isNaN(startKm) || isNaN(endKm) || isNaN(speed) || !startTimeStr) {
@@ -41,7 +50,10 @@ function calculateArrival() {
     return;
   }
 
+  if (!borderDelaysInitialized) {
   showBorderDelays(startKm, endKm);
+  borderDelaysInitialized = true;
+  }
   
   const direction = endKm > startKm ? 1 : -1;
   const distance = Math.abs(endKm - startKm);
