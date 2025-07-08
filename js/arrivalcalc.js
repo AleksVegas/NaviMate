@@ -289,68 +289,14 @@ function showBorderDelays(startKm, endKm) {
   container.appendChild(table);
 }
 
-(function injectDynamicStyles() {
+
+    (function () {
   const style = document.createElement("style");
   style.innerHTML = `
-    input[type="number"],
-    input[type="datetime-local"] {
-      width: 60px;
-      padding: 4px 6px;
-      font-size: 13px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      background-color: #fff;
-      color: #000;
-      box-sizing: border-box;
-    }
-
     @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #121212;
-        color: #eee;
+      #borderDelaysSection td:first-child {
+        color: #ddd;
       }
-
-      input[type="number"],
-      input[type="datetime-local"] {
-        background-color: #1e1e1e;
-        color: #eee;
-        border: 1px solid #555;
-      }
-
-      #borderDelaysSection span {
-        color: #ccc;
-      }
-    }
-
-    @media (prefers-color-scheme: light) {
-      body {
-        background-color: #fff;
-        color: #000;
-      }
-
-      input[type="number"],
-      input[type="datetime-local"] {
-        background-color: #fff;
-        color: #000;
-        border: 1px solid #ccc;
-      }
-
-      #borderDelaysSection span {
-        color: #555;
-      }
-    }
-
-    #borderDelaysSection table {
-      border-collapse: collapse;
-      width: 100%;
-      max-width: 380px;
-      margin-bottom: 10px;
-    }
-
-    #borderDelaysSection td {
-      padding: 4px 6px;
-      font-size: 14px;
-      white-space: nowrap;
     }
   `;
   document.head.appendChild(style);
