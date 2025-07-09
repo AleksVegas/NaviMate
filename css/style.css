@@ -374,3 +374,36 @@ body.dark .slider {
   background-color: #666;
 }
 
+.setting-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0;
+}
+
+.setting-select {
+  padding: 4px 6px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f3f3f3;
+  color: #666;
+  min-width: 160px;
+}
+
+.setting-select:disabled {
+  background-color: #eaeaea;
+  color: #888;
+  opacity: 0.8;
+}
+
+body.dark .setting-select {
+  background-color: #2a2a2a;
+  color: #bbb;
+  border: 1px solid #555;
+}
+
+body.dark .setting-select:disabled {
+  background-color: #222;
+  color: #777;
+}
