@@ -208,3 +208,13 @@ const themeBtnSettings = document.getElementById("toggle-theme-settings");
 if (themeBtnSettings) {
   themeBtnSettings.addEventListener("click", toggleTheme);
 }
+
+const themeSwitch = document.getElementById("toggle-theme-switch");
+if (themeSwitch) {
+  // Установить состояние при загрузке
+  themeSwitch.checked = localStorage.getItem("theme") === "dark";
+
+  themeSwitch.addEventListener("change", () => {
+    toggleTheme(); // Уже есть у тебя функция
+  });
+}
