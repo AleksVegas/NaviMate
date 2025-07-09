@@ -407,3 +407,37 @@ body.dark .setting-select:disabled {
   background-color: #222;
   color: #777;
 }
+
+.settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  max-width: 360px;
+}
+
+.settings-row label {
+  white-space: nowrap;
+  font-size: 14px;
+  flex: 1;
+}
+
+.settings-row select {
+  font-size: 14px;
+  padding: 4px 6px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000;
+  flex: 1;
+  max-width: 160px;
+}
+
+/* Для тёмной темы */
+body.dark .settings-row select {
+  background-color: #1e1e1e;
+  color: #eee;
+  border: 1px solid #555;
+}
