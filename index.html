@@ -72,14 +72,31 @@
   <h2>⚙️ Настройки</h2>  
   <hr style="margin: 12px 0; border-color: #ccc;">
 
+  <!-- Переключатель темы -->
   <div class="setting-row">
-    <label for="toggle-theme-switch">🌗 Изменение темы: День/Ночь</label>
+    <label for="toggle-theme-switch">🌗 Тема (день/ночь)</label>
     <label class="switch">
       <input type="checkbox" id="toggle-theme-switch">
       <span class="slider round"></span>
     </label>
   </div>
-    </section>
+
+  <!-- Язык (фиксированный) -->
+  <div class="setting-row">
+    <label for="language-select">🌐 Язык</label>
+    <select id="language-select" class="setting-select" disabled>
+      <option value="ru" selected>Русский</option>
+    </select>
+  </div>
+
+  <!-- ВВП (фиксированный) -->
+  <div class="setting-row">
+    <label for="waterway-select">🌊 Водный путь</label>
+    <select id="waterway-select" class="setting-select" disabled>
+      <option value="danube" selected>Дунай</option>
+    </select>
+  </div>
+</section>
     
     <section id="about-section" class="section"> 
   <h2>ℹ️ О приложении</h2>
