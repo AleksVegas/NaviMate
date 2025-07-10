@@ -68,6 +68,38 @@ function formatNumber(n) {
   return (n % 1 === 0) ? n.toFixed(0) : n.toFixed(1);
 }
 
+const waitingPlacesUpstream = [
+  { km: 1674.7 },
+  { km: 1693 },
+  { km: 1696 },
+  { km: 1699.5 },
+  { km: 1710 },
+  { km: 1716 },
+  { km: 1732 },
+  { km: 1733, restricted: true, restrictedFrom: 1733.5, restrictedTo: 1735 },
+  { km: 1781.5 },
+  { km: 1783.7 },
+  { km: 1784.7 },
+  { km: 1786.1 },
+  { km: 1786.8 },
+  { km: 1790 },
+  { km: 1792.5 },
+  { km: 1794.5 },
+  { km: 1796 },
+  { km: 1798 },
+  { km: 1800 },
+  { km: 1802 },
+  { km: 1805 },
+  { km: 1863 }
+];
+
+function findNearestWaitingPlaceUpstream(km) {
+  for (let i = waitingPlacesUpstream.length - 1; i >= 0; i--) {
+    if (waitingPlacesUpstream[i].km <= km) return waitingPlacesUpstream[i];
+  }
+  return null;
+}
+
 // Создаёт блок с формой для ввода данных судов
 function createBlock(index) {
   const block = document.createElement('div');
@@ -108,14 +140,12 @@ function calculate(index) {
   const es = parseFloat(document.getElementById(`enemy_speed_${index}`).value);
   const op = parseFloat(document.getElementById(`our_pos_${index}`).value);
   const os = parseFloat(document.getElementById(`our_speed_${index}`).value);
-
-  // Проверка на допустимые значения скорости
-if (os <= 0 || os > 50 || es <= 0 || es > 50) {
-  result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 50 км/ч.";
-  return;
-}
-
   const result = document.getElementById(`result_${index}`);
+
+  if (os <= 0 || os > 50 || es <= 0 || es > 50) {
+    result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 50 км/ч.";
+    return;
+  }
 
   if (isNaN(ep) || isNaN(es) || isNaN(op) || isNaN(os)) {
     result.innerText = "Пожалуйста, введите все данные.";
@@ -127,16 +157,28 @@ if (os <= 0 || os > 50 || es <= 0 || es > 50) {
     return;
   }
 
-  // Расчёт километра встречи
   const meeting_km = (op * es + ep * os) / (os + es);
   const distance_to_meeting = Math.abs(meeting_km - op);
-  const time_to_meeting = Math.abs(ep - op) / (os + es) * 60; // минуты
+  const time_to_meeting = Math.abs(ep - op) / (os + es) * 60;
 
-  result.innerHTML = `
+  let output = `
     <div>📍 Км встречи: <b>${formatNumber(meeting_km)}</b></div>
     <div>📏 Расстояние до встречи (км): <b>${formatNumber(distance_to_meeting)}</b></div>
     <div>⏱️ Время до встречи (мин): <b>${formatNumber(time_to_meeting)}</b></div>
   `;
+
+  // Если движемся вверх
+  if (op < ep) {
+    const nearest = findNearestWaitingPlaceUpstream(meeting_km);
+    if (nearest) {
+      output += `<div>📍 Ближайшее место ожидания: <b>${nearest.km} км</b></div>`;
+      if (nearest.restricted) {
+        output += `<div>⚠️ На участке с ${nearest.restrictedFrom} по ${nearest.restrictedTo} км расход запрещён</div>`;
+      }
+    }
+  }
+
+  result.innerHTML = output;
 }
 
 // Очистка полей и результатов для конкретного блока
@@ -148,19 +190,16 @@ function clearFields(index) {
   document.getElementById(`result_${index}`).innerText = '';
 }
 
-// Копирование позиции нашего судна из первого блока в другие
 function copyOurPos(index) {
   const pos = document.getElementById('our_pos_0').value;
   document.getElementById(`our_pos_${index}`).value = pos;
 }
 
-// Копирование скорости нашего судна из первого блока в другие
 function copyOurSpeed(index) {
   const speed = document.getElementById('our_speed_0').value;
   document.getElementById(`our_speed_${index}`).value = speed;
 }
 
-// Инициализация: создаём 3 блока и навешиваем обработчик на кнопку очистки всего
 const container = document.getElementById('blocks');
 for (let i = 0; i < 3; i++) {
   container.appendChild(createBlock(i));
@@ -170,13 +209,11 @@ document.querySelector('.btn-clear-all').addEventListener('click', () => {
   for (let i = 0; i < 3; i++) clearFields(i);
 });
 
-// Уведомление о наличии интернета 
 window.addEventListener('online', () => {
   console.log('Интернет появился, обновляем страницу');
   location.reload();
 });
 
-//отслеживание интернета и показ уведомления 
 function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 }
@@ -200,10 +237,8 @@ if (!navigator.onLine && !isStandalone()) {
   showOfflineNotice();
 }
 
-// 🎯 Назначение переключения темы
 document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
 
-// Если есть вторая кнопка (в настройках)
 const themeBtnSettings = document.getElementById("toggle-theme-settings");
 if (themeBtnSettings) {
   themeBtnSettings.addEventListener("click", toggleTheme);
@@ -211,10 +246,8 @@ if (themeBtnSettings) {
 
 const themeSwitch = document.getElementById("toggle-theme-switch");
 if (themeSwitch) {
-  // Установить состояние при загрузке
   themeSwitch.checked = localStorage.getItem("theme") === "dark";
-
   themeSwitch.addEventListener("change", () => {
-    toggleTheme(); // Уже есть у тебя функция
+    toggleTheme();
   });
 }
