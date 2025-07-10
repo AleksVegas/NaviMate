@@ -8,7 +8,6 @@ if (themeBtnHeader) {
   themeBtnHeader.innerText = localStorage.getItem("theme") === "dark" ? "☀️" : "🌙";
 }
 
-// Управление меню
 const menuToggleBtn = document.getElementById('menu-toggle');
 const sidebar = document.getElementById('sidebar');
 const navButtons = document.querySelectorAll('nav#sidebar button.nav-btn');
@@ -23,123 +22,78 @@ function toggleTheme() {
   const theme = document.body.classList.contains("dark") ? "dark" : "light";
   localStorage.setItem("theme", theme);
 
-  // Обновить иконку и текст на кнопке в настройках
   const btnSettings = document.getElementById("toggle-theme-settings");
   if (btnSettings) {
     btnSettings.innerText = theme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
   }
 
-  // Обновить иконку в хедере
   const btnHeader = document.getElementById("toggle-theme");
   if (btnHeader) {
     btnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
   }
 }
 
-// Инициализация кнопки при загрузке 
 const savedTheme = localStorage.getItem("theme");
 const btnSettings = document.getElementById("toggle-theme-settings");
 if (btnSettings) {
   btnSettings.innerText = savedTheme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
 }
 
-// Переключение разделов
 navButtons.forEach(btn => {
   btn.addEventListener('click', () => {
     const target = btn.getAttribute('data-section');
-
-    // Активная кнопка
     navButtons.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
-    // Показать секцию
     sections.forEach(sec => {
       if (sec.id === target) sec.classList.add('active');
       else sec.classList.remove('active');
     });
-
-    // Закрыть меню (если мобильный)
     sidebar.classList.remove('open');
   });
 });
 
-// --- Вспомогательная функция форматирования чисел ---
 function formatNumber(n) {
   return (n % 1 === 0) ? n.toFixed(0) : n.toFixed(1);
 }
 
-const waitingPlacesUpstream = [
-  { km: 1674.7 },
-  { km: 1693 },
-  { km: 1696 },
-  { km: 1699.5 },
-  { km: 1710 },
-  { km: 1716 },
-  { km: 1732 },
-  { km: 1733, restricted: true, restrictedFrom: 1733.5, restrictedTo: 1735 },
-  { km: 1781.5 },
-  { km: 1783.7 },
-  { km: 1784.7 },
-  { km: 1786.1 },
-  { km: 1786.8 },
-  { km: 1790 },
-  { km: 1792.5 },
-  { km: 1794.5 },
-  { km: 1796 },
-  { km: 1798 },
-  { km: 1800 },
-  { km: 1802 },
-  { km: 1805 },
-  { km: 1863 }
+const waitingZonesUpstream = [
+  { from: 1674, to: 1675.4, waitAt: 1674.7 },
+  { from: 1693, to: 1695.8, waitAt: 1693 },
+  { from: 1696.4, to: 1696.7, waitAt: 1696 },
+  { from: 1700.1, to: 1701.2, waitAt: 1699.5 },
+  { from: 1710.2, to: 1711.1, waitAt: 1710 },
+  { from: 1716.1, to: 1716.5, waitAt: 1716 },
+  { from: 1732.1, to: 1732.8, waitAt: 1732 },
+  { from: 1733.5, to: 1735, waitAt: 1733, restricted: true },
+  { from: 1781.9, to: 1782.1, waitAt: 1781.5 },
+  { from: 1784, to: 1784.5, waitAt: 1783.7 },
+  { from: 1785, to: 1785.4, waitAt: 1784.7 },
+  { from: 1786.3, to: 1786.7, waitAt: 1786.1 },
+  { from: 1787.2, to: 1788.7, waitAt: 1786.8 },
+  { from: 1790.7, to: 1792, waitAt: 1790 },
+  { from: 1793.2, to: 1794, waitAt: 1792.5 },
+  { from: 1794.7, to: 1795.6, waitAt: 1794.5 },
+  { from: 1796.4, to: 1797.4, waitAt: 1796 },
+  { from: 1798.8, to: 1799.5, waitAt: 1798 },
+  { from: 1801, to: 1801.7, waitAt: 1800 },
+  { from: 1803, to: 1803.5, waitAt: 1802 },
+  { from: 1807, to: 1808, waitAt: 1805 },
+  { from: 1863.5, to: 1864.5, waitAt: 1863 },
 ];
 
-function findNearestWaitingPlaceUpstream(km) {
-  for (let i = waitingPlacesUpstream.length - 1; i >= 0; i--) {
-    if (waitingPlacesUpstream[i].km <= km) return waitingPlacesUpstream[i];
+function findWaitingZoneUpstream(km) {
+  for (const zone of waitingZonesUpstream) {
+    if (km >= zone.from && km <= zone.to) return zone;
   }
   return null;
 }
 
-// Создаёт блок с формой для ввода данных судов
-function createBlock(index) {
-  const block = document.createElement('div');
-  block.className = 'block';
-
-  const enemyLabel = `Встречное судно ${index + 1}`;
-  const ourLabel = 'Наше судно';
-
-  block.innerHTML = `
-    <label>${enemyLabel}: Позиция (км):</label>
-    <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="например: 2025">
-
-    <label>${enemyLabel}: Скорость (км/ч):</label>
-    <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="например: 20.5">
-
-    <label>${ourLabel}: Позиция (км):</label>
-    <input type="number" id="our_pos_${index}" step="0.1" placeholder="например: 2008">
-    ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurPos(${index})">Скопировать позицию из 1 блока</button>` : ''}
-
-    <label>${ourLabel}: Скорость (км/ч):</label>
-    <input type="number" id="our_speed_${index}" step="0.1" placeholder="например: 12">
-    ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurSpeed(${index})">Скопировать скорость из 1 блока</button>` : ''}
-
-    <div style="margin-top: 10px;">
-      <button class="calc-btn" onclick="calculate(${index})">Рассчитать</button>
-      <button class="btn-clear" onclick="clearFields(${index})" type="button">Очистить</button>
-    </div>
-
-    <div class="output" id="result_${index}"></div>
-  `;
-
-  return block;
-}
-
-// Основная функция расчёта встречи судов
 function calculate(index) {
   const ep = parseFloat(document.getElementById(`enemy_pos_${index}`).value);
   const es = parseFloat(document.getElementById(`enemy_speed_${index}`).value);
   const op = parseFloat(document.getElementById(`our_pos_${index}`).value);
   const os = parseFloat(document.getElementById(`our_speed_${index}`).value);
+
   const result = document.getElementById(`result_${index}`);
 
   if (os <= 0 || os > 50 || es <= 0 || es > 50) {
@@ -167,87 +121,15 @@ function calculate(index) {
     <div>⏱️ Время до встречи (мин): <b>${formatNumber(time_to_meeting)}</b></div>
   `;
 
-  // Если движемся вверх
   if (op < ep) {
-    const nearest = findNearestWaitingPlaceUpstream(meeting_km);
-    if (nearest) {
-      output += `<div>📍 Ближайшее место ожидания: <b>${nearest.km} км</b></div>`;
-      if (nearest.restricted) {
-        output += `<div>⚠️ На участке с ${nearest.restrictedFrom} по ${nearest.restrictedTo} км расход запрещён</div>`;
+    const zone = findWaitingZoneUpstream(meeting_km);
+    if (zone) {
+      output += `<div>📍 Ближайшее место ожидания: <b>${zone.waitAt} км</b></div>`;
+      if (zone.restricted) {
+        output += `<div>⚠️ Расхождение запрещено с ${zone.from} по ${zone.to} км</div>`;
       }
     }
   }
 
   result.innerHTML = output;
-}
-
-// Очистка полей и результатов для конкретного блока
-function clearFields(index) {
-  document.getElementById(`enemy_pos_${index}`).value = '';
-  document.getElementById(`enemy_speed_${index}`).value = '';
-  document.getElementById(`our_pos_${index}`).value = '';
-  document.getElementById(`our_speed_${index}`).value = '';
-  document.getElementById(`result_${index}`).innerText = '';
-}
-
-function copyOurPos(index) {
-  const pos = document.getElementById('our_pos_0').value;
-  document.getElementById(`our_pos_${index}`).value = pos;
-}
-
-function copyOurSpeed(index) {
-  const speed = document.getElementById('our_speed_0').value;
-  document.getElementById(`our_speed_${index}`).value = speed;
-}
-
-const container = document.getElementById('blocks');
-for (let i = 0; i < 3; i++) {
-  container.appendChild(createBlock(i));
-}
-
-document.querySelector('.btn-clear-all').addEventListener('click', () => {
-  for (let i = 0; i < 3; i++) clearFields(i);
-});
-
-window.addEventListener('online', () => {
-  console.log('Интернет появился, обновляем страницу');
-  location.reload();
-});
-
-function isStandalone() {
-  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-}
-
-function showOfflineNotice() {
-  const banner = document.createElement('div');
-  banner.textContent = '⚠️ Связь с цивилизацией потеряна. Некоторые функции могут быть недоступны.';
-  banner.style.position = 'fixed';
-  banner.style.bottom = '0';
-  banner.style.left = '0';
-  banner.style.right = '0';
-  banner.style.backgroundColor = '#d9534f';
-  banner.style.color = 'white';
-  banner.style.padding = '10px';
-  banner.style.textAlign = 'center';
-  banner.style.zIndex = '10000';
-  document.body.appendChild(banner);
-}
-
-if (!navigator.onLine && !isStandalone()) {
-  showOfflineNotice();
-}
-
-document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
-
-const themeBtnSettings = document.getElementById("toggle-theme-settings");
-if (themeBtnSettings) {
-  themeBtnSettings.addEventListener("click", toggleTheme);
-}
-
-const themeSwitch = document.getElementById("toggle-theme-switch");
-if (themeSwitch) {
-  themeSwitch.checked = localStorage.getItem("theme") === "dark";
-  themeSwitch.addEventListener("change", () => {
-    toggleTheme();
-  });
 }
