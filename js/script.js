@@ -1,69 +1,220 @@
-// main.js — исправленная версия с поддержкой ближайших мест ожидания и запретов
+// Применить сохранённую тему при загрузке
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark");
+}
 
-// Применить сохранённую тему при загрузке 
-if (localStorage.getItem("theme") === "dark") { document.body.classList.add("dark"); }
+const themeBtnHeader = document.getElementById("toggle-theme");
+if (themeBtnHeader) {
+  themeBtnHeader.innerText = localStorage.getItem("theme") === "dark" ? "☀️" : "🌙";
+}
 
-const themeBtnHeader = document.getElementById("toggle-theme"); if (themeBtnHeader) { themeBtnHeader.innerText = localStorage.getItem("theme") === "dark" ? "☀️" : "🌙"; }
+// Управление меню
+const menuToggleBtn = document.getElementById('menu-toggle');
+const sidebar = document.getElementById('sidebar');
+const navButtons = document.querySelectorAll('nav#sidebar button.nav-btn');
+const sections = document.querySelectorAll('main .section');
 
-// --- Места ожидания вверх по течению --- 
-const waitingPlacesUpstream = [ { km: 1674.7 }, { km: 1693 }, { km: 1696 }, { km: 1699.5 }, { km: 1710 }, { km: 1716 }, { km: 1732 }, { km: 1733, restricted: true, restrictedFrom: 1733.5, restrictedTo: 1735 }, { km: 1781.5 }, { km: 1783.7 }, { km: 1784.7 }, { km: 1786.1 }, { km: 1786.8 }, { km: 1790 }, { km: 1792.5 }, { km: 1794.5 }, { km: 1796 }, { km: 1798 }, { km: 1800 }, { km: 1802 }, { km: 1805 }, { km: 1863 } ];
+menuToggleBtn.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+});
 
-function findNearestWaitingPlaceUpstream(km) { for (let i = waitingPlacesUpstream.length - 1; i >= 0; i--) { if (waitingPlacesUpstream[i].km <= km) return waitingPlacesUpstream[i]; } return null; }
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+  const theme = document.body.classList.contains("dark") ? "dark" : "light";
+  localStorage.setItem("theme", theme);
 
-function formatNumber(n) { return (n % 1 === 0) ? n.toFixed(0) : n.toFixed(1); }
+  // Обновить иконку и текст на кнопке в настройках
+  const btnSettings = document.getElementById("toggle-theme-settings");
+  if (btnSettings) {
+    btnSettings.innerText = theme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
+  }
 
-function createBlock(index) { const block = document.createElement('div'); block.className = 'block';
+  // Обновить иконку в хедере
+  const btnHeader = document.getElementById("toggle-theme");
+  if (btnHeader) {
+    btnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
+  }
+}
 
-const enemyLabel = Встречное судно ${index + 1}; const ourLabel = 'Наше судно';
+// Инициализация кнопки при загрузке 
+const savedTheme = localStorage.getItem("theme");
+const btnSettings = document.getElementById("toggle-theme-settings");
+if (btnSettings) {
+  btnSettings.innerText = savedTheme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
+}
 
-block.innerHTML = ` <label>${enemyLabel}: Позиция (км):</label> <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="например: 2025">
+// Переключение разделов
+navButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const target = btn.getAttribute('data-section');
 
-<label>${enemyLabel}: Скорость (км/ч):</label>
-<input type="number" id="enemy_speed_${index}" step="0.1" placeholder="например: 20.5">
+    // Активная кнопка
+    navButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
 
-<label>${ourLabel}: Позиция (км):</label>
-<input type="number" id="our_pos_${index}" step="0.1" placeholder="например: 2008">
-${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurPos(${index})">Скопировать позицию из 1 блока</button>` : ''}
+    // Показать секцию
+    sections.forEach(sec => {
+      if (sec.id === target) sec.classList.add('active');
+      else sec.classList.remove('active');
+    });
 
-<label>${ourLabel}: Скорость (км/ч):</label>
-<input type="number" id="our_speed_${index}" step="0.1" placeholder="например: 12">
-${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurSpeed(${index})">Скопировать скорость из 1 блока</button>` : ''}
+    // Закрыть меню (если мобильный)
+    sidebar.classList.remove('open');
+  });
+});
 
-<div style="margin-top: 10px;">
-  <button class="calc-btn" onclick="calculate(${index})">Рассчитать</button>
-  <button class="btn-clear" onclick="clearFields(${index})" type="button">Очистить</button>
-</div>
+// --- Вспомогательная функция форматирования чисел ---
+function formatNumber(n) {
+  return (n % 1 === 0) ? n.toFixed(0) : n.toFixed(1);
+}
 
-<div class="output" id="result_${index}"></div>
+// Создаёт блок с формой для ввода данных судов
+function createBlock(index) {
+  const block = document.createElement('div');
+  block.className = 'block';
 
-`;
+  const enemyLabel = `Встречное судно ${index + 1}`;
+  const ourLabel = 'Наше судно';
 
-return block; }
+  block.innerHTML = `
+    <label>${enemyLabel}: Позиция (км):</label>
+    <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="например: 2025">
 
-function calculate(index) { const ep = parseFloat(document.getElementById(enemy_pos_${index}).value); const es = parseFloat(document.getElementById(enemy_speed_${index}).value); const op = parseFloat(document.getElementById(our_pos_${index}).value); const os = parseFloat(document.getElementById(our_speed_${index}).value);
+    <label>${enemyLabel}: Скорость (км/ч):</label>
+    <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="например: 20.5">
 
-const result = document.getElementById(result_${index});
+    <label>${ourLabel}: Позиция (км):</label>
+    <input type="number" id="our_pos_${index}" step="0.1" placeholder="например: 2008">
+    ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurPos(${index})">Скопировать позицию из 1 блока</button>` : ''}
 
-if (os <= 0 || os > 50 || es <= 0 || es > 50) { result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 50 км/ч."; return; }
+    <label>${ourLabel}: Скорость (км/ч):</label>
+    <input type="number" id="our_speed_${index}" step="0.1" placeholder="например: 12">
+    ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurSpeed(${index})">Скопировать скорость из 1 блока</button>` : ''}
 
-if (isNaN(ep) || isNaN(es) || isNaN(op) || isNaN(os)) { result.innerText = "Пожалуйста, введите все данные."; return; }
+    <div style="margin-top: 10px;">
+      <button class="calc-btn" onclick="calculate(${index})">Рассчитать</button>
+      <button class="btn-clear" onclick="clearFields(${index})" type="button">Очистить</button>
+    </div>
 
-const meeting_km = (op * es + ep * os) / (os + es); const distance_to_meeting = Math.abs(meeting_km - op); const time_to_meeting = Math.abs(ep - op) / (os + es) * 60;
+    <div class="output" id="result_${index}"></div>
+  `;
 
-let output = <div>📍 Км встречи: <b>${formatNumber(meeting_km)}</b></div> <div>📏 Расстояние до встречи (км): <b>${formatNumber(distance_to_meeting)}</b></div> <div>⏱️ Время до встречи (мин): <b>${formatNumber(time_to_meeting)}</b></div>;
+  return block;
+}
 
-if (op < ep) { const nearest = findNearestWaitingPlaceUpstream(meeting_km); if (nearest) { output += <div>📍 Ближайшее место ожидания: <b>${formatNumber(nearest.km)} км</b></div>; if (nearest.restricted) { output += <div>⚠️ На участке с ${nearest.restrictedFrom} по ${nearest.restrictedTo} км расход запрещён</div>; } } }
+// Основная функция расчёта встречи судов
+function calculate(index) {
+  const ep = parseFloat(document.getElementById(`enemy_pos_${index}`).value);
+  const es = parseFloat(document.getElementById(`enemy_speed_${index}`).value);
+  const op = parseFloat(document.getElementById(`our_pos_${index}`).value);
+  const os = parseFloat(document.getElementById(`our_speed_${index}`).value);
 
-result.innerHTML = output; }
+  // Проверка на допустимые значения скорости
+if (os <= 0 || os > 50 || es <= 0 || es > 50) {
+  result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 50 км/ч.";
+  return;
+}
 
-function clearFields(index) { document.getElementById(enemy_pos_${index}).value = ''; document.getElementById(enemy_speed_${index}).value = ''; document.getElementById(our_pos_${index}).value = ''; document.getElementById(our_speed_${index}).value = ''; document.getElementById(result_${index}).innerText = ''; }
+  const result = document.getElementById(`result_${index}`);
 
-function copyOurPos(index) { const pos = document.getElementById('our_pos_0').value; document.getElementById(our_pos_${index}).value = pos; }
+  if (isNaN(ep) || isNaN(es) || isNaN(op) || isNaN(os)) {
+    result.innerText = "Пожалуйста, введите все данные.";
+    return;
+  }
 
-function copyOurSpeed(index) { const speed = document.getElementById('our_speed_0').value; document.getElementById(our_speed_${index}).value = speed; }
+  if (es + os === 0) {
+    result.innerText = "Суммарная скорость не может быть равна нулю.";
+    return;
+  }
 
-//Инициализация 
-                                                                                        const container = document.getElementById('blocks'); for (let i = 0; i < 3; i++) { container.appendChild(createBlock(i)); }
+  // Расчёт километра встречи
+  const meeting_km = (op * es + ep * os) / (os + es);
+  const distance_to_meeting = Math.abs(meeting_km - op);
+  const time_to_meeting = Math.abs(ep - op) / (os + es) * 60; // минуты
 
-document.querySelector('.btn-clear-all').addEventListener('click', () => { for (let i = 0; i < 3; i++) clearFields(i); });
+  result.innerHTML = `
+    <div>📍 Км встречи: <b>${formatNumber(meeting_km)}</b></div>
+    <div>📏 Расстояние до встречи (км): <b>${formatNumber(distance_to_meeting)}</b></div>
+    <div>⏱️ Время до встречи (мин): <b>${formatNumber(time_to_meeting)}</b></div>
+  `;
+}
 
+// Очистка полей и результатов для конкретного блока
+function clearFields(index) {
+  document.getElementById(`enemy_pos_${index}`).value = '';
+  document.getElementById(`enemy_speed_${index}`).value = '';
+  document.getElementById(`our_pos_${index}`).value = '';
+  document.getElementById(`our_speed_${index}`).value = '';
+  document.getElementById(`result_${index}`).innerText = '';
+}
+
+// Копирование позиции нашего судна из первого блока в другие
+function copyOurPos(index) {
+  const pos = document.getElementById('our_pos_0').value;
+  document.getElementById(`our_pos_${index}`).value = pos;
+}
+
+// Копирование скорости нашего судна из первого блока в другие
+function copyOurSpeed(index) {
+  const speed = document.getElementById('our_speed_0').value;
+  document.getElementById(`our_speed_${index}`).value = speed;
+}
+
+// Инициализация: создаём 3 блока и навешиваем обработчик на кнопку очистки всего
+const container = document.getElementById('blocks');
+for (let i = 0; i < 3; i++) {
+  container.appendChild(createBlock(i));
+}
+
+document.querySelector('.btn-clear-all').addEventListener('click', () => {
+  for (let i = 0; i < 3; i++) clearFields(i);
+});
+
+// Уведомление о наличии интернета 
+window.addEventListener('online', () => {
+  console.log('Интернет появился, обновляем страницу');
+  location.reload();
+});
+
+//отслеживание интернета и показ уведомления 
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+}
+
+function showOfflineNotice() {
+  const banner = document.createElement('div');
+  banner.textContent = '⚠️ Связь с цивилизацией потеряна. Некоторые функции могут быть недоступны.';
+  banner.style.position = 'fixed';
+  banner.style.bottom = '0';
+  banner.style.left = '0';
+  banner.style.right = '0';
+  banner.style.backgroundColor = '#d9534f';
+  banner.style.color = 'white';
+  banner.style.padding = '10px';
+  banner.style.textAlign = 'center';
+  banner.style.zIndex = '10000';
+  document.body.appendChild(banner);
+}
+
+if (!navigator.onLine && !isStandalone()) {
+  showOfflineNotice();
+}
+
+// 🎯 Назначение переключения темы
+document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
+
+// Если есть вторая кнопка (в настройках)
+const themeBtnSettings = document.getElementById("toggle-theme-settings");
+if (themeBtnSettings) {
+  themeBtnSettings.addEventListener("click", toggleTheme);
+}
+
+const themeSwitch = document.getElementById("toggle-theme-switch");
+if (themeSwitch) {
+  // Установить состояние при загрузке
+  themeSwitch.checked = localStorage.getItem("theme") === "dark";
+
+  themeSwitch.addEventListener("change", () => {
+    toggleTheme(); // Уже есть у тебя функция
+  });
+}
