@@ -164,13 +164,13 @@ function calculate(index) {
   if (op < ep) {
     const zone = findNearestWaitingZone(meeting_km);
     if (zone) {
-      output += `<div>📍 Ближайшее место ожидания: <b>${formatNumber(zone.km)} км</b></div>`;
+      output += `<div>⏸️ Ближайшее место ожидания: <b>${formatNumber(zone.km)} км</b></div>`;
     }
 
     // Проверка попадания в запрет
     for (const z of waitingZonesUpstream) {
       if (z.restricted && meeting_km >= z.from && meeting_km <= z.to) {
-        output += `<div>⚠️ Расхождение запрещено с <b>${z.from}</b> по <b>${z.to}</b> км</div>`;
+        output += `<div>⛔ Расхождение запрещено с <b>${z.from}</b> по <b>${z.to}</b> км</div>`;
         break;
       }
     }
