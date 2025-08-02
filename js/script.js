@@ -99,7 +99,7 @@ const waitingSectionsUpstream = [
 { from: 1975.2, to: 1977.0, display: 1975.0 },
 { from: 1999.5, to: 2000.5, display: 1999.0 },
 { from: 2003.3, to: 2003.8, display: 2003.2 },
-{ from: 2008.9, to: 2009.3, display: 2008.5 }, // display уточни: ты писал 2008.5–2008.8
+{ from: 2008.9, to: 2009.3, display: 2008.5-2008.8 },
 { from: 2010.0, to: 2011.0, display: 2009.7 },
 { from: 2015.8, to: 2017.0, display: 2015.5 },
 { from: 2017.5, to: 2018.5, display: 2017.2 },
@@ -276,5 +276,6 @@ if (themeSwitch) {
     toggleTheme();
   });
 }
+
 
 
