@@ -62,7 +62,7 @@ function formatNumber(n) {
 const waitingSectionsUpstream = [
   // Будапешт - Братислава
   { from: 1674.0, to: 1675.4, display: 1674.7 },
-  { from: 1695.2, to: 1695.7, display: 1693-1695 },
+  { from: 1695.2, to: 1695.7, display: 1694 },
   { from: 1696.4, to: 1696.7, display: 1696.0 },
   { from: 1700.1, to: 1701.2, display: 1699.5 },
   { from: 1710.2, to: 1711.1, display: 1710.0 },
@@ -276,6 +276,7 @@ if (themeSwitch) {
     toggleTheme();
   });
 }
+
 
 
 
