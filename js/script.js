@@ -91,9 +91,31 @@ const waitingSectionsUpstream = [
 { from: 1884.2, to: 1885.5, display: 1884.0 },
 { from: 1890.0, to: 1891.0, display: 1889.8 },
 { from: 1895.2, to: 1896.0, display: 1895.0 },
-{ from: 1901.0, to: 1903.0, display: 1901.0 },
-{ from: 1907.0, to: 1908.0, display: 1906.0 },
-{ from: 1905.0, to: 1910.0, display: 1909.0 },
+{ from: 1901.9, to: 1903.1, display: 1901.7 },
+{ from: 1907.2, to: 1908.6, display: 1906.0 },
+{ from: 1909.5, to: 1910.0, display: 1909.2 },
+  // Вена - Линц 
+  { from: 1974.0, to: 1975.0, display: 1973.5 },
+{ from: 1975.2, to: 1977.0, display: 1975.0 },
+{ from: 1999.5, to: 2000.5, display: 1999.0 },
+{ from: 2003.3, to: 2003.8, display: 2003.2 },
+{ from: 2008.9, to: 2009.3, display: 2008.5 }, // display уточни: ты писал 2008.5–2008.8
+{ from: 2010.0, to: 2011.0, display: 2009.7 },
+{ from: 2015.8, to: 2017.0, display: 2015.5 },
+{ from: 2017.5, to: 2018.5, display: 2017.2 },
+{ from: 2019.4, to: 2020.5, display: 2019.2 },
+{ from: 2020.7, to: 2023.0, display: 2020.5 },
+{ from: 2026.6, to: 2029.0, display: 2026.5 },
+{ from: 2031.7, to: 2032.7, display: 2031.5 },
+{ from: 2034.3, to: 2035.0, display: 2034.0 },
+{ from: 2055.2, to: 2056.2, display: 2055.0 },
+{ from: 2074.8, to: 2076.3, display: 2074.5 },
+{ from: 2077.5, to: 2078.5, display: 2077.0 },
+{ from: 2080.6, to: 2081.3, display: 2080.0 },
+{ from: 2084.0, to: 2085.0, display: 2083.5 },
+{ from: 2087.0, to: 2088.0, display: 2086.5 },
+{ from: 2116.2, to: 2117.5, display: 2116.0 },
+{ from: 2132.2, to: 2134.0, display: 2131.5 },
 ];
 
 function findNearestWaitingZone(meetingKm) {
@@ -254,4 +276,5 @@ if (themeSwitch) {
     toggleTheme();
   });
 }
+
 
