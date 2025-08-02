@@ -60,6 +60,7 @@ function formatNumber(n) {
 
 // Массив зон ожидания вверх по течению
 const waitingSectionsUpstream = [
+  // Будапешт - Братислава
   { from: 1674.0, to: 1675.4, display: 1674.7 },
   { from: 1693.0, to: 1695.0, display: 1693.0 },
   { from: 1696.4, to: 1696.7, display: 1696.0 },
@@ -82,6 +83,17 @@ const waitingSectionsUpstream = [
   { from: 1803.0, to: 1803.5, display: 1802.0 },
   { from: 1807.0, to: 1808.0, display: 1805.0 },
   { from: 1863.5, to: 1864.5, display: 1863.0 },
+  // Братислава - Вена
+{ from: 1870.7, to: 1871.3, display: 1870.5 },
+{ from: 1874.2, to: 1876.0, display: 1873.8 },
+{ from: 1877.3, to: 1878.2, display: 1877.2 },
+{ from: 1879.5, to: 1882.0, display: 1879.2 },
+{ from: 1884.2, to: 1885.5, display: 1884.0 },
+{ from: 1890.0, to: 1891.0, display: 1889.8 },
+{ from: 1895.2, to: 1896.0, display: 1895.0 },
+{ from: 1901.0, to: 1903.0, display: 1901.0 },
+{ from: 1907.0, to: 1908.0, display: 1906.0 },
+{ from: 1905.0, to: 1910.0, display: 1909.0 },
 ];
 
 function findNearestWaitingZone(meetingKm) {
@@ -242,3 +254,4 @@ if (themeSwitch) {
     toggleTheme();
   });
 }
+
