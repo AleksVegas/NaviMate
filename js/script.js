@@ -60,6 +60,16 @@ function formatNumber(n) {
 
 // Массив зон ожидания вверх по течению
 const waitingSectionsUpstream = [
+  // Мохач - Будапешт
+  { from: 1471.0, to: 1475.0, display: 1468.3 },
+  { from: 1479.0, to: 1481.0, display: 1478.2 },
+  { from: 1552.8, to: 1553.2, display: 1552.0 },
+  { from: 1554.5, to: 1555.8, display: 1554.0 },
+  { from: 1556.8, to: 1558.0, display: 1556.0 },
+  { from: 1558.6, to: 1562.0, display: 1558.5 },
+  { from: 1563.5, to: 1570.0, display: 1563.0 },
+  { from: 1614.0, to: 1616.5, display: 1613.0 },
+  { from: 1617.0, to: 1620.0, display: 1616.8},
   // Будапешт - Братислава
   { from: 1674.0, to: 1675.4, display: 1674.7 },
   { from: 1695.2, to: 1695.7, display: 1694 },
@@ -72,7 +82,8 @@ const waitingSectionsUpstream = [
   { from: 1781.9, to: 1782.1, display: 1781.5 },
   { from: 1784.0, to: 1784.5, display: 1783.7 },
   { from: 1785.0, to: 1785.4, display: 1784.7 },
-  { from: 1786.3, to: 1786.7, display: 1786.1 },
+  { from: 1786.3, to: 1786.7, display: 1786
+    .1 },
   { from: 1787.2, to: 1788.7, display: 1786.8 },
   { from: 1790.7, to: 1792.0, display: 1790.0 },
   { from: 1793.2, to: 1794.0, display: 1792.5 },
@@ -99,7 +110,7 @@ const waitingSectionsUpstream = [
 { from: 1975.2, to: 1977.0, display: 1975.0 },
 { from: 1999.5, to: 2000.5, display: 1999.0 },
 { from: 2003.3, to: 2003.8, display: 2003.2 },
-{ from: 2008.9, to: 2009.3, display: 2008.5-2008.8 },
+{ from: 2008.9, to: 2009.3, display: 2008.5 },
 { from: 2010.0, to: 2011.0, display: 2009.7 },
 { from: 2015.8, to: 2017.0, display: 2015.5 },
 { from: 2017.5, to: 2018.5, display: 2017.2 },
@@ -276,6 +287,7 @@ if (themeSwitch) {
     toggleTheme();
   });
 }
+
 
 
 
