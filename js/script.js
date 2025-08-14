@@ -61,7 +61,7 @@ function formatNumber(n) {
 // Массив зон ожидания вверх по течению
 const waitingSectionsUpstream = [
   // Мохач - Будапешт
-  { from: 1471.1, to: 1475.0, display: 1468.3; 1471.0 },
+  { from: 1471.1, to: 1475.0, display: 1468.3, 1471.0 },
   { from: 1479.0, to: 1481.0, display: 1478.2 },
   { from: 1552.8, to: 1553.2, display: 1552.0 },
   { from: 1554.5, to: 1555.8, display: 1554.0 },
@@ -86,7 +86,7 @@ const waitingSectionsUpstream = [
   { from: 1787.2, to: 1788.7, display: 1786.8 },
   { from: 1790.7, to: 1792.0, display: 1790.0 },
   { from: 1793.2, to: 1794.0, display: 1792.5 },
-  { from: 1794.5, to: 1795.9, display: 1794.2; 1795.0, restricted: true },
+  { from: 1794.5, to: 1795.9, display: 1794.2, 1795.0, restricted: true },
   { from: 1796.1, to: 1797.8, display: 1796.0, restricted: true },
   { from: 1798.4, to: 1799.5, display: 1798.0 },
   { from: 1800.1, to: 1800.7, display: 1800.0 },
@@ -287,6 +287,7 @@ if (themeSwitch) {
     toggleTheme();
   });
 }
+
 
 
 
