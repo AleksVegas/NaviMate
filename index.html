@@ -157,7 +157,9 @@
       
 </section>
   
-  </main>    <script src="js/script.js"></script>    <script>  
+  </main>    
+  
+  <script>  
     if ('serviceWorker' in navigator) {  
       window.addEventListener('load', () => {  
         navigator.serviceWorker.register('/service-worker.js')  
@@ -187,6 +189,11 @@
   window.addEventListener('offline', updateOfflineBanner);  
   window.addEventListener('online', updateOfflineBanner);  
 </script> 
+  
+<script src="js/lang.js"></script>
+<script src="js/script.js"></script>
 <script src="js/arrivalcalc.js"></script>
+  
 </body>  
 </html>  
+
