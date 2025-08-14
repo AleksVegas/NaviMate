@@ -1,54 +1,49 @@
-const translations = {
+const lang = {
   ru: {
-    // Кнопки
-    calcBtn: "Рассчитать",
-    clearBtn: "Очистить",
-    copyPosBtn: "Скопировать позицию из 1 блока",
-    copySpeedBtn: "Скопировать скорость из 1 блока",
-    
-    // Наше и встречное судно
-    enemyLabel: "Встречное судно",
-    ourLabel: "Наше судно",
-
-    // Результаты расчета
-    meetingKm: "📍 Км встречи",
-    distance: "📏 Расстояние до встречи (км)",
-    time: "⏱️ Время до встречи (мин)",
-    waitingPlace: "⚠️ Ближайшее место ожидания",
-    restricted: "⛔ Расхождение запрещено с",
-
-    // Ошибки ввода
-    speedError: "⚠️ Скорость судов должна быть от 0.1 до 50 км/ч.",
-    inputError: "Пожалуйста, введите все данные.",
-    zeroSpeedError: "Суммарная скорость не может быть равна нулю.",
-
-    // Сообщения оффлайн
-    offlineNotice: "⚠️ Связь с цивилизацией потеряна. Некоторые функции могут быть недоступны."
+    calcSectionTitle: "Расчёт встречи судов",
+    arrivalCalcTitle: "Расчёт времени прибытия",
+    startKm: "Начальный километр (км):",
+    endKm: "Конечный километр (км):",
+    speed: "Скорость (км/ч):",
+    startTime: "Время начала движения:",
+    workHours: "Длительность рабочего дня (часов):",
+    calcBtn: "Рассчитать время прибытия",
+    requiredSpeedBtn: "Рассчитать необходимую скорость 🚀",
+    resultArrival: "⚠️ Пожалуйста, заполните все поля корректно.",
+    invalidTime: "⚠️ Неверный формат времени.",
+    arrivalTooEarly: "⚠️ Желаемое время прибытия должно быть позже времени начала движения.",
+    tooSlow: "⚠️ Требуемая скорость слишком мала. Проверьте данные.",
+    tooFast: "⚠️ Требуемая скорость слишком велика. Невозможно прибыть вовремя.",
+    expectedArrival: "🚢 <strong>Ожидаемое прибытие:</strong>",
+    totalDuration: "⏳ <strong>Общая продолжительность:</strong>",
+    distance: "📍 <strong>Расстояние:</strong>",
+    borderDelays: "🛃 Пограничные задержки:",
+    lockDelay: "⚓ Учтён шлюз",
+    hours: "ч"
   },
   en: {
-    // Buttons
-    calcBtn: "Calculate",
-    clearBtn: "Clear",
-    copyPosBtn: "Copy position from block 1",
-    copySpeedBtn: "Copy speed from block 1",
-    
-    // Ships
-    enemyLabel: "Enemy ship",
-    ourLabel: "Our ship",
-
-    // Results
-    meetingKm: "📍 Meeting km",
-    distance: "📏 Distance to meeting (km)",
-    time: "⏱️ Time to meeting (min)",
-    waitingPlace: "⚠️ Nearest waiting place",
-    restricted: "⛔ Passing prohibited from",
-
-    // Input errors
-    speedError: "⚠️ Ship speed must be between 0.1 and 50 km/h.",
-    inputError: "Please enter all data.",
-    zeroSpeedError: "Total speed cannot be zero.",
-
-    // Offline notice
-    offlineNotice: "⚠️ Connection lost. Some features may be unavailable."
+    calcSectionTitle: "Ship Meeting Calculation",
+    arrivalCalcTitle: "Arrival Time Calculation",
+    startKm: "Start kilometer (km):",
+    endKm: "End kilometer (km):",
+    speed: "Speed (km/h):",
+    startTime: "Start time:",
+    workHours: "Workday duration (hours):",
+    calcBtn: "Calculate arrival time",
+    requiredSpeedBtn: "Calculate required speed 🚀",
+    resultArrival: "⚠️ Please fill in all fields correctly.",
+    invalidTime: "⚠️ Invalid time format.",
+    arrivalTooEarly: "⚠️ Desired arrival time must be after start time.",
+    tooSlow: "⚠️ Required speed too low. Check your data.",
+    tooFast: "⚠️ Required speed too high. Cannot arrive on time.",
+    expectedArrival: "🚢 <strong>Expected arrival:</strong>",
+    totalDuration: "⏳ <strong>Total duration:</strong>",
+    distance: "📍 <strong>Distance:</strong>",
+    borderDelays: "🛃 Border delays:",
+    lockDelay: "⚓ Lock accounted",
+    hours: "h"
   }
 };
+
+// Текущий язык по умолчанию
+let currentLang = 'ru';
