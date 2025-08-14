@@ -61,7 +61,7 @@ function formatNumber(n) {
 // Массив зон ожидания вверх по течению
 const waitingSectionsUpstream = [
   // Мохач - Будапешт
-  { from: 1471.0, to: 1475.0, display: 1468.3 },
+  { from: 1471.1, to: 1475.0, display: 1468.3; 1471.0 },
   { from: 1479.0, to: 1481.0, display: 1478.2 },
   { from: 1552.8, to: 1553.2, display: 1552.0 },
   { from: 1554.5, to: 1555.8, display: 1554.0 },
@@ -75,10 +75,10 @@ const waitingSectionsUpstream = [
   { from: 1695.2, to: 1695.7, display: 1694 },
   { from: 1696.4, to: 1696.7, display: 1696.0 },
   { from: 1700.1, to: 1701.2, display: 1699.5 },
-  { from: 1710.2, to: 1711.1, display: 1710.0 },
+  { from: 1710.1, to: 1712.1, display: 1710.0, restricted: true },
   { from: 1716.1, to: 1716.5, display: 1716.0 },
   { from: 1732.1, to: 1732.8, display: 1732.0 },
-  { from: 1733.5, to: 1735.0, display: 1733.0, restricted: true },
+  { from: 1733.4, to: 1735.2, display: 1733.0, restricted: true },
   { from: 1781.9, to: 1782.1, display: 1781.5 },
   { from: 1784.0, to: 1784.5, display: 1783.7 },
   { from: 1785.0, to: 1785.4, display: 1784.7 },
@@ -86,11 +86,12 @@ const waitingSectionsUpstream = [
   { from: 1787.2, to: 1788.7, display: 1786.8 },
   { from: 1790.7, to: 1792.0, display: 1790.0 },
   { from: 1793.2, to: 1794.0, display: 1792.5 },
-  { from: 1794.7, to: 1795.6, display: 1794.5 },
-  { from: 1796.4, to: 1797.4, display: 1796.0 },
-  { from: 1798.8, to: 1799.5, display: 1798.0 },
-  { from: 1801.0, to: 1801.7, display: 1800.0 },
-  { from: 1803.0, to: 1803.5, display: 1802.0 },
+  { from: 1794.5, to: 1795.9, display: 1794.2; 1795.0, restricted: true },
+  { from: 1796.1, to: 1797.8, display: 1796.0, restricted: true },
+  { from: 1798.4, to: 1799.5, display: 1798.0 },
+  { from: 1800.1, to: 1800.7, display: 1800.0 },
+  { from: 1801.0, to: 1801.9, display: 1800.8 },
+  { from: 1802.5, to: 1803.5, display: 1802.0 },
   { from: 1807.0, to: 1808.0, display: 1805.0 },
   { from: 1863.5, to: 1864.5, display: 1863.0 },
   // Братислава - Вена
@@ -98,7 +99,7 @@ const waitingSectionsUpstream = [
 { from: 1874.2, to: 1876.0, display: 1873.8 },
 { from: 1877.3, to: 1878.2, display: 1877.2 },
 { from: 1879.5, to: 1882.0, display: 1879.2 },
-{ from: 1884.2, to: 1885.5, display: 1884.0 },
+{ from: 1884.2, to: 1887, display: 1884.0, restricted: true },
 { from: 1890.0, to: 1891.0, display: 1889.8 },
 { from: 1895.2, to: 1896.0, display: 1895.0 },
 { from: 1901.9, to: 1903.1, display: 1901.7 },
@@ -210,7 +211,7 @@ if (op < ep) {
   if (section) {
     output += `<div>⚠️ Ближайшее место ожидания: <b>${section.display} км</b></div>`;
     if (section.restricted) {
-      output += `<div>⛔ Расхождение запрещено с ${section.from} по ${section.to} км</div>`;
+      output += `<div>⛔ Расхождение и обгон запрещен с ${section.from} по ${section.to} км</div>`;
     }
   }
 }
@@ -286,6 +287,7 @@ if (themeSwitch) {
     toggleTheme();
   });
 }
+
 
 
 
