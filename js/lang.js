@@ -47,6 +47,50 @@ const translations = {
 
     // --- Баннера оффлайн ---
     offlineBanner: "⚠️ Связь с цивилизацией потеряна. Возможны перебои в работе."
+
+// --- Опции выбора часов ---
+  work12: "12 часов",
+  work14: "14 часов",
+  work16: "16 часов",
+  work18: "18 часов",
+  work24: "24 часа (нон-стоп)",
+
+  // --- Язык и водный путь ---
+  langRu: "Русский",
+  waterwayDanube: "Дунай",
+
+  // --- Раздел "О приложении" ---
+  aboutFeature1: "<strong>Главная особенность</strong> — мгновенный расчёт <strong>километра встречи</strong>, что в разы упрощает и ускоряет навигационные задачи.",
+  aboutFeature2: "Показывает км встречи, расстояние до неё и ориентировочное время до встречи.",
+  aboutFeature3: "Поддержка нескольких одновременных расчётов.",
+  aboutFeature4: "Быстрое копирование данных нашего судна (позиция и скорость) из первого блока.",
+  aboutFeature5: "Уведомления об ошибках ввода и граничных значениях.",
+  aboutFeature6: "Поддержка <strong>тёмной и светлой темы</strong> интерфейса.",
+
+  // --- Раздел "Прибытие" ---
+  arrivalFeature1: "Позволяет рассчитать <strong>время прибытия</strong> и <strong>необходимую скорость</strong> для заданного времени.",
+  arrivalFeature2: "Учитываются расстояние, скорость, задержки на шлюзах и границах, а также рабочие часы судна.",
+  arrivalFeature3: "Автоматически определяется направление движения.",
+
+  // --- Раздел "Шлюзы и границы" ---
+  lockFeature1: "Автоматически учитываются все ключевые шлюзы от <strong>Железных Ворот до Ашаха</strong>.",
+  lockFeature2: "Пограничные переходы определяются по маршруту, с возможностью ручного редактирования задержек.",
+
+  // --- Раздел "Приватность" ---
+  privacyFeature1: "Все расчёты выполняются <strong>локально в вашем браузере</strong>.",
+  privacyFeature2: "Данные <strong>не сохраняются</strong> и <strong>не передаются</strong> на сервер.",
+  privacyFeature3: "Приложение работает <strong>без подключения к интернету</strong> после первого открытия.",
+
+  // --- Раздел "Планы" ---
+  planFeature1: "Определение ближайших мест ожидания для вверх идущих судов (для особых участков).",
+  planFeature2: "Определение рекомендуемого борта расхождения.",
+  planFeature3: "Добавление информации об уровнях воды",
+  planFeature4: "Страница поддержки проекта",
+
+  // --- Благодарность ---
+  thanksText: "🙏 Спасибо, что используете <strong>NaviMate</strong>! Приложение активно развивается — всё только начинается.",
+
+ 
   },
 
   en: {
@@ -97,5 +141,47 @@ const translations = {
 
     // --- Offline banner ---
     offlineBanner: "⚠️ Connection lost. Some features may not work."
+
+// --- Hours ---
+  work12: "12 hours",
+  work14: "14 hours",
+  work16: "16 hours",
+  work18: "18 hours",
+  work24: "24 hours (non-stop)",
+
+  // --- Language and waterways ---
+  langRu: "Russian",
+  waterwayDanube: "Danube",
+
+  // --- About app ---
+  aboutFeature1: "<strong>Main feature</strong> — instant calculation of <strong>meeting kilometer</strong>, greatly simplifying and speeding up navigation tasks.",
+  aboutFeature2: "Shows meeting km, distance to it, and estimated time to meet.",
+  aboutFeature3: "Supports multiple simultaneous calculations.",
+  aboutFeature4: "Quickly copy our ship's data (position and speed) from the first block.",
+  aboutFeature5: "Error notifications and boundary values.",
+  aboutFeature6: "Supports <strong>dark and light themes</strong>.",
+
+  // --- Section: Arrivals ---
+  arrivalFeature1: "Allows calculating <strong>arrival time</strong> and <strong>required speed</strong> for a given time.",
+  arrivalFeature2: "Takes into account distance, speed, delays at locks and borders, and ship working hours.",
+  arrivalFeature3: "Direction of movement is determined automatically.",
+
+  // --- Section: Locks and border ---
+  lockFeature1: "Automatically accounts for all key locks from <strong>Iron Gates to Asah</strong>.",
+  lockFeature2: "Border crossings are determined along the route, with the option to manually edit delays.",
+
+  // --- Section: Privat ---
+  privacyFeature1: "All calculations are performed <strong>locally in your browser</strong>.",
+  privacyFeature2: "Data <strong>is not saved</strong> and <strong>not transmitted</strong> to the server.",
+  privacyFeature3: "The app works <strong>offline</strong> after first opening.",
+
+  // --- Section: Plans ---
+  planFeature1: "Determining the nearest waiting points for upstream vessels (for special sections).",
+  planFeature2: "Determining the recommended passing side.",
+  planFeature3: "Adding information about water levels",
+  planFeature4: "Project support page",
+
+  // --- Thanks ---
+  thanksText: "🙏 Thank you for using <strong>NaviMate</strong>! The app is actively developing — this is just the beginning.",
   }
 };
