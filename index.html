@@ -12,39 +12,39 @@
   <header>  
     <button id="menu-toggle" aria-label="Открыть меню ☰" data-i18n="menuOpen">☰</button>
     <h1>NaviMate</h1>  
-    <button id="toggle-theme" title="Переключить тему">🌙</button>
+    <button id="toggle-theme" title="Переключить тему" data-i18n="themeToggle">🌙</button>
   </header>    <nav id="sidebar" class="sidebar-closed" aria-label="Главное меню">  
     <ul>  
-      <li><button class="nav-btn active" data-section="calc-section">🚢 Расчёт встречи судов</button></li>  
-      <li><button class="nav-btn" data-section="arrival-calc">🕒 Расчёт времени прибытия</button></li>
-      <li><button class="nav-btn" data-section="settings-section">⚙️ Настройки</button></li>  
-      <li><button class="nav-btn" data-section="about-section">ℹ️ О приложении</button></li>  
+      <li><button class="nav-btn active" data-section="calc-section" data-i18n="navCalc">🚢 Расчёт встречи судов</button></li>  
+      <li><button class="nav-btn" data-section="arrival-calc" data-i18n="navArrival">🕒 Расчёт времени прибытия</button></li>
+      <li><button class="nav-btn" data-section="settings-section" data-i18n="navSettings">⚙️ Настройки</button></li>  
+      <li><button class="nav-btn" data-section="about-section" data-i18n="navAbout">ℹ️ О приложении</button></li>  
     </ul>  
   </nav>    <main>  
     <section id="calc-section" class="section active">  
       <div id="blocks">
- <h2>Расчёт встречи судов</h2> 
+ <h2 data-i18n="calcHeading">Расчёт встречи судов</h2> 
       </div>  
-      <button class="btn-clear-all" type="button">Очистить всё</button>  
+      <button class="btn-clear-all" type="button" data-i18n="clearAll">Очистить всё</button>  
     </section> 
     <!--Раздел 2 -->
    <section id="arrival-calc" class="section">
   <div class="block">
-    <h2>Расчёт времени прибытия</h2>
+    <h2 data-i18n="arrivalHeading">Расчёт времени прибытия</h2>
 
-    <label for="startKmArrival">Начальный километр (км):</label>
+    <label for="startKmArrival" data-i18n="startKm">Начальный километр (км):</label>
     <input type="number" id="startKmArrival" placeholder="Например, 1640" />
 
-    <label for="endKmArrival">Конечный километр (км):</label>
+    <label for="endKmArrival" data-i18n="endKm">Конечный километр (км):</label>
     <input type="number" id="endKmArrival" placeholder="Например, 2130" />
 
-    <label for="speedArrival">Скорость (км/ч):</label>
+    <label for="speedArrival" data-i18n="speed">Скорость (км/ч):</label>
     <input type="number" id="speedArrival" placeholder="Например, 12" step="0.1" />
 
-    <label for="startTimeArrival">Время начала движения:</label>
+    <label for="startTimeArrival" data-i18n="startTime">Время начала движения:</label>
     <input type="datetime-local" id="startTimeArrival" />
 
-    <label for="workHoursArrival">Длительность рабочего дня (часов):</label>
+    <label for="workHoursArrival" data-i18n="workHours">Длительность рабочего дня (часов):</label>
     <select id="workHoursArrival">
       <option value="12">12 часов</option>
       <option value="14">14 часов</option>
@@ -53,28 +53,28 @@
       <option value="24">24 часа (нон-стоп)</option>
     </select>
 
-    <button class="calc-btn" onclick="calculateArrival()">Рассчитать время прибытия</button>
+    <button class="calc-btn" onclick="calculateArrival()" data-i18n="btnArrival">Рассчитать время прибытия</button>
 
     <div class="output" id="resultArrival"></div>
 
     <div id="borderDelaysSection" class="output" style="margin-top: 20px;"></div>
 
     <div id="desiredBlockArrival" style="display:none; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ccc;">
-      <label for="desiredArrivalTimeArrival">Желаемое время прибытия (если хотите получить рекомендованную скорость):</label>
+      <label for="desiredArrivalTimeArrival" data-i18n="desiredArrival">Желаемое время прибытия (если хотите получить рекомендованную скорость):</label>
       <input type="datetime-local" id="desiredArrivalTimeArrival" />
-      <button class="calc-btn" onclick="calculateRecommendedSpeed()">Рассчитать необходимую скорость 🚀</button>
+      <button class="calc-btn" onclick="calculateRecommendedSpeed()" data-i18n="btnSpeed">Рассчитать необходимую скорость 🚀</button>
       <div class="output" id="requiredSpeedResultArrival"></div>
     </div>
   </div>
 </section>
     
     <section id="settings-section" class="section">  
-  <h2>⚙️ Настройки</h2>  
+  <h2 data-i18n="settingsHeading">⚙️ Настройки</h2>  
   <hr style="margin: 12px 0; border-color: #ccc;">
 
   <!-- Переключатель темы -->
   <div class="setting-row">
-    <label for="toggle-theme-switch">🌗 Тема (день/ночь)</label>
+    <label for="toggle-theme-switch" data-i18n="themeLabel">🌗 Тема (день/ночь)</label>
     <label class="switch">
       <input type="checkbox" id="toggle-theme-switch">
       <span class="slider round"></span>
@@ -82,14 +82,14 @@
   </div>
 
 <div class="settings-row">
-  <label for="language-select">🌍 Язык:</label>
+  <label for="language-select" data-i18n="langLabel">🌍 Язык:</label>
   <select id="language-select" disabled>
     <option selected>Русский</option>
   </select>
 </div>
 
 <div class="settings-row">
-  <label for="waterway-select">🌊 Водный путь:</label>
+  <label for="waterway-select" data-i18n="waterwayLabel">🌊 Водный путь:</label>
   <select id="waterway-select" disabled>
     <option selected>Дунай</option>
   </select>
@@ -98,13 +98,13 @@
 </section>
     
     <section id="about-section" class="section"> 
-  <h2>ℹ️ О приложении</h2>
+  <h2 data-i18n="aboutHeading">ℹ️ О приложении</h2>
   <hr style="margin: 12px 0; border-color: #ccc;">
   
-  <p><strong>📱 NaviMate</strong> — цифровой штурман для судоводителей на внутренних водных путях.</p>  
+  <p data-i18n="aboutText"><strong>📱 NaviMate</strong> — цифровой штурман для судоводителей на внутренних водных путях.</p>  
   
-  <h3>🚢 Доступные инструменты</h3> 
-  <h4>🔁 Расчёт встречи судов</h4>
+  <h3 data-i18n="toolsHeading">🚢 Доступные инструменты</h3> 
+  <h4 data-i18n="toolCalc">🔁 Расчёт встречи судов</h4>
   <ul>
     <li><strong>Главная особенность</strong> — мгновенный расчёт <strong>километра встречи</strong>, что в разы упрощает и ускоряет навигационные задачи.</li>
     <li>Показывает км встречи, расстояние до неё и ориентировочное время до встречи.</li>
@@ -114,27 +114,27 @@
     <li>Поддержка <strong>тёмной и светлой темы</strong> интерфейса.</li>
   </ul>  
   
-  <h4>🕒 Расчёт времени прибытия</h4>
+  <h4 data-i18n="toolArrival">🕒 Расчёт времени прибытия</h4>
   <ul>
     <li>Позволяет рассчитать <strong>время прибытия</strong> и <strong>необходимую скорость</strong> для заданного времени.</li>
     <li>Учитываются расстояние, скорость, задержки на шлюзах и границах, а также рабочие часы судна.</li>
     <li>Автоматически определяется направление движения.</li>
   </ul>  
   
-  <h4>⚓ Шлюзы и 🛃 границы</h4>
+  <h4 data-i18n="toolLocks">⚓ Шлюзы и 🛃 границы</h4>
   <ul>
     <li>Автоматически учитываются все ключевые шлюзы от <strong>Железных Ворот до Ашаха</strong>.</li>
     <li>Пограничные переходы определяются по маршруту, с возможностью ручного редактирования задержек.</li>
   </ul> 
   
-  <h4>🔐 Приватность и оффлайн-режим</h4>
+  <h4 data-i18n="toolPrivacy">🔐 Приватность и оффлайн-режим</h4>
   <ul>
     <li>Все расчёты выполняются <strong>локально в вашем браузере</strong>.</li>
     <li>Данные <strong>не сохраняются</strong> и <strong>не передаются</strong> на сервер.</li>
     <li>Приложение работает <strong>без подключения к интернету</strong> после первого открытия.</li>
   </ul>  
   
-  <h4>💡 В планах</h4>
+  <h4 data-i18n="plansHeading">💡 В планах</h4>
   <ul>
     <li>Определение ближайших мест ожидания для вверх идущих судов (для особых участков).</li>
     <li>Определение рекомендуемого борта расхождения.</li>
@@ -145,11 +145,11 @@
   <p>🙏 Спасибо, что используете <strong>NaviMate</strong>! Приложение активно развивается — всё только начинается.</p>
 
 <div style="margin-top: 40px;">
-  <h2>💬 Обратная связь</h2>
-  <p>Мы всегда рады услышать ваши идеи, пожелания и замечания! Помогите нам сделать NaviMate лучше.</p>
+  <h2 data-i18n="feedbackHeading">💬 Обратная связь</h2>
+  <p data-i18n="feedbackText">Мы всегда рады услышать ваши идеи, пожелания и замечания! Помогите нам сделать NaviMate лучше.</p>
   <p>
     <a href="https://forms.gle/6k6UVyYNDnL6RCzK9" target="_blank" rel="noopener noreferrer"
-       style="color: #2f5597; font-weight: bold; text-decoration: underline;">
+       style="color: #2f5597; font-weight: bold; text-decoration: underline;" data-i18n="leaveFeedback">
       Оставить отзыв и предложения
     </a>
   </p>
@@ -167,7 +167,7 @@
           .catch(err => console.error('Ошибка регистрации SW:', err));  
       });  
     }  
-  </script>    <!-- Нету связи -->  <div id="offline-banner" style="display:none; padding:10px; text-align:center; background:#ffe9e9; color:#a00; font-weight:bold;">  
+  </script>    <!-- Нету связи -->  <div id="offline-banner" data-i18n="offlineBanner" style="display:none; padding:10px; text-align:center; background:#ffe9e9; color:#a00; font-weight:bold;">  
   ⚠️ Связь с цивилизацией потеряна. Возможны перебои в работе.  
 </div>  <script>  
   function isInStandaloneMode() {  
@@ -196,5 +196,6 @@
   
 </body>  
 </html>  
+
 
 
