@@ -270,6 +270,7 @@ function showOfflineNotice() {
   document.body.appendChild(banner);
 }
 
+// Тема
 if (!navigator.onLine && !isStandalone()) {
   showOfflineNotice();
 }
@@ -287,6 +288,41 @@ if (themeSwitch) {
     toggleTheme();
   });
 }
+
+//Переключение языка
+
+function setLanguage(lang) {
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (translations[lang] && translations[lang][key]) {
+      if (el.tagName.toLowerCase() === "input" || el.tagName.toLowerCase() === "select" || el.tagName.toLowerCase() === "textarea") {
+        el.placeholder = translations[lang][key];
+      } else {
+        el.textContent = translations[lang][key];
+      }
+    }
+  });
+  localStorage.setItem("language", lang);
+}
+
+// загрузка сохранённого языка
+document.addEventListener("DOMContentLoaded", () => {
+  const savedLang = localStorage.getItem("language") || "ru";
+  setLanguage(savedLang);
+
+  const langSelect = document.getElementById("language-select");
+  if (langSelect) {
+    langSelect.disabled = false;
+    langSelect.innerHTML = `
+      <option value="ru" ${savedLang === "ru" ? "selected" : ""}>Русский</option>
+      <option value="en" ${savedLang === "en" ? "selected" : ""}>English</option>
+    `;
+    langSelect.addEventListener("change", e => {
+      setLanguage(e.target.value);
+    });
+  }
+});
+
 
 
 
