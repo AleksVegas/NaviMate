@@ -290,7 +290,7 @@ if (themeSwitch) {
 }
 
 
-// Переключение языка
+// Функция смены языка
 function setLanguage(lang) {
   // Переводим все элементы с data-i18n
   document.querySelectorAll("[data-i18n]").forEach(el => {
@@ -299,55 +299,36 @@ function setLanguage(lang) {
       if (el.tagName.toLowerCase() === "input" || el.tagName.toLowerCase() === "textarea") {
         el.placeholder = translations[lang][key];
       } else if (el.tagName.toLowerCase() === "option") {
-        // Меняем текст опций на текущем языке
-        const optionKey = el.getAttribute("data-i18n");
-        if (translations[lang][optionKey]) {
-          el.textContent = translations[lang][optionKey];
-        }
+        el.textContent = translations[lang][key]; // переводим текст опции
       } else {
-        el.textContent = translations[lang][key];
+        el.textContent = translations[lang][key]; // перевод обычного текста
       }
     }
   });
+
   localStorage.setItem("language", lang);
 
-  // Обновляем selected у select
+  // Обновляем выбранное значение в селекте
   const langSelect = document.getElementById("language-select");
-  if (langSelect) {
-    langSelect.value = lang;
-  }
+  if (langSelect) langSelect.value = lang;
 }
 
-// Загрузка сохранённого языка
+// При загрузке страницы
 document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("language") || "ru";
+  setLanguage(savedLang);
 
-  // Сначала включаем селект и добавляем опции, если их нет
+  // Настраиваем селект выбора языка
   const langSelect = document.getElementById("language-select");
   if (langSelect) {
     langSelect.disabled = false;
-    if (!langSelect.querySelector('option[value="ru"]')) {
-      const ruOption = document.createElement("option");
-      ruOption.value = "ru";
-      ruOption.setAttribute("data-i18n", "langRu");
-      langSelect.appendChild(ruOption);
-    }
-    if (!langSelect.querySelector('option[value="en"]')) {
-      const enOption = document.createElement("option");
-      enOption.value = "en";
-      enOption.setAttribute("data-i18n", "langEn");
-      langSelect.appendChild(enOption);
-    }
-
-    // Смена языка при выборе
     langSelect.addEventListener("change", e => {
       setLanguage(e.target.value);
     });
   }
-
-  // Применяем сохранённый язык
-  setLanguage(savedLang);
 });
+
+
 
 
 
