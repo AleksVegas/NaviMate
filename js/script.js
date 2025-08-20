@@ -290,24 +290,25 @@ if (themeSwitch) {
 }
 
 
-// Функция для перевода страницы
 function setLanguage(lang) {
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
     if (translations[lang] && translations[lang][key]) {
       if (el.tagName.toLowerCase() === "input" || el.tagName.toLowerCase() === "textarea") {
         el.placeholder = translations[lang][key];
-      } else if (el.tagName.toLowerCase() === "option") {
-        el.textContent = translations[lang][key];
       } else {
         el.textContent = translations[lang][key];
       }
     }
   });
   localStorage.setItem("language", lang);
+
+  // Обновляем selected для <select> без переписывания HTML
+  const langSelect = document.getElementById("language-select");
+  if (langSelect) langSelect.value = lang;
 }
 
-// Загрузка языка при старте
+// При загрузке страницы
 document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("language") || "ru";
   setLanguage(savedLang);
@@ -315,12 +316,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const langSelect = document.getElementById("language-select");
   if (langSelect) {
     langSelect.disabled = false;
-    langSelect.value = savedLang; // выбрать сохранённый язык
+    langSelect.value = savedLang;
     langSelect.addEventListener("change", e => {
       setLanguage(e.target.value);
     });
   }
 });
+
 
 
 
