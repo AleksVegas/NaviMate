@@ -57,6 +57,7 @@ const translations = {
 
   // --- Язык и водный путь ---
   langRu: "Русский",
+  langEn: "English",
   waterwayDanube: "Дунай",
 
   // --- Раздел "О приложении" ---
@@ -151,6 +152,7 @@ const translations = {
 
   // --- Language and waterways ---
   langRu: "Russian",
+  langEn: "English",
   waterwayDanube: "Danube",
 
   // --- About app ---
