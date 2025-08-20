@@ -289,8 +289,8 @@ if (themeSwitch) {
   });
 }
 
-//Переключение языка
 
+// Функция смены языка
 function setLanguage(lang) {
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
@@ -305,23 +305,30 @@ function setLanguage(lang) {
   localStorage.setItem("language", lang);
 }
 
-// загрузка сохранённого языка
+// Заполнение селекта и установка сохранённого языка
 document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("language") || "ru";
-  setLanguage(savedLang);
 
   const langSelect = document.getElementById("language-select");
   if (langSelect) {
     langSelect.disabled = false;
     langSelect.innerHTML = `
-      <option value="ru" ${savedLang === "ru" ? "selected" : ""}>Русский</option>
-      <option value="en" ${savedLang === "en" ? "selected" : ""}>English</option>
+      <option value="ru" ${savedLang === "ru" ? "selected" : ""}>${translations[savedLang].langRu}</option>
+      <option value="en" ${savedLang === "en" ? "selected" : ""}>${translations[savedLang].langEn}</option>
     `;
     langSelect.addEventListener("change", e => {
       setLanguage(e.target.value);
+
+      // обновляем текст в опциях селекта на текущем языке
+      langSelect.options[0].text = translations[e.target.value].langRu;
+      langSelect.options[1].text = translations[e.target.value].langEn;
     });
   }
+
+  // Устанавливаем язык на странице
+  setLanguage(savedLang);
 });
+
 
 
 
