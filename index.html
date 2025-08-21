@@ -2,7 +2,7 @@
 <head>  
   <meta charset="UTF-8" />  
   <meta name="viewport" content="width=device-width, initial-scale=1" />  
-  <meta name="description" content="Приложение для расчёта встречи и обгона судов. Удобно, быстро и просто для судоводителей на внутренних водных путях.">  
+  <meta name="description" data-i18n="metaDescription" content="Приложение для расчёта встречи и обгона судов. Удобно, быстро и просто для судоводителей на внутренних водных путях.">  
   <title>NaviMate</title>  
   <link rel="stylesheet" href="css/style.css" />  
   <link rel="manifest" href="manifest.json" />  
@@ -10,9 +10,9 @@
 </head>  
 <body>  
   <header>  
-    <button id="menu-toggle" aria-label="Открыть меню ☰">☰</button>
+    <button id="menu-toggle" aria-label="Открыть меню ☰" data-i18n="menuOpen">☰</button>
     <h1>NaviMate</h1>  
-    <button id="toggle-theme" title="Переключить тему">🌙</button>
+    <button id="toggle-theme" title="Переключить тему" data-i18n="themeToggle">🌙</button>
   </header>    <nav id="sidebar" class="sidebar-closed" aria-label="Главное меню">  
     <ul>  
       <li><button class="nav-btn active" data-section="calc-section" data-i18n="navCalc">🚢 Расчёт встречи судов</button></li>  
@@ -33,13 +33,13 @@
     <h2 data-i18n="arrivalHeading">Расчёт времени прибытия</h2>
 
     <label for="startKmArrival" data-i18n="startKm">Начальный километр (км):</label>
-    <input type="number" id="startKmArrival" placeholder="Например, 1640" />
+    <input type="number" id="startKmArrival"  data-i18n="phStartKm" placeholder="Например, 1640" />
 
     <label for="endKmArrival" data-i18n="endKm">Конечный километр (км):</label>
-    <input type="number" id="endKmArrival" placeholder="Например, 2130" />
+    <input type="number" id="endKmArrival" data-i18n="phEndKm" placeholder="Например, 2130" />
 
     <label for="speedArrival" data-i18n="speed">Скорость (км/ч):</label>
-    <input type="number" id="speedArrival" placeholder="Например, 12" step="0.1" />
+    <input type="number" id="speedArrival" data-i18n="phSpeed" placeholder="Например, 12" step="0.1" />
 
     <label for="startTimeArrival" data-i18n="startTime">Время начала движения:</label>
     <input type="datetime-local" id="startTimeArrival" />
@@ -197,6 +197,7 @@
   
 </body>  
 </html>  
+
 
 
 
