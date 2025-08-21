@@ -138,7 +138,7 @@ function findNearestWaitingZone(meetingKm) {
   return null;
 }
 
-// Блок расчёта
+// 1. Функция createBlock. Блок расчёта
 function createBlock(index) {
   const enemyLabel = translations[lang].enemyLabel.replace("{n}", index + 1);
   const ourLabel   = translations[lang].ourLabel;
@@ -168,6 +168,11 @@ function createBlock(index) {
   `;
 
   return block;
+}
+// 2. Создание блоков после определения функции
+const container = document.getElementById('blocks');
+for (let i = 0; i < 3; i++) {
+  container.appendChild(createBlock(i));
 }
 
 // Основная функция расчёта
@@ -322,6 +327,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
