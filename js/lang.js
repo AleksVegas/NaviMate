@@ -141,7 +141,7 @@ const translations = {
     leaveFeedback: "Leave feedback and suggestions",
 
     // --- Offline banner ---
-    offlineBanner: "⚠️ Connection lost. Some features may not work."
+    offlineBanner: "⚠️ Connection lost. Some features may not work.",
 
 // --- Hours ---
   work12: "12 hours",
