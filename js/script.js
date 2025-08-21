@@ -174,7 +174,7 @@ document.addEventListener("DOMContentLoaded", () => {
       rebuildBlocks();
     });
   }
-});
+
   // 4️⃣ Очистка всех блоков
   const btnClearAll = document.querySelector('.btn-clear-all');
   if (btnClearAll) btnClearAll.addEventListener('click', () => {
@@ -274,6 +274,7 @@ if (themeSwitch) {
   themeSwitch.checked = localStorage.getItem("theme") === "dark";
   themeSwitch.addEventListener("change", toggleTheme);
 }
+
 
 
 
