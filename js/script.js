@@ -140,30 +140,28 @@ function findNearestWaitingZone(meetingKm) {
 
 // Блок расчёта
 function createBlock(index) {
-  const block = document.createElement('div');
-  block.className = 'block';
-
   const enemyLabel = translations[lang].enemyLabel.replace("{n}", index + 1);
   const ourLabel   = translations[lang].ourLabel;
 
+  const block = document.createElement('div');
+  block.className = 'block';
+
   block.innerHTML = `
     <label>${enemyLabel}: Позиция (км):</label>
-    <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="например: 2025">
-
+    <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="${translations[lang].enemyPosPlaceholder}">
+    
     <label>${enemyLabel}: Скорость (км/ч):</label>
-    <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="например: 20.5">
+    <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="${translations[lang].enemySpeedPlaceholder}">
 
     <label>${ourLabel}: Позиция (км):</label>
-    <input type="number" id="our_pos_${index}" step="0.1" placeholder="например: 2008">
-    ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurPos(${index})">Скопировать позицию из 1 блока</button>` : ''}
-
+    <input type="number" id="our_pos_${index}" step="0.1" placeholder="${translations[lang].ourPosPlaceholder}">
+    
     <label>${ourLabel}: Скорость (км/ч):</label>
-    <input type="number" id="our_speed_${index}" step="0.1" placeholder="например: 12">
-    ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurSpeed(${index})">Скопировать скорость из 1 блока</button>` : ''}
-
+    <input type="number" id="our_speed_${index}" step="0.1" placeholder="${translations[lang].ourSpeedPlaceholder}">
+    
     <div style="margin-top: 10px;">
-      <button class="calc-btn" onclick="calculate(${index})">Рассчитать</button>
-      <button class="btn-clear" onclick="clearFields(${index})" type="button">Очистить</button>
+      <button class="calc-btn" onclick="calculate(${index})">${translations[lang].btnCalculate}</button>
+      <button class="btn-clear" onclick="clearFields(${index})" type="button">${translations[lang].btnClear}</button>
     </div>
 
     <div class="output" id="result_${index}"></div>
@@ -324,6 +322,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
