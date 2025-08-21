@@ -143,8 +143,8 @@ function createBlock(index) {
   const block = document.createElement('div');
   block.className = 'block';
 
-  const enemyLabel = `Встречное судно ${index + 1}`;
-  const ourLabel = 'Наше судно';
+  const enemyLabel = translations[lang].enemyLabel.replace("{n}", index + 1);
+  const ourLabel   = translations[lang].ourLabel;
 
   block.innerHTML = `
     <label>${enemyLabel}: Позиция (км):</label>
@@ -324,6 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
