@@ -118,13 +118,14 @@ const waitingSectionsUpstream = [
   ];
 
 
-// ====================== Создание блоков расчёта ======================
+// ---------- Перевод и блоки расчёта ----------
 function createBlock(index) {
   const enemyLabel = translations[lang].enemyLabel.replace("{n}", index + 1);
-  const ourLabel   = translations[lang].ourLabel;
+  const ourLabel = translations[lang].ourLabel;
 
   const block = document.createElement('div');
   block.className = 'block';
+
   block.innerHTML = `
     <label>${enemyLabel}: Позиция (км):</label>
     <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="${translations[lang].enemyPosPlaceholder}">
@@ -145,14 +146,11 @@ function createBlock(index) {
 
     <div class="output" id="result_${index}"></div>
   `;
+
   return block;
 }
 
-// ====================== Пересоздание блоков при смене языка ======================
-function setLanguageBlocks(newLang) {
-  lang = newLang;
-  localStorage.setItem("language", lang);
-
+function refreshBlocks() {
   const container = document.getElementById('blocks');
   container.innerHTML = "";
   for (let i = 0; i < 3; i++) {
@@ -160,8 +158,11 @@ function setLanguageBlocks(newLang) {
   }
 }
 
-// ====================== Переключение интерфейса языка ======================
-function setInterfaceLanguage(lang) {
+function setLanguage(newLang) {
+  lang = newLang;
+  localStorage.setItem("language", lang);
+
+  // Перевод всех элементов с data-i18n
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
     if (translations[lang] && translations[lang][key]) {
@@ -172,20 +173,16 @@ function setInterfaceLanguage(lang) {
       }
     }
   });
-  localStorage.setItem("language", lang);
+
+  // Пересоздаём блоки расчёта
+  refreshBlocks();
 }
 
-// ====================== Загрузка страницы ======================
+// ---------- Подключение select языка ----------
 document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("language") || "ru";
+  setLanguage(savedLang);
 
-  // 1️⃣ Перевод интерфейса
-  setInterfaceLanguage(savedLang);
-
-  // 2️⃣ Создание блоков расчёта
-  setLanguageBlocks(savedLang);
-
-  // 3️⃣ Настройка <select> языка
   const langSelect = document.getElementById("language-select");
   if (langSelect) {
     langSelect.disabled = false;
@@ -193,12 +190,9 @@ document.addEventListener("DOMContentLoaded", () => {
       <option value="ru" ${savedLang === "ru" ? "selected" : ""}>Русский</option>
       <option value="en" ${savedLang === "en" ? "selected" : ""}>English</option>
     `;
-    langSelect.addEventListener("change", e => {
-      setInterfaceLanguage(e.target.value);
-      setLanguageBlocks(e.target.value);
-    });
+    langSelect.addEventListener("change", e => setLanguage(e.target.value));
   }
-
+});
   // 4️⃣ Очистка всех блоков
   const btnClearAll = document.querySelector('.btn-clear-all');
   if (btnClearAll) btnClearAll.addEventListener('click', () => {
@@ -298,6 +292,7 @@ if (themeSwitch) {
   themeSwitch.checked = localStorage.getItem("theme") === "dark";
   themeSwitch.addEventListener("change", toggleTheme);
 }
+
 
 
 
