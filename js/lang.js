@@ -34,7 +34,7 @@ const translations = {
 
     // --- О приложении ---
     aboutHeading: "ℹ️ О приложении",
-    aboutText: "📱 NaviMate — цифровой штурман для судоводителей на внутренних водных путях.",
+    aboutText: "📱 NaviMate — цифровой помощник судоводителя на внутренних водных путях.",
     toolsHeading: "🚢 Доступные инструменты",
     toolCalc: "🔁 Расчёт встречи судов",
     toolArrival: "🕒 Расчёт времени прибытия",
@@ -129,7 +129,7 @@ const translations = {
 
     // --- About ---
     aboutHeading: "ℹ️ About",
-    aboutText: "📱 NaviMate — a digital navigator for inland waterway captains.",
+    aboutText: "📱 NaviMate — a digital navigation tool for inland waterway captains.",
     toolsHeading: "🚢 Available Tools",
     toolCalc: "🔁 Meeting Calculation",
     toolArrival: "🕒 Arrival Time Calculation",
