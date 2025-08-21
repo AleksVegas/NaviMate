@@ -118,10 +118,13 @@ const waitingSectionsUpstream = [
   ];
 
 
-// ---------- Перевод и блоки расчёта ----------
+// Переменная текущего языка
+let lang = localStorage.getItem("language") || "ru";
+
+// Функция создания блока с плейсхолдерами
 function createBlock(index) {
   const enemyLabel = translations[lang].enemyLabel.replace("{n}", index + 1);
-  const ourLabel = translations[lang].ourLabel;
+  const ourLabel   = translations[lang].ourLabel;
 
   const block = document.createElement('div');
   block.className = 'block';
@@ -146,11 +149,11 @@ function createBlock(index) {
 
     <div class="output" id="result_${index}"></div>
   `;
-
   return block;
 }
 
-function refreshBlocks() {
+// Пересоздаём блоки при смене языка
+function rebuildBlocks() {
   const container = document.getElementById('blocks');
   container.innerHTML = "";
   for (let i = 0; i < 3; i++) {
@@ -158,39 +161,18 @@ function refreshBlocks() {
   }
 }
 
-function setLanguage(newLang) {
-  lang = newLang;
-  localStorage.setItem("language", lang);
-
-  // Перевод всех элементов с data-i18n
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    if (translations[lang] && translations[lang][key]) {
-      if (["input","select","textarea"].includes(el.tagName.toLowerCase())) {
-        el.placeholder = translations[lang][key];
-      } else {
-        el.innerHTML = translations[lang][key];
-      }
-    }
-  });
-
-  // Пересоздаём блоки расчёта
-  refreshBlocks();
-}
-
-// ---------- Подключение select языка ----------
+// Инициализация блока и языка при загрузке страницы
 document.addEventListener("DOMContentLoaded", () => {
-  const savedLang = localStorage.getItem("language") || "ru";
-  setLanguage(savedLang);
+  rebuildBlocks();
 
   const langSelect = document.getElementById("language-select");
   if (langSelect) {
-    langSelect.disabled = false;
-    langSelect.innerHTML = `
-      <option value="ru" ${savedLang === "ru" ? "selected" : ""}>Русский</option>
-      <option value="en" ${savedLang === "en" ? "selected" : ""}>English</option>
-    `;
-    langSelect.addEventListener("change", e => setLanguage(e.target.value));
+    langSelect.value = lang;
+    langSelect.addEventListener("change", e => {
+      lang = e.target.value;
+      localStorage.setItem("language", lang);
+      rebuildBlocks();
+    });
   }
 });
   // 4️⃣ Очистка всех блоков
@@ -292,6 +274,7 @@ if (themeSwitch) {
   themeSwitch.checked = localStorage.getItem("theme") === "dark";
   themeSwitch.addEventListener("change", toggleTheme);
 }
+
 
 
 
