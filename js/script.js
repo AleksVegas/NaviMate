@@ -166,13 +166,25 @@ function createBlock(index) {
 
     <div class="output" id="result_${index}"></div>
   `;
-
   return block;
 }
-// 2. Создание блоков после определения функции
-const container = document.getElementById('blocks');
-for (let i = 0; i < 3; i++) {
-  container.appendChild(createBlock(i));
+// 2. При смене языка нужно пересоздавать блоки
+function setLanguage(newLang) {
+  lang = newLang;
+  localStorage.setItem("language", lang);
+
+  const container = document.getElementById('blocks');
+  container.innerHTML = "";
+  for (let i = 0; i < 3; i++) {
+    container.appendChild(createBlock(i));
+  }
+}
+//3. Подключаем к <select> языка:
+const langSelect = document.getElementById("language-select");
+if (langSelect) {
+  langSelect.addEventListener("change", e => setLanguage(e.target.value));
+  // сразу применяем сохранённый язык
+  setLanguage(langSelect.value);
 }
 
 // Основная функция расчёта
@@ -327,6 +339,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
