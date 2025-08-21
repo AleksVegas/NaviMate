@@ -299,12 +299,13 @@ function setLanguage(lang) {
       if (el.tagName.toLowerCase() === "input" || el.tagName.toLowerCase() === "select" || el.tagName.toLowerCase() === "textarea") {
         el.placeholder = translations[lang][key];
       } else {
-        el.textContent = translations[lang][key];
+        el.innerHTML = translations[lang][key];
       }
     }
   });
   localStorage.setItem("language", lang);
 }
+
 
 // загрузка сохранённого языка
 document.addEventListener("DOMContentLoaded", () => {
@@ -323,6 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
