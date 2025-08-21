@@ -1,3 +1,4 @@
+let lang = localStorage.getItem("language") || "ru";
 // Применить сохранённую тему при загрузке
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
@@ -292,11 +293,12 @@ if (themeSwitch) {
 
 //Переключение языка
 
-function setLanguage(lang) {
+function setLanguage(selectedLang) {
+  lang = selectedLang; // обновляем глобальную переменную
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
     if (translations[lang] && translations[lang][key]) {
-      if (el.tagName.toLowerCase() === "input" || el.tagName.toLowerCase() === "select" || el.tagName.toLowerCase() === "textarea") {
+      if (["input","select","textarea"].includes(el.tagName.toLowerCase())) {
         el.placeholder = translations[lang][key];
       } else {
         el.innerHTML = translations[lang][key];
@@ -324,3 +326,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
