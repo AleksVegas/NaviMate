@@ -1,6 +1,7 @@
 const translations = {
   ru: {
     // --- Общие ---
+    metaDescription: "Приложение для расчёта встречи и обгона судов. Удобно, быстро и просто для судоводителей на внутренних водных путях.",
     appName: "NaviMate",
     menuOpen: "Открыть меню",
     themeToggle: "Переключить тему",
@@ -15,6 +16,10 @@ const translations = {
     // --- Раздел: Расчёт встречи ---
     calcHeading: "Расчёт встречи судов",
 
+    phStartKm: "Например, 1640",
+    phEndKm: "Например, 2130",
+    phSpeed: "Например, 12",
+
     // --- Раздел: Время прибытия ---
     arrivalHeading: "Расчёт времени прибытия",
     startKm: "Начальный километр (км):",
@@ -25,6 +30,7 @@ const translations = {
     btnArrival: "Рассчитать время прибытия",
     desiredArrival: "Желаемое время прибытия (если хотите получить рекомендованную скорость):",
     btnSpeed: "Рассчитать необходимую скорость 🚀",
+    
 
     // --- Настройки ---
     settingsHeading: "⚙️ Настройки",
@@ -96,6 +102,7 @@ const translations = {
 
   en: {
     // --- Common ---
+    metaDescription: "App for calculating vessel encounters and overtaking. Convenient, fast, and simple for inland waterway captains.",
     appName: "NaviMate",
     menuOpen: "Open menu",
     themeToggle: "Toggle theme",
@@ -109,6 +116,10 @@ const translations = {
 
     // --- Section: Meeting ---
     calcHeading: "Ship Meeting Calculation",
+    
+    phStartKm: "E.g., 1640",
+    phEndKm: "E.g., 2130",
+    phSpeed: "E.g., 12",
 
     // --- Section: Arrival ---
     arrivalHeading: "Arrival Time Calculation",
