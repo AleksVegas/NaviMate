@@ -329,6 +329,35 @@ function setLanguage(selectedLang) {
     if (btnCopySpeed) btnCopySpeed.innerText = translations[lang].copySpeed;
   });
 
+// --- Обновление подписей, кнопок и результата для блоков встречи ---
+document.querySelectorAll('.block').forEach((block, index) => {
+  // Labels
+  const labels = block.querySelectorAll('label');
+  if (labels.length >= 4) {
+    labels[0].innerText = translations[lang].enemyLabel.replace("{n}", index + 1) + ": " + translations[lang].posLabel;
+    labels[1].innerText = translations[lang].enemyLabel.replace("{n}", index + 1) + ": " + translations[lang].speedLabel;
+    labels[2].innerText = translations[lang].ourLabel + ": " + translations[lang].posLabel;
+    labels[3].innerText = translations[lang].ourLabel + ": " + translations[lang].speedLabel;
+  }
+
+  // Кнопки: Рассчитать и Очистить
+  const calcBtn = block.querySelector('.calc-btn');
+  if (calcBtn) calcBtn.innerText = translations[lang].calcBtn;
+
+  const clearBtn = block.querySelector('.btn-clear');
+  if (clearBtn) clearBtn.innerText = translations[lang].clearBtn;
+
+  // Output блок (если нужно, можно очистить/обновить текст)
+  const result = block.querySelector('.output');
+  if (result) {
+    // При смене языка можно просто оставить результат пустым или показывать подсказку
+    // result.innerText = ""; // если хочешь очищать при смене языка
+  }
+});
+
+
+
+//---------------------//
   localStorage.setItem("language", lang);
 }
 
@@ -351,6 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
