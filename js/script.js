@@ -138,7 +138,12 @@ function findNearestWaitingZone(meetingKm) {
   return null;
 }
 
-let lang = localStorage.getItem("language") || "ru";
+let lang = localStorage.getItem("lang") || "ru";
+if (!translations[lang]) {
+  lang = "ru";
+  localStorage.setItem("lang", lang);
+}
+
 // Блок расчёта
 function createBlock(index) {
   const block = document.createElement('div');
@@ -326,6 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
