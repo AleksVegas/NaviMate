@@ -130,9 +130,9 @@ const waitingSectionsUpstream = [
 ];
 
 function findNearestWaitingZone(meetingKm) {
-  for (let i = waitingZonesUpstream.length - 1; i >= 0; i--) {
-    if (waitingZonesUpstream[i].km <= meetingKm) {
-      return waitingZonesUpstream[i];
+  for (let i = waitingSectionsUpstream.length - 1; i >= 0; i--) {
+    if (waitingSectionsUpstream[i].from <= meetingKm && meetingKm <= waitingSectionsUpstream[i].to) {
+      return waitingSectionsUpstream[i];
     }
   }
   return null;
@@ -326,5 +326,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
