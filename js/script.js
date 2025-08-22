@@ -1,4 +1,3 @@
-let lang = localStorage.getItem("language") || "ru";
 // Применить сохранённую тему при загрузке
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
@@ -139,6 +138,7 @@ function findNearestWaitingZone(meetingKm) {
   return null;
 }
 
+let lang = localStorage.getItem("language") || "ru";
 // Блок расчёта
 function createBlock(index) {
   const block = document.createElement('div');
@@ -326,4 +326,5 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
