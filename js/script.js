@@ -212,18 +212,16 @@ let output = `
 `;
 
   // Проверка направления и поиск места ожидания
-if (op < ep) {
-  const section = waitingSectionsUpstream.find(s => meeting_km >= s.from && meeting_km <= s.to);
-  if (section) {
-    output += `<div>⚠️ Ближайшее место ожидания: <b>${section.display} км</b></div>`;
-    if (section.restricted) {
-      output += `<div>⛔ Расхождение и обгон запрещен с ${section.from} по ${section.to} км</div>`;
-    }
+const nearestZone = findNearestWaitingZone(meeting_km);
+if (nearestZone) {
+  output += `<div>${translations[lang].waitingZone} <b>${nearestZone.display} км</b></div>`;
+  if (nearestZone.restricted) {
+    output += `<div>${translations[lang].restricted.replace("{from}", nearestZone.from).replace("{to}", nearestZone.to)}</div>`;
   }
 }
 
-  result.innerHTML = output;
-}
+result.innerHTML = output;
+
 
 function clearFields(index) {
   document.getElementById(`enemy_pos_${index}`).value = '';
@@ -380,6 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
