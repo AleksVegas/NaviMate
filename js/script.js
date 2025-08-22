@@ -221,7 +221,7 @@ if (nearestZone) {
 }
 
 result.innerHTML = output;
-
+}
 
 function clearFields(index) {
   document.getElementById(`enemy_pos_${index}`).value = '';
@@ -378,6 +378,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
