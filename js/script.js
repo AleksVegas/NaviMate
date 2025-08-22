@@ -310,8 +310,28 @@ function setLanguage(selectedLang) {
       }
     }
   });
+ // --- Минимальные изменения: обновление форм блоков встречи судов ---
+  document.querySelectorAll('.block').forEach((block, index) => {
+    const enemyPos = block.querySelector(`#enemy_pos_${index}`);
+    const enemySpeed = block.querySelector(`#enemy_speed_${index}`);
+    const ourPos = block.querySelector(`#our_pos_${index}`);
+    const ourSpeed = block.querySelector(`#our_speed_${index}`);
+
+    if (enemyPos) enemyPos.placeholder = translations[lang].phStartKm;
+    if (enemySpeed) enemySpeed.placeholder = translations[lang].phSpeed;
+    if (ourPos) ourPos.placeholder = translations[lang].phStartKm;
+    if (ourSpeed) ourSpeed.placeholder = translations[lang].phSpeed;
+
+    const btnCopyPos = block.querySelector('.btn-copy[onclick*="copyOurPos"]');
+    if (btnCopyPos) btnCopyPos.innerText = translations[lang].copyPos;
+
+    const btnCopySpeed = block.querySelector('.btn-copy[onclick*="copyOurSpeed"]');
+    if (btnCopySpeed) btnCopySpeed.innerText = translations[lang].copySpeed;
+  });
+
   localStorage.setItem("language", lang);
 }
+
 
 
 // загрузка сохранённого языка
@@ -331,6 +351,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
