@@ -205,11 +205,11 @@ function calculate(index) {
   const distance_to_meeting = Math.abs(meeting_km - op);
   const time_to_meeting = Math.abs(ep - op) / (os + es) * 60;
 
-  let output = `
-    <div>📍 Км встречи: <b>${formatNumber(meeting_km)}</b></div>
-    <div>📏 Расстояние до встречи (км): <b>${formatNumber(distance_to_meeting)}</b></div>
-    <div>⏱️ Время до встречи (мин): <b>${formatNumber(time_to_meeting)}</b></div>
-  `;
+let output = `
+  <div>${translations[lang].meetingKm} <b>${formatNumber(meeting_km)}</b></div>
+  <div>${translations[lang].distanceToMeeting} <b>${formatNumber(distance_to_meeting)}</b></div>
+  <div>${translations[lang].timeToMeeting} <b>${formatNumber(time_to_meeting)}</b></div>
+`;
 
   // Проверка направления и поиск места ожидания
 if (op < ep) {
@@ -380,6 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
 
 
 
