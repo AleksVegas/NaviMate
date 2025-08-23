@@ -1,51 +1,33 @@
 const lang = 'ru';
 
-// Проверка офлайна и standalone
-if (!navigator.onLine && !isStandalone()) {
-  showOfflineNotice();
-}
-
-// Получаем элементы кнопок и свича
-const themeBtnHeader = document.getElementById("toggle-theme");
-const themeBtnSettings = document.getElementById("toggle-theme-settings");
-const themeSwitch = document.getElementById("toggle-theme-switch");
-
-// Функция переключения темы
-function toggleTheme() {
-  document.body.classList.toggle("dark");
-  const theme = document.body.classList.contains("dark") ? "dark" : "light";
-  localStorage.setItem("theme", theme);
-
-  // Меняем текст на кнопках
-  if (themeBtnHeader) themeBtnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
-  if (themeBtnSettings) themeBtnSettings.innerText = theme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
-}
-
-// Применяем сохранённую тему при загрузке
-if (localStorage.getItem("theme") === "dark") {
-  document.body.classList.add("dark");
-}
-
-// Обновляем текст кнопок и свич
-if (themeBtnHeader) themeBtnHeader.innerText = document.body.classList.contains("dark") ? "☀️" : "🌙";
-if (themeBtnSettings) themeBtnSettings.innerText = document.body.classList.contains("dark") ? "☀️ Светлая тема" : "🌙 Тёмная тема";
-if (themeSwitch) themeSwitch.checked = document.body.classList.contains("dark");
-
-// Навешиваем события **только один раз**
-if (themeBtnHeader) themeBtnHeader.addEventListener("click", toggleTheme);
-if (themeBtnSettings) themeBtnSettings.addEventListener("click", toggleTheme);
-if (themeSwitch) themeSwitch.addEventListener("change", toggleTheme);
-
 // Проверка, работает ли standalone (PWA)
 function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 }
 
+// Показ баннера оффлайна
+function showOfflineNotice() {
+  const banner = document.createElement('div');
+  banner.textContent = '⚠️ Связь с цивилизацией потеряна. Некоторые функции могут быть недоступны.';
+  Object.assign(banner.style, {
+    position: 'fixed',
+    bottom: '0',
+    left: '0',
+    right: '0',
+    backgroundColor: '#d9534f',
+    color: 'white',
+    padding: '10px',
+    textAlign: 'center',
+    zIndex: '10000'
+  });
+  document.body.appendChild(banner);
+}
 
 // Форматирование чисел
 function formatNumber(n) {
   return (n % 1 === 0) ? n.toFixed(0) : n.toFixed(1);
 }
+
 
 // Массив зон ожидания вверх по течению
 const waitingSectionsUpstream = [
@@ -118,6 +100,7 @@ const waitingSectionsUpstream = [
 { from: 2132.2, to: 2134.0, display: 2131.5 },
 ];
 
+// Поиск ближайшей зоны ожидания
 function findNearestWaitingZone(meetingKm) {
   for (let i = waitingSectionsUpstream.length - 1; i >= 0; i--) {
     if (waitingSectionsUpstream[i].from <= meetingKm && meetingKm <= waitingSectionsUpstream[i].to) {
@@ -127,14 +110,13 @@ function findNearestWaitingZone(meetingKm) {
   return null;
 }
 
-
-// Блок расчёта
+// Создание блока расчёта
 function createBlock(index) {
   const block = document.createElement('div');
   block.className = 'block';
 
   const enemyLabel = translations[lang].enemyLabel.replace("{n}", index + 1);
-  const ourLabel   = translations[lang].ourLabel;
+  const ourLabel = translations[lang].ourLabel;
 
   block.innerHTML = `
     <label>${enemyLabel}: Позиция (км):</label>
@@ -158,8 +140,23 @@ function createBlock(index) {
 
     <div class="output" id="result_${index}"></div>
   `;
-
   return block;
+}
+
+// Очистка полей
+function clearFields(index) {
+  ['enemy_pos_', 'enemy_speed_', 'our_pos_', 'our_speed_'].forEach(id => {
+    document.getElementById(id + index).value = '';
+  });
+  document.getElementById(`result_${index}`).innerText = '';
+}
+
+// Копирование из 1 блока
+function copyOurPos(index) {
+  document.getElementById(`our_pos_${index}`).value = document.getElementById('our_pos_0').value;
+}
+function copyOurSpeed(index) {
+  document.getElementById(`our_speed_${index}`).value = document.getElementById('our_speed_0').value;
 }
 
 // Основная функция расчёта
@@ -170,18 +167,12 @@ function calculate(index) {
   const os = parseFloat(document.getElementById(`our_speed_${index}`).value);
   const result = document.getElementById(`result_${index}`);
 
-  if (os <= 0 || os > 50 || es <= 0 || es > 50) {
-    result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 50 км/ч.";
-    return;
-  }
-
-  if (isNaN(ep) || isNaN(es) || isNaN(op) || isNaN(os)) {
+  if ([ep, es, op, os].some(v => isNaN(v))) {
     result.innerText = "Пожалуйста, введите все данные.";
     return;
   }
-
-  if (es + os === 0) {
-    result.innerText = "Суммарная скорость не может быть равна нулю.";
+  if (os <= 0 || os > 50 || es <= 0 || es > 50) {
+    result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 50 км/ч.";
     return;
   }
 
@@ -189,74 +180,68 @@ function calculate(index) {
   const distance_to_meeting = Math.abs(meeting_km - op);
   const time_to_meeting = Math.abs(ep - op) / (os + es) * 60;
 
-let output = `
-  <div>${translations[lang].meetingKm} <b>${formatNumber(meeting_km)}</b></div>
-  <div>${translations[lang].distanceToMeeting} <b>${formatNumber(distance_to_meeting)}</b></div>
-  <div>${translations[lang].timeToMeeting} <b>${formatNumber(time_to_meeting)}</b></div>
-`;
+  let output = `
+    <div>${translations[lang].meetingKm} <b>${formatNumber(meeting_km)}</b></div>
+    <div>${translations[lang].distanceToMeeting} <b>${formatNumber(distance_to_meeting)}</b></div>
+    <div>${translations[lang].timeToMeeting} <b>${formatNumber(time_to_meeting)}</b></div>
+  `;
 
-  // Проверка направления и поиск места ожидания
-const nearestZone = findNearestWaitingZone(meeting_km);
-if (nearestZone) {
-  output += `<div>${translations[lang].waitingZone} <b>${nearestZone.display} км</b></div>`;
-  if (nearestZone.restricted) {
-    output += `<div>${translations[lang].restricted.replace("{from}", nearestZone.from).replace("{to}", nearestZone.to)}</div>`;
+  const nearestZone = findNearestWaitingZone(meeting_km);
+  if (nearestZone) {
+    output += `<div>${translations[lang].waitingZone} <b>${nearestZone.display} км</b></div>`;
+    if (nearestZone.restricted) {
+      output += `<div>${translations[lang].restricted.replace("{from}", nearestZone.from).replace("{to}", nearestZone.to)}</div>`;
+    }
   }
+
+  result.innerHTML = output;
 }
 
-result.innerHTML = output;
-}
+// Переключение темы
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+  const theme = document.body.classList.contains("dark") ? "dark" : "light";
+  localStorage.setItem("theme", theme);
 
-function clearFields(index) {
-  document.getElementById(`enemy_pos_${index}`).value = '';
-  document.getElementById(`enemy_speed_${index}`).value = '';
-  document.getElementById(`our_pos_${index}`).value = '';
-  document.getElementById(`our_speed_${index}`).value = '';
-  document.getElementById(`result_${index}`).innerText = '';
-}
-
-function copyOurPos(index) {
-  const pos = document.getElementById('our_pos_0').value;
-  document.getElementById(`our_pos_${index}`).value = pos;
-}
-
-function copyOurSpeed(index) {
-  const speed = document.getElementById('our_speed_0').value;
-  document.getElementById(`our_speed_${index}`).value = speed;
+  if (themeBtnHeader) themeBtnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
+  if (themeBtnSettings) themeBtnSettings.innerText = theme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById('blocks');
-  for (let i = 0; i < 3; i++) {
-    container.appendChild(createBlock(i));
+  // Проверка оффлайна
+  if (!navigator.onLine && !isStandalone()) showOfflineNotice();
+
+  // Получаем элементы темы
+  themeBtnHeader = document.getElementById("toggle-theme");
+  themeBtnSettings = document.getElementById("toggle-theme-settings");
+  themeSwitch = document.getElementById("toggle-theme-switch");
+
+  // Применяем сохранённую тему
+  if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark");
+  if (themeBtnHeader) themeBtnHeader.innerText = document.body.classList.contains("dark") ? "☀️" : "🌙";
+  if (themeBtnSettings) themeBtnSettings.innerText = document.body.classList.contains("dark") ? "☀️ Светлая тема" : "🌙 Тёмная тема";
+  if (themeSwitch) themeSwitch.checked = document.body.classList.contains("dark");
+
+  // Навешиваем события темы
+  if (themeBtnHeader) themeBtnHeader.addEventListener("click", toggleTheme);
+  if (themeBtnSettings) themeBtnSettings.addEventListener("click", toggleTheme);
+  if (themeSwitch) themeSwitch.addEventListener("change", toggleTheme);
+
+  // Меню
+  const menuToggleBtn = document.getElementById('menu-toggle');
+  const sidebar = document.getElementById('sidebar');
+  const navButtons = document.querySelectorAll('nav#sidebar button.nav-btn');
+  const sections = document.querySelectorAll('main .section');
+
+  if (menuToggleBtn && sidebar) {
+    menuToggleBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
   }
-});
 
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-section');
+      navButtons.forEach(b => b.classList.remove
 
-document.querySelector('.btn-clear-all').addEventListener('click', () => {
-  for (let i = 0; i < 3; i++) clearFields(i);
-});
-
-window.addEventListener('online', () => {
-  console.log('Интернет появился, обновляем страницу');
-  location.reload();
-});
-
-
-function showOfflineNotice() {
-  const banner = document.createElement('div');
-  banner.textContent = '⚠️ Связь с цивилизацией потеряна. Некоторые функции могут быть недоступны.';
-  banner.style.position = 'fixed';
-  banner.style.bottom = '0';
-  banner.style.left = '0';
-  banner.style.right = '0';
-  banner.style.backgroundColor = '#d9534f';
-  banner.style.color = 'white';
-  banner.style.padding = '10px';
-  banner.style.textAlign = 'center';
-  banner.style.zIndex = '10000';
-  document.body.appendChild(banner);
-}
 
 
 
