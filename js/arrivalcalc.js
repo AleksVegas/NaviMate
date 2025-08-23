@@ -7,7 +7,6 @@ function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem('lang', lang); // сохраняем выбор
   applyTranslations(); // переводим все элементы
-  borderDelaysInitialized = false; // сброс
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   if (!isNaN(startKm) && !isNaN(endKm)) {
@@ -28,7 +27,7 @@ function translateElement(el) {
   } else if (el.tagName === "OPTION") {
     el.textContent = t[key];
   } else {
-    el.textContent = t[key];
+    el.innerHTML = t[key]; // <--- вместо textContent
   }
 }
 
@@ -84,6 +83,17 @@ function calculateArrival() {
   const workHours = parseFloat(document.getElementById("workHoursArrival").value);
   const resultDiv = document.getElementById("resultArrival");
 
+if (prevStartKm === startKm && prevEndKm === endKm && borderDelaysInitialized) return;
+
+  prevStartKm = startKm;
+  prevEndKm = endKm;
+  borderDelaysInitialized = false;
+
+if (!borderDelaysInitialized) {
+    showBorderDelays(startKm, endKm);
+    borderDelaysInitialized = true;
+  }
+
   if (isNaN(startKm) || isNaN(endKm) || isNaN(speed) || !startTimeStr) {
     resultDiv.innerHTML = t.errorData;
     return;
@@ -103,11 +113,6 @@ function calculateArrival() {
     borderDelaysInitialized = false;
     prevStartKm = startKm;
     prevEndKm = endKm;
-  }
-
-  if (!borderDelaysInitialized) {
-    showBorderDelays(startKm, endKm);
-    borderDelaysInitialized = true;
   }
 
   const direction = endKm > startKm ? 1 : -1;
@@ -164,11 +169,12 @@ function calculateArrival() {
 
   const locksInfo = passedLocks.length > 0 ? "<br>" + passedLocks.join("<br>") : "";
 
-  resultDiv.innerHTML = `
+resultDiv.innerHTML = `
 🚢 <strong>${t.arrivalHeading}:</strong> ${formattedArrival}<br>
 ⏳ <strong>${t.workHours}:</strong> ${travelHours.toFixed(2)} ч<br>
 📍 <strong>Расстояние:</strong> ${distance} км${locksInfo}${bordersInfo}
-  `;
+`;
+
 
   document.getElementById("desiredBlockArrival").style.display = "block";
   document.getElementById("requiredSpeedResultArrival").innerHTML = "";
