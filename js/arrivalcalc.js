@@ -346,24 +346,26 @@ function calculateRecommendedSpeed() {
 //Вызываем функцию после загрузки страницы
 window.addEventListener('DOMContentLoaded', () => {
   const selector = document.getElementById('langSelector');
+  const savedLang = localStorage.getItem('lang') || 'ru';
+  currentLang = savedLang;
+
   if (selector) {
-    selector.value = currentLang;
+    selector.value = savedLang;
     selector.addEventListener('change', (e) => setLanguage(e.target.value));
   }
 
   applyTranslations();
 
-});
-
 //блок обеспечивает пересчёт и обновление отображения, когда значения километров уже есть на странице.
 const startInput = document.getElementById("startKmArrival");
-const endInput = document.getElementById("endKmArrival");
-if (startInput && endInput) {
-  const startKm = parseFloat(startInput.value);
-  const endKm = parseFloat(endInput.value);
-  if (!isNaN(startKm) && !isNaN(endKm)) {
-    showBorderDelays(startKm, endKm);
-    calculateArrival();
+  const endInput = document.getElementById("endKmArrival");
+  if (startInput && endInput) {
+    const startKm = parseFloat(startInput.value);
+    const endKm = parseFloat(endInput.value);
+    if (!isNaN(startKm) && !isNaN(endKm)) {
+      showBorderDelays(startKm, endKm);
+      calculateArrival();
+    }
   }
-}
+});
 
