@@ -302,3 +302,30 @@ function calculateRecommendedSpeed() {
   `;
   document.head.appendChild(style);
 })();
+
+//функция перевода
+function applyArrivalTranslations() {
+  const t = translations[currentLang]; // текущий язык
+  
+  document.querySelector("h2[data-i18n='arrivalHeading']").textContent = t.arrivalHeading;
+  
+  document.querySelector("label[for='startKmArrival']").textContent = t.startKm;
+  document.getElementById("startKmArrival").placeholder = t.phStartKm;
+  
+  document.querySelector("label[for='endKmArrival']").textContent = t.endKm;
+  document.getElementById("endKmArrival").placeholder = t.phEndKm;
+  
+  document.querySelector("label[for='speedArrival']").textContent = t.speed;
+  document.getElementById("speedArrival").placeholder = t.phSpeed;
+  
+  document.querySelector("label[for='startTimeArrival']").textContent = t.startTime;
+  document.querySelector("label[for='workHoursArrival']").textContent = t.workHours;
+  
+  document.querySelector("button[onclick='calculateArrival()']").textContent = t.btnArrival;
+  document.querySelector("button[onclick='calculateRecommendedSpeed()']").textContent = t.btnSpeed;
+}
+
+//Вызываем функцию после загрузки страницы
+window.addEventListener('DOMContentLoaded', () => {
+  applyArrivalTranslations();
+});
