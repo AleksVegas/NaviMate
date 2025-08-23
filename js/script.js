@@ -171,8 +171,8 @@ function calculate(index) {
     result.innerText = "Пожалуйста, введите все данные.";
     return;
   }
-  if (os <= 0 || os > 50 || es <= 0 || es > 50) {
-    result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 50 км/ч.";
+  if (os <= 0.1 || os > 70 || es <= 0.1 || es > 70) {
+    result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 70 км/ч.";
     return;
   }
 
@@ -237,11 +237,36 @@ document.addEventListener("DOMContentLoaded", () => {
     menuToggleBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
   }
 
-  navButtons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const target = btn.getAttribute('data-section');
-      navButtons.forEach(b => b.classList.remove
+  navButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      sections.forEach(sec => {
+        if (sec.id === target) sec.classList.add('active');
+        else sec.classList.remove('active');
+      });
+      if (sidebar) sidebar.classList.remove('open');
+    });
+  });
 
+  // Создаём 3 блока расчёта
+  const container = document.getElementById('blocks');
+  for (let i = 0; i < 3; i++) {
+    container.appendChild(createBlock(i));
+  }
+
+  // Кнопка очистки всех блоков
+  const clearAllBtn = document.querySelector('.btn-clear-all');
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', () => {
+      for (let i = 0; i < 3; i++) clearFields(i);
+    });
+  }
+});
+
+// Обновление страницы при восстановлении интернета
+window.addEventListener('online', () => {
+  console.log('Интернет появился, обновляем страницу');
+  location.reload();
+});
 
 
 
