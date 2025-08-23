@@ -1,29 +1,53 @@
 const lang = 'ru';
 
-// Проверка, работает ли standalone (PWA)
+// Проверка offline и standalone
 function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
 }
 
-// Показ баннера оффлайна
 function showOfflineNotice() {
   const banner = document.createElement('div');
   banner.textContent = '⚠️ Связь с цивилизацией потеряна. Некоторые функции могут быть недоступны.';
-  Object.assign(banner.style, {
-    position: 'fixed',
-    bottom: '0',
-    left: '0',
-    right: '0',
-    backgroundColor: '#d9534f',
-    color: 'white',
-    padding: '10px',
-    textAlign: 'center',
-    zIndex: '10000'
-  });
+  banner.style.position = 'fixed';
+  banner.style.bottom = '0';
+  banner.style.left = '0';
+  banner.style.right = '0';
+  banner.style.backgroundColor = '#d9534f';
+  banner.style.color = 'white';
+  banner.style.padding = '10px';
+  banner.style.textAlign = 'center';
+  banner.style.zIndex = '10000';
   document.body.appendChild(banner);
 }
 
-// Форматирование чисел
+if (!navigator.onLine && !isStandalone()) {
+  showOfflineNotice();
+}
+
+// Тема
+const themeBtnHeader = document.getElementById("toggle-theme");
+const themeBtnSettings = document.getElementById("toggle-theme-settings");
+const themeSwitch = document.getElementById("toggle-theme-switch");
+
+function toggleTheme() {
+  document.body.classList.toggle("dark");
+  const theme = document.body.classList.contains("dark") ? "dark" : "light";
+  localStorage.setItem("theme", theme);
+
+  if (themeBtnHeader) themeBtnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
+  if (themeBtnSettings) themeBtnSettings.innerText = theme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
+  if (themeSwitch) themeSwitch.checked = document.body.classList.contains("dark");
+}
+
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark");
+}
+
+if (themeBtnHeader) themeBtnHeader.addEventListener("click", toggleTheme);
+if (themeBtnSettings) themeBtnSettings.addEventListener("click", toggleTheme);
+if (themeSwitch) themeSwitch.addEventListener("change", toggleTheme);
+
+// Форматирование числа
 function formatNumber(n) {
   return (n % 1 === 0) ? n.toFixed(0) : n.toFixed(1);
 }
@@ -100,7 +124,6 @@ const waitingSectionsUpstream = [
 { from: 2132.2, to: 2134.0, display: 2131.5 },
 ];
 
-// Поиск ближайшей зоны ожидания
 function findNearestWaitingZone(meetingKm) {
   for (let i = waitingSectionsUpstream.length - 1; i >= 0; i--) {
     if (waitingSectionsUpstream[i].from <= meetingKm && meetingKm <= waitingSectionsUpstream[i].to) {
@@ -110,7 +133,7 @@ function findNearestWaitingZone(meetingKm) {
   return null;
 }
 
-// Создание блока расчёта
+// Создание блока расчета
 function createBlock(index) {
   const block = document.createElement('div');
   block.className = 'block';
@@ -121,45 +144,28 @@ function createBlock(index) {
   block.innerHTML = `
     <label>${enemyLabel}: Позиция (км):</label>
     <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="например: 2025">
-
+    
     <label>${enemyLabel}: Скорость (км/ч):</label>
     <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="например: 20.5">
-
+    
     <label>${ourLabel}: Позиция (км):</label>
     <input type="number" id="our_pos_${index}" step="0.1" placeholder="например: 2008">
     ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurPos(${index})">Скопировать позицию из 1 блока</button>` : ''}
-
+    
     <label>${ourLabel}: Скорость (км/ч):</label>
     <input type="number" id="our_speed_${index}" step="0.1" placeholder="например: 12">
     ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurSpeed(${index})">Скопировать скорость из 1 блока</button>` : ''}
-
-    <div style="margin-top: 10px;">
+    
+    <div style="margin-top:10px;">
       <button class="calc-btn" onclick="calculate(${index})">Рассчитать</button>
-      <button class="btn-clear" onclick="clearFields(${index})" type="button">Очистить</button>
+      <button class="btn-clear" onclick="clearFields(${index})">Очистить</button>
     </div>
-
     <div class="output" id="result_${index}"></div>
   `;
+
   return block;
 }
 
-// Очистка полей
-function clearFields(index) {
-  ['enemy_pos_', 'enemy_speed_', 'our_pos_', 'our_speed_'].forEach(id => {
-    document.getElementById(id + index).value = '';
-  });
-  document.getElementById(`result_${index}`).innerText = '';
-}
-
-// Копирование из 1 блока
-function copyOurPos(index) {
-  document.getElementById(`our_pos_${index}`).value = document.getElementById('our_pos_0').value;
-}
-function copyOurSpeed(index) {
-  document.getElementById(`our_speed_${index}`).value = document.getElementById('our_speed_0').value;
-}
-
-// Основная функция расчёта
 function calculate(index) {
   const ep = parseFloat(document.getElementById(`enemy_pos_${index}`).value);
   const es = parseFloat(document.getElementById(`enemy_speed_${index}`).value);
@@ -167,12 +173,13 @@ function calculate(index) {
   const os = parseFloat(document.getElementById(`our_speed_${index}`).value);
   const result = document.getElementById(`result_${index}`);
 
-  if ([ep, es, op, os].some(v => isNaN(v))) {
-    result.innerText = "Пожалуйста, введите все данные.";
-    return;
-  }
   if (os <= 0.1 || os > 70 || es <= 0.1 || es > 70) {
     result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 70 км/ч.";
+    return;
+  }
+
+  if (isNaN(ep) || isNaN(es) || isNaN(op) || isNaN(os)) {
+    result.innerText = "Пожалуйста, введите все данные.";
     return;
   }
 
@@ -197,35 +204,33 @@ function calculate(index) {
   result.innerHTML = output;
 }
 
-// Переключение темы
-function toggleTheme() {
-  document.body.classList.toggle("dark");
-  const theme = document.body.classList.contains("dark") ? "dark" : "light";
-  localStorage.setItem("theme", theme);
-
-  if (themeBtnHeader) themeBtnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
-  if (themeBtnSettings) themeBtnSettings.innerText = theme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
+function clearFields(index) {
+  document.getElementById(`enemy_pos_${index}`).value = '';
+  document.getElementById(`enemy_speed_${index}`).value = '';
+  document.getElementById(`our_pos_${index}`).value = '';
+  document.getElementById(`our_speed_${index}`).value = '';
+  document.getElementById(`result_${index}`).innerText = '';
 }
 
+function copyOurPos(index) {
+  document.getElementById(`our_pos_${index}`).value = document.getElementById('our_pos_0').value;
+}
+
+function copyOurSpeed(index) {
+  document.getElementById(`our_speed_${index}`).value = document.getElementById('our_speed_0').value;
+}
+
+// DOMContentLoaded один раз
 document.addEventListener("DOMContentLoaded", () => {
-  // Проверка оффлайна
-  if (!navigator.onLine && !isStandalone()) showOfflineNotice();
+  const container = document.getElementById('blocks');
+  for (let i = 0; i < 3; i++) container.appendChild(createBlock(i));
 
-  // Получаем элементы темы
-  themeBtnHeader = document.getElementById("toggle-theme");
-  themeBtnSettings = document.getElementById("toggle-theme-settings");
-  themeSwitch = document.getElementById("toggle-theme-switch");
-
-  // Применяем сохранённую тему
-  if (localStorage.getItem("theme") === "dark") document.body.classList.add("dark");
-  if (themeBtnHeader) themeBtnHeader.innerText = document.body.classList.contains("dark") ? "☀️" : "🌙";
-  if (themeBtnSettings) themeBtnSettings.innerText = document.body.classList.contains("dark") ? "☀️ Светлая тема" : "🌙 Тёмная тема";
-  if (themeSwitch) themeSwitch.checked = document.body.classList.contains("dark");
-
-  // Навешиваем события темы
-  if (themeBtnHeader) themeBtnHeader.addEventListener("click", toggleTheme);
-  if (themeBtnSettings) themeBtnSettings.addEventListener("click", toggleTheme);
-  if (themeSwitch) themeSwitch.addEventListener("change", toggleTheme);
+  const clearAllBtn = document.querySelector('.btn-clear-all');
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', () => {
+      for (let i = 0; i < 3; i++) clearFields(i);
+    });
+  }
 
   // Меню
   const menuToggleBtn = document.getElementById('menu-toggle');
@@ -237,36 +242,20 @@ document.addEventListener("DOMContentLoaded", () => {
     menuToggleBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
   }
 
-  navButtons.forEach(b => b.classList.remove('active'));
+  navButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.getAttribute('data-section');
+      navButtons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      sections.forEach(sec => {
-        if (sec.id === target) sec.classList.add('active');
-        else sec.classList.remove('active');
-      });
+      sections.forEach(sec => sec.id === target ? sec.classList.add('active') : sec.classList.remove('active'));
       if (sidebar) sidebar.classList.remove('open');
     });
   });
-
-  // Создаём 3 блока расчёта
-  const container = document.getElementById('blocks');
-  for (let i = 0; i < 3; i++) {
-    container.appendChild(createBlock(i));
-  }
-
-  // Кнопка очистки всех блоков
-  const clearAllBtn = document.querySelector('.btn-clear-all');
-  if (clearAllBtn) {
-    clearAllBtn.addEventListener('click', () => {
-      for (let i = 0; i < 3; i++) clearFields(i);
-    });
-  }
 });
 
-// Обновление страницы при восстановлении интернета
-window.addEventListener('online', () => {
-  console.log('Интернет появился, обновляем страницу');
-  location.reload();
-});
+// Перезагрузка при появлении интернета
+window.addEventListener('online', () => location.reload());
+
 
 
 
