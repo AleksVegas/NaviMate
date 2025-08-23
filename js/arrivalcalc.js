@@ -1,6 +1,25 @@
-// --- Подключение перевода ---
-const currentLang = 'ru'; // 'ru' или 'en', можно менять
-const t = translations[currentLang];
+// 1️⃣ Язык по умолчанию
+let currentLang = 'ru';
+
+// 2️⃣ Функции перевода
+function translateElement(el) {
+  const t = translations[currentLang];
+  const key = el.getAttribute("data-i18n");
+  if (!key || !t[key]) return;
+
+  if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
+    el.placeholder = t[key];
+  } else if (el.tagName === "OPTION") {
+    el.textContent = t[key];
+  } else {
+    el.textContent = t[key];
+  }
+}
+
+function applyTranslations(root = document) {
+  root.querySelectorAll("[data-i18n]").forEach(translateElement);
+}
+
 
 function pluralizeHours(n) {
   n = Math.abs(n);
@@ -303,29 +322,8 @@ function calculateRecommendedSpeed() {
   document.head.appendChild(style);
 })();
 
-//функция перевода
-function applyArrivalTranslations() {
-  const t = translations[currentLang]; // текущий язык
-  
-  document.querySelector("h2[data-i18n='arrivalHeading']").textContent = t.arrivalHeading;
-  
-  document.querySelector("label[for='startKmArrival']").textContent = t.startKm;
-  document.getElementById("startKmArrival").placeholder = t.phStartKm;
-  
-  document.querySelector("label[for='endKmArrival']").textContent = t.endKm;
-  document.getElementById("endKmArrival").placeholder = t.phEndKm;
-  
-  document.querySelector("label[for='speedArrival']").textContent = t.speed;
-  document.getElementById("speedArrival").placeholder = t.phSpeed;
-  
-  document.querySelector("label[for='startTimeArrival']").textContent = t.startTime;
-  document.querySelector("label[for='workHoursArrival']").textContent = t.workHours;
-  
-  document.querySelector("button[onclick='calculateArrival()']").textContent = t.btnArrival;
-  document.querySelector("button[onclick='calculateRecommendedSpeed()']").textContent = t.btnSpeed;
-}
 
 //Вызываем функцию после загрузки страницы
 window.addEventListener('DOMContentLoaded', () => {
-  applyArrivalTranslations();
+  applyTranslations();       // переведёт все элементы на выбранный язык
 });
