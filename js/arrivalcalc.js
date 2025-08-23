@@ -10,19 +10,11 @@ function setLanguage(lang) {
   borderDelaysInitialized = false; // сброс
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
-
-if (!isNaN(startKm) && !isNaN(endKm)) {
-  showBorderDelays(startKm, endKm); // обновляем таблицу с новым языком
-  calculateArrival(); // ✅ пересчёт после смены языка
+  if (!isNaN(startKm) && !isNaN(endKm)) {
+    showBorderDelays(startKm, endKm); // обновляем таблицу с новым языком
+    calculateArrival(); // ✅ пересчёт после смены языка
   }
 }
-
-//подкл к селекторам
-document.getElementById('langSelector').addEventListener('change', (e) => {
-  setLanguage(e.target.value);
-});
-
-
 
 
 // 2️⃣ Функции перевода
@@ -355,10 +347,12 @@ function calculateRecommendedSpeed() {
 window.addEventListener('DOMContentLoaded', () => {
   const selector = document.getElementById('langSelector');
   if (selector) {
-    selector.value = currentLang; // ставим выбранный язык
+    selector.value = currentLang;
     selector.addEventListener('change', (e) => setLanguage(e.target.value));
   }
+
   applyTranslations();
+
 });
 
 //блок обеспечивает пересчёт и обновление отображения, когда значения километров уже есть на странице.
