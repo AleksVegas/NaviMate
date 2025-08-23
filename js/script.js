@@ -1,57 +1,44 @@
-// Применить сохранённую тему при загрузке
-if (localStorage.getItem("theme") === "dark") {
-  document.body.classList.add("dark");
+// Проверка офлайна и standalone
+if (!navigator.onLine && !isStandalone()) {
+  showOfflineNotice();
 }
 
+// Получаем элементы кнопок и свича
 const themeBtnHeader = document.getElementById("toggle-theme");
-if (themeBtnHeader) {
-  themeBtnHeader.innerText = localStorage.getItem("theme") === "dark" ? "☀️" : "🌙";
-}
+const themeBtnSettings = document.getElementById("toggle-theme-settings");
+const themeSwitch = document.getElementById("toggle-theme-switch");
 
-// Управление меню
-const menuToggleBtn = document.getElementById('menu-toggle');
-const sidebar = document.getElementById('sidebar');
-const navButtons = document.querySelectorAll('nav#sidebar button.nav-btn');
-const sections = document.querySelectorAll('main .section');
-
-menuToggleBtn.addEventListener('click', () => {
-  sidebar.classList.toggle('open');
-});
-
+// Функция переключения темы
 function toggleTheme() {
   document.body.classList.toggle("dark");
   const theme = document.body.classList.contains("dark") ? "dark" : "light";
   localStorage.setItem("theme", theme);
 
-  const btnSettings = document.getElementById("toggle-theme-settings");
-  if (btnSettings) {
-    btnSettings.innerText = theme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
-  }
-
-  const btnHeader = document.getElementById("toggle-theme");
-  if (btnHeader) {
-    btnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
-  }
+  // Меняем текст на кнопках
+  if (themeBtnHeader) themeBtnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
+  if (themeBtnSettings) themeBtnSettings.innerText = theme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
 }
 
-const savedTheme = localStorage.getItem("theme");
-const btnSettings = document.getElementById("toggle-theme-settings");
-if (btnSettings) {
-  btnSettings.innerText = savedTheme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
+// Применяем сохранённую тему при загрузке
+if (localStorage.getItem("theme") === "dark") {
+  document.body.classList.add("dark");
 }
 
-navButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const target = btn.getAttribute('data-section');
-    navButtons.forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    sections.forEach(sec => {
-      if (sec.id === target) sec.classList.add('active');
-      else sec.classList.remove('active');
-    });
-    sidebar.classList.remove('open');
-  });
-});
+// Обновляем текст кнопок и свич
+if (themeBtnHeader) themeBtnHeader.innerText = document.body.classList.contains("dark") ? "☀️" : "🌙";
+if (themeBtnSettings) themeBtnSettings.innerText = document.body.classList.contains("dark") ? "☀️ Светлая тема" : "🌙 Тёмная тема";
+if (themeSwitch) themeSwitch.checked = document.body.classList.contains("dark");
+
+// Навешиваем события **только один раз**
+if (themeBtnHeader) themeBtnHeader.addEventListener("click", toggleTheme);
+if (themeBtnSettings) themeBtnSettings.addEventListener("click", toggleTheme);
+if (themeSwitch) themeSwitch.addEventListener("change", toggleTheme);
+
+// Проверка, работает ли standalone (PWA)
+function isStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+}
+
 
 // Форматирование чисел
 function formatNumber(n) {
@@ -138,11 +125,6 @@ function findNearestWaitingZone(meetingKm) {
   return null;
 }
 
-let lang = localStorage.getItem("lang") || "ru";
-if (!translations[lang]) {
-  lang = "ru";
-  localStorage.setItem("lang", lang);
-}
 
 // Блок расчёта
 function createBlock(index) {
@@ -255,9 +237,6 @@ window.addEventListener('online', () => {
   location.reload();
 });
 
-function isStandalone() {
-  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-}
 
 function showOfflineNotice() {
   const banner = document.createElement('div');
@@ -274,110 +253,14 @@ function showOfflineNotice() {
   document.body.appendChild(banner);
 }
 
-// Тема
-if (!navigator.onLine && !isStandalone()) {
-  showOfflineNotice();
-}
-
-document.getElementById("toggle-theme").addEventListener("click", toggleTheme);
-const themeBtnSettings = document.getElementById("toggle-theme-settings");
-if (themeBtnSettings) {
-  themeBtnSettings.addEventListener("click", toggleTheme);
-}
-
-const themeSwitch = document.getElementById("toggle-theme-switch");
-if (themeSwitch) {
-  themeSwitch.checked = localStorage.getItem("theme") === "dark";
-  themeSwitch.addEventListener("change", () => {
-    toggleTheme();
-  });
-}
-
-
-//Переключение языка
-
-function setLanguage(selectedLang) {
-  lang = selectedLang; // обновляем глобальную переменную
-  document.querySelectorAll("[data-i18n]").forEach(el => {
-    const key = el.getAttribute("data-i18n");
-    if (translations[lang] && translations[lang][key]) {
-      if (["input","select","textarea"].includes(el.tagName.toLowerCase())) {
-        el.placeholder = translations[lang][key];
-      } else {
-        el.innerHTML = translations[lang][key];
-      }
-    }
-  });
- // --- Минимальные изменения: обновление форм блоков встречи судов ---
-  document.querySelectorAll('.block').forEach((block, index) => {
-    const enemyPos = block.querySelector(`#enemy_pos_${index}`);
-    const enemySpeed = block.querySelector(`#enemy_speed_${index}`);
-    const ourPos = block.querySelector(`#our_pos_${index}`);
-    const ourSpeed = block.querySelector(`#our_speed_${index}`);
-
-    if (enemyPos) enemyPos.placeholder = translations[lang].phStartKm;
-    if (enemySpeed) enemySpeed.placeholder = translations[lang].phSpeed;
-    if (ourPos) ourPos.placeholder = translations[lang].phStartKm;
-    if (ourSpeed) ourSpeed.placeholder = translations[lang].phSpeed;
-
-    const btnCopyPos = block.querySelector('.btn-copy[onclick*="copyOurPos"]');
-    if (btnCopyPos) btnCopyPos.innerText = translations[lang].copyPos;
-
-    const btnCopySpeed = block.querySelector('.btn-copy[onclick*="copyOurSpeed"]');
-    if (btnCopySpeed) btnCopySpeed.innerText = translations[lang].copySpeed;
-  });
-
-// --- Обновление подписей, кнопок и результата для блоков встречи ---
-document.querySelectorAll('.block').forEach((block, index) => {
-  // Labels
-  const labels = block.querySelectorAll('label');
-  if (labels.length >= 4) {
-    labels[0].innerText = translations[lang].enemyLabel.replace("{n}", index + 1) + ": " + translations[lang].posLabel;
-    labels[1].innerText = translations[lang].enemyLabel.replace("{n}", index + 1) + ": " + translations[lang].speedLabel;
-    labels[2].innerText = translations[lang].ourLabel + ": " + translations[lang].posLabel;
-    labels[3].innerText = translations[lang].ourLabel + ": " + translations[lang].speedLabel;
-  }
-
-  // Кнопки: Рассчитать и Очистить
-  const calcBtn = block.querySelector('.calc-btn');
-  if (calcBtn) calcBtn.innerText = translations[lang].calcBtn;
-
-  const clearBtn = block.querySelector('.btn-clear');
-  if (clearBtn) clearBtn.innerText = translations[lang].clearBtn;
-
-  // Output блок (если нужно, можно очистить/обновить текст)
-  const result = block.querySelector('.output');
-  if (result) {
-    // При смене языка можно просто оставить результат пустым или показывать подсказку
-    // result.innerText = ""; // если хочешь очищать при смене языка
-  }
-});
 
 
 
-//---------------------//
-  localStorage.setItem("language", lang);
-}
 
 
 
-// загрузка сохранённого языка
-document.addEventListener("DOMContentLoaded", () => {
-  const savedLang = localStorage.getItem("language") || "ru";
-  setLanguage(savedLang);
 
-  const langSelect = document.getElementById("language-select");
-  if (langSelect) {
-    langSelect.disabled = false;
-    langSelect.innerHTML = `
-      <option value="ru" ${savedLang === "ru" ? "selected" : ""}>Русский</option>
-      <option value="en" ${savedLang === "en" ? "selected" : ""}>English</option>
-    `;
-    langSelect.addEventListener("change", e => {
-      setLanguage(e.target.value);
-    });
-  }
-});
+
 
 
 
