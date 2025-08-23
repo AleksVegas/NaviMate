@@ -1,3 +1,5 @@
+const lang = 'ru';
+
 // Проверка офлайна и standalone
 if (!navigator.onLine && !isStandalone()) {
   showOfflineNotice();
@@ -223,10 +225,13 @@ function copyOurSpeed(index) {
   document.getElementById(`our_speed_${index}`).value = speed;
 }
 
-const container = document.getElementById('blocks');
-for (let i = 0; i < 3; i++) {
-  container.appendChild(createBlock(i));
-}
+document.addEventListener("DOMContentLoaded", () => {
+  const container = document.getElementById('blocks');
+  for (let i = 0; i < 3; i++) {
+    container.appendChild(createBlock(i));
+  }
+});
+
 
 document.querySelector('.btn-clear-all').addEventListener('click', () => {
   for (let i = 0; i < 3; i++) clearFields(i);
@@ -252,6 +257,7 @@ function showOfflineNotice() {
   banner.style.zIndex = '10000';
   document.body.appendChild(banner);
 }
+
 
 
 
