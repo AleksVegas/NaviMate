@@ -1,5 +1,29 @@
 // 1️⃣ Язык по умолчанию
-let currentLang = 'ru';
+// при загрузке страницы
+let currentLang = localStorage.getItem('lang') || 'ru';
+
+//Сохраняем выбор пользователя
+function setLanguage(lang) {
+  currentLang = lang;
+  localStorage.setItem('lang', lang); // сохраняем выбор
+  applyTranslations(); // переводим все элементы
+  borderDelaysInitialized = false; // сброс
+  const startKm = parseFloat(document.getElementById("startKmArrival").value);
+  const endKm = parseFloat(document.getElementById("endKmArrival").value);
+
+if (!isNaN(startKm) && !isNaN(endKm)) {
+  showBorderDelays(startKm, endKm); // обновляем таблицу с новым языком
+  calculateArrival(); // ✅ пересчёт после смены языка
+  }
+}
+
+//подкл к селекторам
+document.getElementById('langSelector').addEventListener('change', (e) => {
+  setLanguage(e.target.value);
+});
+
+
+
 
 // 2️⃣ Функции перевода
 function translateElement(el) {
@@ -60,6 +84,7 @@ let prevStartKm = null;
 let prevEndKm = null;
 
 function calculateArrival() {
+  const t = translations[currentLang];
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   const speed = parseFloat(document.getElementById("speedArrival").value);
@@ -158,6 +183,7 @@ function calculateArrival() {
 }
 
 function calculateRecommendedSpeed() {
+  const t = translations[currentLang];
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   const startTimeStr = document.getElementById("startTimeArrival").value;
@@ -238,6 +264,7 @@ function calculateRecommendedSpeed() {
 
 
     function showBorderDelays(startKm, endKm) {
+    const t = translations[currentLang];
     const container = document.getElementById("borderDelaysSection");
     container.innerHTML = "";
 
@@ -245,6 +272,7 @@ function calculateRecommendedSpeed() {
     (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
     (startKm > endKm && b.km <= startKm && b.km >= endKm)
   );
+
 
     if (relevantBorders.length === 0) return;
   
@@ -325,5 +353,23 @@ function calculateRecommendedSpeed() {
 
 //Вызываем функцию после загрузки страницы
 window.addEventListener('DOMContentLoaded', () => {
-  applyTranslations();       // переведёт все элементы на выбранный язык
+  const selector = document.getElementById('langSelector');
+  if (selector) {
+    selector.value = currentLang; // ставим выбранный язык
+    selector.addEventListener('change', (e) => setLanguage(e.target.value));
+  }
+  applyTranslations();
 });
+
+//блок обеспечивает пересчёт и обновление отображения, когда значения километров уже есть на странице.
+const startInput = document.getElementById("startKmArrival");
+const endInput = document.getElementById("endKmArrival");
+if (startInput && endInput) {
+  const startKm = parseFloat(startInput.value);
+  const endKm = parseFloat(endInput.value);
+  if (!isNaN(startKm) && !isNaN(endKm)) {
+    showBorderDelays(startKm, endKm);
+    calculateArrival();
+  }
+}
+
