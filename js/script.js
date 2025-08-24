@@ -31,7 +31,14 @@ function toggleTheme() {
   const theme = document.body.classList.contains("dark") ? "dark" : "light";
   localStorage.setItem("theme", theme);
 
-  if (themeBtnHeader) themeBtnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
+  if (themeBtnHeader) {
+    themeBtnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
+    // Обновляем aria-label и title при смене темы
+    const t = window.translations[window.lang || 'ru'] || {};
+    const themeText = t.themeToggle || "Переключить тему";
+    themeBtnHeader.setAttribute('aria-label', themeText);
+    themeBtnHeader.setAttribute('title', themeText);
+  }
   if (themeSwitch) themeSwitch.checked = document.body.classList.contains("dark");
 }
 
@@ -39,7 +46,14 @@ if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
 }
 
-if (themeBtnHeader) themeBtnHeader.addEventListener("click", toggleTheme);
+if (themeBtnHeader) {
+  // Обновляем aria-label при инициализации
+  const t = window.translations[window.lang || 'ru'] || {};
+  const themeText = t.themeToggle || "Переключить тему";
+  themeBtnHeader.setAttribute('aria-label', themeText);
+  themeBtnHeader.setAttribute('title', themeText);
+  themeBtnHeader.addEventListener("click", toggleTheme);
+}
 if (themeSwitch) {
   themeSwitch.checked = document.body.classList.contains("dark");
   themeSwitch.addEventListener("change", toggleTheme);
@@ -139,31 +153,37 @@ function createBlock(index) {
   // Получаем переводы из глобального объекта
   const translations = window.translations || {};
   const lang = window.lang || 'ru';
-  const enemyLabel = (translations[lang] && translations[lang].enemyLabel) 
-    ? translations[lang].enemyLabel.replace("{n}", index + 1) 
-    : `Встречное судно ${index + 1}`;
-  const ourLabel = (translations[lang] && translations[lang].ourLabel) 
-    ? translations[lang].ourLabel 
-    : 'Наше судно';
+  const t = translations[lang] || {};
+  
+  const enemyLabel = t.enemyLabel ? t.enemyLabel.replace("{n}", index + 1) : `Встречное судно ${index + 1}`;
+  const ourLabel = t.ourLabel || 'Наше судно';
+  const posLabel = t.posLabel || "Позиция (км):";
+  const speedLabel = t.speedLabel || "Скорость (км/ч):";
+  const copyPosText = t.copyPos || "Скопировать позицию из 1 блока";
+  const copySpeedText = t.copySpeed || "Скопировать скорость из 1 блока";
+  const calcBtnText = t.calcBtn || "Рассчитать";
+  const clearBtnText = t.clearBtn || "Очистить";
+  const phStartKm = t.phStartKm || "Например, 1640";
+  const phSpeed = t.phSpeed || "Например, 12";
 
   block.innerHTML = `
-    <label>${enemyLabel}: Позиция (км):</label>
-    <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="например: 2025">
+    <label>${enemyLabel}: ${posLabel}</label>
+    <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="${phStartKm}">
     
-    <label>${enemyLabel}: Скорость (км/ч):</label>
-    <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="например: 20.5">
+    <label>${enemyLabel}: ${speedLabel}</label>
+    <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="${phSpeed}">
     
-    <label>${ourLabel}: Позиция (км):</label>
-    <input type="number" id="our_pos_${index}" step="0.1" placeholder="например: 2008">
-    ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurPos(${index})">Скопировать позицию из 1 блока</button>` : ''}
+    <label>${ourLabel}: ${posLabel}</label>
+    <input type="number" id="our_pos_${index}" step="0.1" placeholder="${phStartKm}">
+    ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurPos(${index})">${copyPosText}</button>` : ''}
     
-    <label>${ourLabel}: Скорость (км/ч):</label>
-    <input type="number" id="our_speed_${index}" step="0.1" placeholder="например: 12">
-    ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurSpeed(${index})">Скопировать скорость из 1 блока</button>` : ''}
+    <label>${ourLabel}: ${speedLabel}</label>
+    <input type="number" id="our_speed_${index}" step="0.1" placeholder="${phSpeed}">
+    ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurSpeed(${index})">${copySpeedText}</button>` : ''}
     
     <div style="margin-top:10px;">
-      <button class="calc-btn" onclick="calculate(${index})">Рассчитать</button>
-      <button class="btn-clear" onclick="clearFields(${index})">Очистить</button>
+      <button class="calc-btn" onclick="calculate(${index})">${calcBtnText}</button>
+      <button class="btn-clear" onclick="clearFields(${index})">${clearBtnText}</button>
     </div>
     <div class="output" id="result_${index}"></div>
   `;
@@ -249,6 +269,11 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     const container = document.getElementById('blocks');
     for (let i = 0; i < 3; i++) container.appendChild(createBlock(i));
+
+    // Применяем переводы к созданным блокам
+    if (typeof updateMeetingBlocks === 'function') {
+      updateMeetingBlocks();
+    }
 
     const clearAllBtn = document.querySelector('.btn-clear-all');
     if (clearAllBtn) {
