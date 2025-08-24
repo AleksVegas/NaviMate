@@ -25,7 +25,7 @@ if (!navigator.onLine && !isStandalone()) {
 // Тема и язык
 const themeBtnHeader = document.getElementById("toggle-theme");
 const themeSwitch = document.getElementById("toggle-theme-switch");
-const languageBtnHeader = document.getElementById("toggle-language");
+const headerLanguageSelect = document.getElementById("header-language-select");
 
 function toggleTheme() {
   document.body.classList.toggle("dark");
@@ -38,8 +38,22 @@ function toggleTheme() {
   if (themeSwitch) themeSwitch.checked = document.body.classList.contains("dark");
 }
 
+// Функция для синхронизации темы из настроек
+function syncThemeFromSettings() {
+  const isDark = document.body.classList.contains("dark");
+  if (themeBtnHeader) {
+    themeBtnHeader.innerText = isDark ? "☀️" : "🌙";
+  }
+}
+
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
+}
+
+// Обновляем кнопку темы при инициализации
+if (themeBtnHeader) {
+  const isDark = document.body.classList.contains("dark");
+  themeBtnHeader.innerText = isDark ? "☀️" : "🌙";
 }
 
 if (themeBtnHeader) {
@@ -47,33 +61,35 @@ if (themeBtnHeader) {
 }
 if (themeSwitch) {
   themeSwitch.checked = document.body.classList.contains("dark");
-  themeSwitch.addEventListener("change", toggleTheme);
+  themeSwitch.addEventListener("change", () => {
+    toggleTheme();
+    syncThemeFromSettings();
+  });
 }
 
 // Функция переключения языка
-function toggleLanguage() {
-  const currentLang = window.lang || 'ru';
-  const newLang = currentLang === 'ru' ? 'en' : 'ru';
-  
+function changeLanguage(newLang) {
   if (typeof setLanguage === 'function') {
     setLanguage(newLang);
   }
   
-  // Обновляем кнопку
-  if (languageBtnHeader) {
-    languageBtnHeader.innerText = newLang === 'ru' ? '🇷🇺' : '🇺🇸';
-    languageBtnHeader.setAttribute('title', newLang === 'ru' ? 'Переключить на английский' : 'Switch to Russian');
-    languageBtnHeader.setAttribute('aria-label', newLang === 'ru' ? 'Переключить на английский' : 'Switch to Russian');
+  // Обновляем селекторы языка
+  const langSelect = document.getElementById('language-select');
+  if (langSelect) {
+    langSelect.value = newLang;
+  }
+  if (headerLanguageSelect) {
+    headerLanguageSelect.value = newLang;
   }
 }
 
-if (languageBtnHeader) {
+if (headerLanguageSelect) {
   // Устанавливаем начальное состояние
   const currentLang = window.lang || 'ru';
-  languageBtnHeader.innerText = currentLang === 'ru' ? '🇷🇺' : '🇺🇸';
-  languageBtnHeader.setAttribute('title', currentLang === 'ru' ? 'Переключить на английский' : 'Switch to Russian');
-  languageBtnHeader.setAttribute('aria-label', currentLang === 'ru' ? 'Переключить на английский' : 'Switch to Russian');
-  languageBtnHeader.addEventListener("click", toggleLanguage);
+  headerLanguageSelect.value = currentLang;
+  headerLanguageSelect.addEventListener("change", (e) => {
+    changeLanguage(e.target.value);
+  });
 }
 
 // Форматирование числа

@@ -271,6 +271,16 @@ function setLanguage(selectedLang) {
   
   // Обновляем секцию времени прибытия
   updateArrivalSection();
+  
+  // Обновляем селекторы языка
+  const langSelect = document.getElementById('language-select');
+  const headerLangSelect = document.getElementById('header-language-select');
+  if (langSelect) {
+    langSelect.value = lang;
+  }
+  if (headerLangSelect) {
+    headerLangSelect.value = lang;
+  }
 } 
 
 

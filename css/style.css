@@ -34,7 +34,28 @@ body {
 	user-select: none;
   }
   
-  #toggle-language,
+  #header-language-select {
+	font-size: 1rem;
+	background: rgba(255, 255, 255, 0.1);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	color: white;
+	cursor: pointer;
+	user-select: none;
+	padding: 5px 8px;
+	margin-left: 10px;
+	border-radius: 4px;
+	transition: background-color 0.3s;
+  }
+  
+  #header-language-select:hover {
+	background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  #header-language-select option {
+	background: #2f5597;
+	color: white;
+  }
+  
   #toggle-theme {
 	font-size: 1.2rem;
 	background: none;
@@ -48,7 +69,6 @@ body {
 	transition: background-color 0.3s;
   }
   
-  #toggle-language:hover,
   #toggle-theme:hover {
 	background-color: rgba(255, 255, 255, 0.1);
   }
