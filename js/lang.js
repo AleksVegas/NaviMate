@@ -382,9 +382,9 @@ function updateCalculationResults() {
 function updateArrivalSection() {
   const t = window.translations[lang] || {};
   
-  // Проверяем, что секция существует и активна
+  // Проверяем, что секция существует
   const arrivalSection = document.getElementById('arrival-calc');
-  if (!arrivalSection || !arrivalSection.classList.contains('active')) return;
+  if (!arrivalSection) return;
   
   // Обновляем заголовки и labels
   const arrivalHeading = document.querySelector('#arrival-calc h2[data-i18n="arrivalHeading"]');
@@ -492,5 +492,10 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMeetingBlocks();
     updateArrivalSection();
     updateCalculationResults();
-  }, 200);
+  }, 50);
+  
+  // Дополнительная проверка для секции времени прибытия
+  setTimeout(() => {
+    updateArrivalSection();
+  }, 100);
 });
