@@ -104,6 +104,12 @@ window.translations = {
     arrivalFeature1: "Позволяет рассчитать <strong>время прибытия</strong> и <strong>необходимую скорость</strong> для заданного времени.",
     arrivalFeature2: "Учитываются расстояние, скорость, задержки на шлюзах и границах, а также рабочие часы судна.",
     arrivalFeature3: "Автоматически определяется направление движения.",
+    
+    // --- Единицы времени ---
+    delay: "задержка",
+    hour: "час",
+    hours: "часа",
+    hoursMany: "часов",
   
     // --- Раздел "Шлюзы и границы" ---
     lockFeature1: "Автоматически учитываются все ключевые шлюзы от <strong>Железных Ворот до Ашаха</strong>.",
@@ -122,6 +128,15 @@ window.translations = {
     lockAbwinden: "Абвинден",
     lockOttensheim: "Оттенсхайм",
     lockAsah: "Ашах",
+    
+    // --- Названия границ ---
+    borderRomaniaGalati: "Граница Румынии Галац",
+    borderRomaniaGiurgiu: "Граница Румынии Джурджу",
+    borderBulgariaRuse: "Граница Болгарии Русе",
+    borderRomaniaTurnu: "Граница Румынии Турну - Северин",
+    borderSerbiaVeliko: "Граница Сербии Велико-Градиште",
+    borderSerbiaBezdan: "Граница Сербии Бездан",
+    borderHungaryMohacs: "Граница Венгрии Мохач",
   
     // --- Раздел "Приватность" ---
     privacyFeature1: "Все расчёты выполняются <strong>локально в вашем браузере</strong>.",
@@ -242,6 +257,12 @@ window.translations = {
     arrivalFeature1: "Allows calculating <strong>arrival time</strong> and <strong>required speed</strong> for a given time.",
     arrivalFeature2: "Takes into account distance, speed, delays at locks and borders, and ship working hours.",
     arrivalFeature3: "Direction of movement is determined automatically.",
+    
+    // --- Time units ---
+    delay: "delay",
+    hour: "hour",
+    hours: "hours",
+    hoursMany: "hours",
   
     // --- Section: Locks and border ---
     lockFeature1: "Automatically accounts for all key locks from <strong>Iron Gates to Asah</strong>.",
@@ -260,6 +281,15 @@ window.translations = {
     lockAbwinden: "Abwinden",
     lockOttensheim: "Ottensheim",
     lockAsah: "Asah",
+    
+    // --- Border names ---
+    borderRomaniaGalati: "Romania Border Galati",
+    borderRomaniaGiurgiu: "Romania Border Giurgiu",
+    borderBulgariaRuse: "Bulgaria Border Ruse",
+    borderRomaniaTurnu: "Romania Border Turnu - Severin",
+    borderSerbiaVeliko: "Serbia Border Veliko-Gradiste",
+    borderSerbiaBezdan: "Serbia Border Bezdan",
+    borderHungaryMohacs: "Hungary Border Mohacs",
   
     // --- Section: Privat ---
     privacyFeature1: "All calculations are performed <strong>locally in your browser</strong>.",

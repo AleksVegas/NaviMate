@@ -17,12 +17,18 @@ function updateArrivalCalculations() {
 
 
 function pluralizeHours(n) {
+  const t = window.translations[window.lang || 'ru'] || {};
   n = Math.abs(n);
-  if (Number.isInteger(n)) {
-    if (n % 10 === 1 && n % 100 !== 11) return 'час';
-    if ([2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100)) return 'часа';
+  
+  if (window.lang === 'en') {
+    return n === 1 ? t.hour || 'hour' : t.hours || 'hours';
   }
-  return 'часов';
+  
+  if (Number.isInteger(n)) {
+    if (n % 10 === 1 && n % 100 !== 11) return t.hour || 'час';
+    if ([2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100)) return t.hours || 'часа';
+  }
+  return t.hoursMany || 'часов';
 }
 
 const locks = [
@@ -41,13 +47,13 @@ const locks = [
 ];
 
 const borderPoints = [
-  { name: "Граница Румынии Галац", km: 150, defaultDelay: 2 },
-  { name: "Граница Румынии Джурджу", km: 497, defaultDelay: 0 },
-  { name: "Граница Болгарии Русе", km: 495, defaultDelay: 0 },
-  { name: "Граница Румынии Турну - Северин", km: 931, defaultDelay: 0 },
-  { name: "Граница Сербии Велико-Градиште", km: 1050, defaultDelay: 2 },
-  { name: "Граница Сербии Бездан", km: 1433, defaultDelay: 2 },
-  { name: "Граница Венгрии Мохач", km: 1446, defaultDelay: 2 },
+  { nameKey: "borderRomaniaGalati", km: 150, defaultDelay: 2 },
+  { nameKey: "borderRomaniaGiurgiu", km: 497, defaultDelay: 0 },
+  { nameKey: "borderBulgariaRuse", km: 495, defaultDelay: 0 },
+  { nameKey: "borderRomaniaTurnu", km: 931, defaultDelay: 0 },
+  { nameKey: "borderSerbiaVeliko", km: 1050, defaultDelay: 2 },
+  { nameKey: "borderSerbiaBezdan", km: 1433, defaultDelay: 2 },
+  { nameKey: "borderHungaryMohacs", km: 1446, defaultDelay: 2 },
 ];
 
 let borderDelaysInitialized = false;
@@ -116,7 +122,8 @@ if (!borderDelaysInitialized) {
     ) {
       travelHours += lock.delay;
       const lockName = t[lock.nameKey] || lock.nameKey;
-      passedLocks.push(`⚓ ${lockName} — задержка ${lock.delay} ${pluralizeHours(lock.delay)}`);
+      const delayText = t.delay || 'задержка';
+      passedLocks.push(`⚓ ${lockName} — ${delayText} ${lock.delay} ${pluralizeHours(lock.delay)}`);
     }
   });
 
@@ -132,14 +139,14 @@ if (!borderDelaysInitialized) {
       if (!isNaN(delay) && delay > 0) {
         borderDelayTotal += delay;
         const name = labels[i] ? labels[i].textContent : `Граница ${i + 1}`;
-        passedBorders.push(`${name.trim()} — ${delay} ${pluralizeHours(delay)}`);
+        passedBorders.push(`🛃 ${name.trim()} — ${delay} ${pluralizeHours(delay)}`);
       }
     });
     travelHours += borderDelayTotal;
   }
 
   const bordersInfo = passedBorders.length > 0
-    ? "<br><strong>🛃 " + (t.borderDelays || 'Пограничные задержки') + ":</strong><br>" + passedBorders.join("<br>")
+    ? "<br><strong>" + (t.borderDelays || 'Пограничные задержки') + ":</strong><br>" + passedBorders.join("<br>")
     : "";
 
   if (workHours < 24) {
@@ -157,7 +164,7 @@ if (!borderDelaysInitialized) {
     minute: "2-digit"
   });
 
-  const locksInfo = passedLocks.length > 0 ? "<br><strong>⚓ " + (t.lockDelays || 'Задержки на шлюзах') + ":</strong><br>" + passedLocks.join("<br>") : "";
+  const locksInfo = passedLocks.length > 0 ? "<br><strong>" + (t.lockDelays || 'Задержки на шлюзах') + ":</strong><br>" + passedLocks.join("<br>") : "";
 
 resultDiv.innerHTML = `
 🚢 <strong>${t.arrivalHeading || 'Расчёт времени прибытия'}:</strong> ${formattedArrival}<br>
@@ -279,7 +286,8 @@ function calculateRecommendedSpeed() {
     const row = document.createElement("tr");
 
     const nameCell = document.createElement("td");
-    nameCell.textContent = border.name.replace("Граница ", "");
+    const borderName = t[border.nameKey] || border.nameKey;
+    nameCell.textContent = borderName.replace("Граница ", "").replace("Border ", "");
     nameCell.style.padding = "4px 6px";
     nameCell.style.fontSize = "14px";
     nameCell.style.whiteSpace = "nowrap";
@@ -312,6 +320,14 @@ function calculateRecommendedSpeed() {
     }
 
     input.addEventListener("input", () => {
+      calculateArrival();
+    });
+    
+    input.addEventListener("change", () => {
+      calculateArrival();
+    });
+    
+    input.addEventListener("blur", () => {
       calculateArrival();
     });
 
