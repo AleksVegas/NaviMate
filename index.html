@@ -47,7 +47,7 @@
     <input type="number" id="speedArrival" data-i18n="phSpeed" placeholder="Например, 12" step="0.1" />
 
     <label for="startTimeArrival" data-i18n="startTime">Время начала движения:</label>
-    <input type="datetime-local" id="startTimeArrival" />
+    <input type="datetime-local" id="startTimeArrival" data-lang="ru" />
 
     <label for="workHoursArrival" data-i18n="workHours">Длительность рабочего дня (часов):</label>
     <select id="workHoursArrival">
@@ -66,7 +66,7 @@
 
     <div id="desiredBlockArrival" style="display:none; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ccc;">
       <label for="desiredArrivalTimeArrival" data-i18n="desiredArrival">Желаемое время прибытия (если хотите получить рекомендованную скорость):</label>
-      <input type="datetime-local" id="desiredArrivalTimeArrival" />
+      <input type="datetime-local" id="desiredArrivalTimeArrival" data-lang="ru" />
       <button class="calc-btn" onclick="calculateRecommendedSpeed()" data-i18n="btnSpeed">Рассчитать необходимую скорость 🚀</button>
       <div class="output" id="requiredSpeedResultArrival"></div>
     </div>

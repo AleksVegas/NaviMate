@@ -417,10 +417,22 @@ function updateArrivalSection() {
   const desiredTimeInput = document.getElementById('desiredArrivalTimeArrival');
   
   if (startTimeInput) {
-    startTimeInput.setAttribute('lang', lang);
+    startTimeInput.setAttribute('data-lang', lang);
+    // Обновляем формат даты
+    if (startTimeInput.value) {
+      const date = new Date(startTimeInput.value);
+      const formattedDate = date.toISOString().slice(0, 16);
+      startTimeInput.value = formattedDate;
+    }
   }
   if (desiredTimeInput) {
-    desiredTimeInput.setAttribute('lang', lang);
+    desiredTimeInput.setAttribute('data-lang', lang);
+    // Обновляем формат даты
+    if (desiredTimeInput.value) {
+      const date = new Date(desiredTimeInput.value);
+      const formattedDate = date.toISOString().slice(0, 16);
+      desiredTimeInput.value = formattedDate;
+    }
   }
   
   // Обновляем кнопки

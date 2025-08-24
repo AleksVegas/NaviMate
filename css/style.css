@@ -35,18 +35,19 @@ body {
   }
   
   #header-language-select {
-  font-size: 1.2rem;
+  font-size: 1rem;
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: white;
   cursor: pointer;
   user-select: none;
-  padding: 2px 4px;
-  margin-left: 10px;
-  border-radius: 4px;
+  padding: 1px 2px;
+  margin-left: 8px;
+  border-radius: 3px;
   transition: background-color 0.3s;
-  min-width: 35px;
+  min-width: 28px;
   text-align: center;
+  height: 24px;
 }
   
   #header-language-select:hover {
@@ -384,7 +385,7 @@ label {
   height: 12px;
   width: 12px;
   left: 2px;
-  bottom: 2px;
+  top: 2px;
   background-color: white;
   transition: 0.4s;
   border-radius: 50%;
@@ -435,6 +436,15 @@ body.dark .setting-select {
 body.dark .setting-select:disabled {
   background-color: #222;
   color: #777;
+}
+
+/* Стили для datetime-local в зависимости от языка */
+input[type="datetime-local"][data-lang="ru"] {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+input[type="datetime-local"][data-lang="en"] {
+  font-family: 'Arial', sans-serif;
 }
 
 .settings-row {
