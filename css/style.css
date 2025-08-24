@@ -35,19 +35,19 @@ body {
   }
   
   #header-language-select {
-	font-size: 0.85rem;
-	background: rgba(255, 255, 255, 0.1);
-	border: 1px solid rgba(255, 255, 255, 0.2);
-	color: white;
-	cursor: pointer;
-	user-select: none;
-	padding: 3px 5px;
-	margin-left: 10px;
-	border-radius: 4px;
-	transition: background-color 0.3s;
-	min-width: 45px;
-	text-align: center;
-  }
+  font-size: 1.2rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 4px;
+  margin-left: 10px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  min-width: 35px;
+  text-align: center;
+}
   
   #header-language-select:hover {
 	background-color: rgba(255, 255, 255, 0.2);
@@ -359,8 +359,8 @@ label {
 .switch {
   position: relative;
   display: inline-block;
-  width: 40px;
-  height: 20px;
+  width: 32px;
+  height: 16px;
 }
 
 .switch input {
@@ -375,14 +375,14 @@ label {
   inset: 0;
   background-color: #ccc;
   transition: 0.4s;
-  border-radius: 20px;
+  border-radius: 16px;
 }
 
 .slider::before {
   content: "";
   position: absolute;
-  height: 16px;
-  width: 16px;
+  height: 12px;
+  width: 12px;
   left: 2px;
   bottom: 2px;
   background-color: white;
@@ -395,7 +395,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider::before {
-  transform: translateX(20px);
+  transform: translateX(16px);
 }
 
 /* Тёмная тема */

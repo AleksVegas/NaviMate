@@ -412,6 +412,17 @@ function updateArrivalSection() {
   const speedInput = document.getElementById('speedArrival');
   if (speedInput) speedInput.placeholder = t.phSpeed || 'Например, 12';
   
+  // Обновляем формат даты для datetime-local
+  const startTimeInput = document.getElementById('startTimeArrival');
+  const desiredTimeInput = document.getElementById('desiredArrivalTimeArrival');
+  
+  if (startTimeInput) {
+    startTimeInput.setAttribute('lang', lang);
+  }
+  if (desiredTimeInput) {
+    desiredTimeInput.setAttribute('lang', lang);
+  }
+  
   // Обновляем кнопки
   const btnArrival = document.querySelector('#arrival-calc .calc-btn[onclick="calculateArrival()"]');
   if (btnArrival) btnArrival.innerHTML = t.btnArrival || 'Рассчитать время прибытия';
@@ -458,5 +469,5 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMeetingBlocks();
     updateArrivalSection();
     updateCalculationResults();
-  }, 100);
+  }, 500);
 });
