@@ -139,7 +139,7 @@ if (!borderDelaysInitialized) {
       if (!isNaN(delay) && delay > 0) {
         borderDelayTotal += delay;
         const name = labels[i] ? labels[i].textContent : `Граница ${i + 1}`;
-        passedBorders.push(`🛃 ${name.trim()} — ${delay} ${pluralizeHours(delay)}`);
+        passedBorders.push(`${name.trim()} — ${delay} ${pluralizeHours(delay)}`);
       }
     });
     travelHours += borderDelayTotal;
@@ -168,8 +168,8 @@ if (!borderDelaysInitialized) {
 
 resultDiv.innerHTML = `
 🚢 <strong>${t.arrivalHeading || 'Расчёт времени прибытия'}:</strong> ${formattedArrival}<br>
-⏳ <strong>${t.workHours || 'Длительность рабочего дня (часов)'}:</strong> ${travelHours.toFixed(2)} ч<br>
-📍 <strong>${t.distance || 'Расстояние'}:</strong> ${distance} км${locksInfo}${bordersInfo}
+⏳ <strong>${t.workHours || 'Длительность рабочего дня (часов)'}:</strong> ${travelHours.toFixed(2)} ${t.hourUnit || 'ч'}<br>
+📍 <strong>${t.distance || 'Расстояние'}:</strong> ${distance} ${t.kmUnit || 'км'}${locksInfo}${bordersInfo}
 `;
 
 
@@ -278,8 +278,8 @@ function calculateRecommendedSpeed() {
   
     const table = document.createElement("table");
     table.style.borderCollapse = "collapse";
-    table.style.width = "100%";
-    table.style.maxWidth = "380px";
+    table.style.width = "auto";
+    table.style.maxWidth = "300px";
     table.style.marginLeft = "0";
 
     relevantBorders.forEach((border, i) => {
@@ -287,9 +287,9 @@ function calculateRecommendedSpeed() {
 
     const nameCell = document.createElement("td");
     const borderName = t[border.nameKey] || border.nameKey;
-    nameCell.textContent = borderName.replace("Граница ", "").replace("Border ", "");
-    nameCell.style.padding = "4px 6px";
-    nameCell.style.fontSize = "14px";
+    nameCell.textContent = borderName;
+    nameCell.style.padding = "4px 8px 4px 0";
+    nameCell.style.fontSize = "13px";
     nameCell.style.whiteSpace = "nowrap";
     nameCell.style.color = document.body.classList.contains('dark') ? "#eee" : "#222";
 
@@ -303,9 +303,9 @@ function calculateRecommendedSpeed() {
     input.id = `borderDelay_${i}`;
 
     // ✅ Универсальные стили под тёмную/светлую темы
-    input.style.width = "45px";
-    input.style.padding = "3px 4px";
-    input.style.fontSize = "13px";
+    input.style.width = "40px";
+    input.style.padding = "2px 4px";
+    input.style.fontSize = "12px";
     input.style.borderRadius = "4px";
     input.style.border = "1px solid #ccc";
     input.style.backgroundColor = "#fff";
@@ -319,23 +319,22 @@ function calculateRecommendedSpeed() {
       input.style.color = "#eee";
     }
 
-    input.addEventListener("input", () => {
-      calculateArrival();
-    });
+    // Обработчики для всех событий изменения
+    const updateCalculation = () => {
+      setTimeout(() => calculateArrival(), 100);
+    };
     
-    input.addEventListener("change", () => {
-      calculateArrival();
-    });
-    
-    input.addEventListener("blur", () => {
-      calculateArrival();
-    });
+    input.addEventListener("input", updateCalculation);
+    input.addEventListener("change", updateCalculation);
+    input.addEventListener("blur", updateCalculation);
+    input.addEventListener("keyup", updateCalculation);
 
     const label = document.createElement("span");
-    label.textContent = "ч";
-    label.style.fontSize = "13px";
+    const hourUnit = t.hourUnit || 'ч';
+    label.textContent = hourUnit;
+    label.style.fontSize = "12px";
     label.style.opacity = "0.7";
-    label.style.marginLeft = "4px";
+    label.style.marginLeft = "3px";
     label.style.color = document.body.classList.contains('dark') ? "#aaa" : "#666";
 
     inputCell.appendChild(input);

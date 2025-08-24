@@ -110,6 +110,8 @@ window.translations = {
     hour: "час",
     hours: "часа",
     hoursMany: "часов",
+    kmUnit: "км",
+    hourUnit: "ч",
   
     // --- Раздел "Шлюзы и границы" ---
     lockFeature1: "Автоматически учитываются все ключевые шлюзы от <strong>Железных Ворот до Ашаха</strong>.",
@@ -130,13 +132,13 @@ window.translations = {
     lockAsah: "Ашах",
     
     // --- Названия границ ---
-    borderRomaniaGalati: "Граница Румынии Галац",
-    borderRomaniaGiurgiu: "Граница Румынии Джурджу",
-    borderBulgariaRuse: "Граница Болгарии Русе",
-    borderRomaniaTurnu: "Граница Румынии Турну - Северин",
-    borderSerbiaVeliko: "Граница Сербии Велико-Градиште",
-    borderSerbiaBezdan: "Граница Сербии Бездан",
-    borderHungaryMohacs: "Граница Венгрии Мохач",
+    borderRomaniaGalati: "🇷🇴 Румыния: Галац",
+    borderRomaniaGiurgiu: "🇷🇴 Румыния: Джурджу",
+    borderBulgariaRuse: "🇧🇬 Болгария: Русе",
+    borderRomaniaTurnu: "🇷🇴 Румыния: Турну-Северин",
+    borderSerbiaVeliko: "🇷🇸 Сербия: Велико-Градиште",
+    borderSerbiaBezdan: "🇷🇸 Сербия: Бездан",
+    borderHungaryMohacs: "🇭🇺 Венгрия: Мохач",
   
     // --- Раздел "Приватность" ---
     privacyFeature1: "Все расчёты выполняются <strong>локально в вашем браузере</strong>.",
@@ -263,6 +265,8 @@ window.translations = {
     hour: "hour",
     hours: "hours",
     hoursMany: "hours",
+    kmUnit: "km",
+    hourUnit: "h",
   
     // --- Section: Locks and border ---
     lockFeature1: "Automatically accounts for all key locks from <strong>Iron Gates to Asah</strong>.",
@@ -283,13 +287,13 @@ window.translations = {
     lockAsah: "Asah",
     
     // --- Border names ---
-    borderRomaniaGalati: "Romania Border Galati",
-    borderRomaniaGiurgiu: "Romania Border Giurgiu",
-    borderBulgariaRuse: "Bulgaria Border Ruse",
-    borderRomaniaTurnu: "Romania Border Turnu - Severin",
-    borderSerbiaVeliko: "Serbia Border Veliko-Gradiste",
-    borderSerbiaBezdan: "Serbia Border Bezdan",
-    borderHungaryMohacs: "Hungary Border Mohacs",
+    borderRomaniaGalati: "🇷🇴 Romania: Galati",
+    borderRomaniaGiurgiu: "🇷🇴 Romania: Giurgiu",
+    borderBulgariaRuse: "🇧🇬 Bulgaria: Ruse",
+    borderRomaniaTurnu: "🇷🇴 Romania: Turnu-Severin",
+    borderSerbiaVeliko: "🇷🇸 Serbia: Veliko-Gradiste",
+    borderSerbiaBezdan: "🇷🇸 Serbia: Bezdan",
+    borderHungaryMohacs: "🇭🇺 Hungary: Mohacs",
   
     // --- Section: Privat ---
     privacyFeature1: "All calculations are performed <strong>locally in your browser</strong>.",
@@ -488,27 +492,25 @@ function updateArrivalSection() {
   
   if (startTimeInput) {
     startTimeInput.setAttribute('data-lang', lang);
-    // Обновляем формат даты
-    if (startTimeInput.value) {
-      const date = new Date(startTimeInput.value);
-      const formattedDate = date.toISOString().slice(0, 16);
-      startTimeInput.value = formattedDate;
-    }
-    // Устанавливаем атрибут lang для форматирования
+    // Устанавливаем локаль для форматирования даты
     startTimeInput.setAttribute('lang', lang);
-    startTimeInput.setAttribute('data-date-format', lang === 'ru' ? 'dd.mm.yyyy' : 'mm/dd/yyyy');
+    // Для русского языка устанавливаем формат dd.mm.yyyy
+    if (lang === 'ru') {
+      startTimeInput.setAttribute('data-date-format', 'dd.mm.yyyy');
+    } else {
+      startTimeInput.setAttribute('data-date-format', 'mm/dd/yyyy');
+    }
   }
   if (desiredTimeInput) {
     desiredTimeInput.setAttribute('data-lang', lang);
-    // Обновляем формат даты
-    if (desiredTimeInput.value) {
-      const date = new Date(desiredTimeInput.value);
-      const formattedDate = date.toISOString().slice(0, 16);
-      desiredTimeInput.value = formattedDate;
-    }
-    // Устанавливаем атрибут lang для форматирования
+    // Устанавливаем локаль для форматирования даты
     desiredTimeInput.setAttribute('lang', lang);
-    desiredTimeInput.setAttribute('data-date-format', lang === 'ru' ? 'dd.mm.yyyy' : 'mm/dd/yyyy');
+    // Для русского языка устанавливаем формат dd.mm.yyyy
+    if (lang === 'ru') {
+      desiredTimeInput.setAttribute('data-date-format', 'dd.mm.yyyy');
+    } else {
+      desiredTimeInput.setAttribute('data-date-format', 'mm/dd/yyyy');
+    }
   }
   
   // Обновляем кнопки
