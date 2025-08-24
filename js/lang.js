@@ -108,6 +108,20 @@ window.translations = {
     // --- Раздел "Шлюзы и границы" ---
     lockFeature1: "Автоматически учитываются все ключевые шлюзы от <strong>Железных Ворот до Ашаха</strong>.",
     lockFeature2: "Пограничные переходы определяются по маршруту, с возможностью ручного редактирования задержек.",
+    
+    // --- Названия шлюзов ---
+    lockGabchikovo: "Габчиково",
+    lockIronGates2: "Железные ворота II",
+    lockIronGates1: "Железные ворота I",
+    lockFreudenau: "Фройденау",
+    lockGreifenstein: "Грайфенштайн",
+    lockAltenworth: "Альтенвёрт",
+    lockMelk: "Мельк",
+    lockIbb: "Иббс",
+    lockWallsee: "Валлзее",
+    lockAbwinden: "Абвинден",
+    lockOttensheim: "Оттенсхайм",
+    lockAsah: "Ашах",
   
     // --- Раздел "Приватность" ---
     privacyFeature1: "Все расчёты выполняются <strong>локально в вашем браузере</strong>.",
@@ -232,6 +246,20 @@ window.translations = {
     // --- Section: Locks and border ---
     lockFeature1: "Automatically accounts for all key locks from <strong>Iron Gates to Asah</strong>.",
     lockFeature2: "Border crossings are determined along the route, with the option to manually edit delays.",
+    
+    // --- Lock names ---
+    lockGabchikovo: "Gabchikovo",
+    lockIronGates2: "Iron Gates II",
+    lockIronGates1: "Iron Gates I",
+    lockFreudenau: "Freudenau",
+    lockGreifenstein: "Greifenstein",
+    lockAltenworth: "Altenworth",
+    lockMelk: "Melk",
+    lockIbb: "Ibb",
+    lockWallsee: "Wallsee",
+    lockAbwinden: "Abwinden",
+    lockOttensheim: "Ottensheim",
+    lockAsah: "Asah",
   
     // --- Section: Privat ---
     privacyFeature1: "All calculations are performed <strong>locally in your browser</strong>.",

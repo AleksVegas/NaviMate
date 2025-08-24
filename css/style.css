@@ -117,6 +117,28 @@ body {
   padding: 2px;
   border: none;
 }
+
+/* Убираем белую полоску при открытии селектора */
+#header-language-select:focus option {
+  background: #2f5597;
+  color: white;
+}
+
+#header-language-select option:hover {
+  background: #244474;
+  color: white;
+}
+
+/* Для темной темы */
+body.dark #header-language-select:focus option {
+  background: #1a1a1a;
+  color: #eee;
+}
+
+body.dark #header-language-select option:hover {
+  background: #333;
+  color: #eee;
+}
   
   /* Мобильная версия - выравнивание селекторов */
   @media (max-width: 768px) {
@@ -510,6 +532,24 @@ input[type="datetime-local"][data-lang="ru"] {
 
 input[type="datetime-local"][data-lang="en"] {
   font-family: 'Arial', sans-serif;
+}
+
+/* Формат даты в зависимости от языка */
+input[type="datetime-local"][data-lang="ru"]::-webkit-datetime-edit {
+  color: var(--text);
+}
+
+input[type="datetime-local"][data-lang="en"]::-webkit-datetime-edit {
+  color: var(--text);
+}
+
+/* Устанавливаем локаль для форматирования даты */
+input[type="datetime-local"][data-lang="ru"] {
+  locale: "ru-RU";
+}
+
+input[type="datetime-local"][data-lang="en"] {
+  locale: "en-US";
 }
 
 .settings-row {

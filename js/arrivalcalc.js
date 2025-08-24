@@ -26,18 +26,18 @@ function pluralizeHours(n) {
 }
 
 const locks = [
-  { name: "Габчиково", km: [1818, 1819], delay: 1 },
-  { name: "Железные ворота II", km: [863, 864], delay: 1 },
-  { name: "Железные ворота I", km: [943, 944], delay: 2.5 },
-  { name: "Фройденау", km: [1919, 1920], delay: 1.5 },
-  { name: "Грайфенштайн", km: [1948, 1949], delay: 1 },
-  { name: "Альтенвёрт", km: [1980, 1981], delay: 1 },
-  { name: "Мельк", km: [2038, 2039], delay: 1 },
-  { name: "Иббс", km: [2060, 2061], delay: 1 },
-  { name: "Валлзее", km: [2095, 2096], delay: 1 },
-  { name: "Абвинден", km: [2119, 2120], delay: 1 },
-  { name: "Оттенсхайм", km: [2147, 2148], delay: 1 },
-  { name: "Ашах", km: [2163, 2164], delay: 1 }
+  { nameKey: "lockGabchikovo", km: [1818, 1819], delay: 1 },
+  { nameKey: "lockIronGates2", km: [863, 864], delay: 1 },
+  { nameKey: "lockIronGates1", km: [943, 944], delay: 2.5 },
+  { nameKey: "lockFreudenau", km: [1919, 1920], delay: 1.5 },
+  { nameKey: "lockGreifenstein", km: [1948, 1949], delay: 1 },
+  { nameKey: "lockAltenworth", km: [1980, 1981], delay: 1 },
+  { nameKey: "lockMelk", km: [2038, 2039], delay: 1 },
+  { nameKey: "lockIbb", km: [2060, 2061], delay: 1 },
+  { nameKey: "lockWallsee", km: [2095, 2096], delay: 1 },
+  { nameKey: "lockAbwinden", km: [2119, 2120], delay: 1 },
+  { nameKey: "lockOttensheim", km: [2147, 2148], delay: 1 },
+  { nameKey: "lockAsah", km: [2163, 2164], delay: 1 }
 ];
 
 const borderPoints = [
@@ -115,7 +115,8 @@ if (!borderDelaysInitialized) {
       (direction === -1 && startKm >= km1 && endKm <= km2)
     ) {
       travelHours += lock.delay;
-      passedLocks.push(`⚓ ${lock.name} — задержка ${lock.delay} ${pluralizeHours(lock.delay)}`);
+      const lockName = t[lock.nameKey] || lock.nameKey;
+      passedLocks.push(`⚓ ${lockName} — задержка ${lock.delay} ${pluralizeHours(lock.delay)}`);
     }
   });
 
@@ -282,7 +283,7 @@ function calculateRecommendedSpeed() {
     nameCell.style.padding = "4px 6px";
     nameCell.style.fontSize = "14px";
     nameCell.style.whiteSpace = "nowrap";
-    nameCell.style.color = "var(--text-color, #222)";
+    nameCell.style.color = document.body.classList.contains('dark') ? "#eee" : "#222";
 
     const inputCell = document.createElement("td");
 
@@ -298,10 +299,17 @@ function calculateRecommendedSpeed() {
     input.style.padding = "3px 4px";
     input.style.fontSize = "13px";
     input.style.borderRadius = "4px";
-    input.style.border = "1px solid var(--border-color, #888)";
-    input.style.backgroundColor = "var(--input-bg, #fff)";
-    input.style.color = "var(--text-color, #000)";
+    input.style.border = "1px solid #ccc";
+    input.style.backgroundColor = "#fff";
+    input.style.color = "#000";
     input.style.caretColor = "auto";
+    
+    // Адаптация под темную тему
+    if (document.body.classList.contains('dark')) {
+      input.style.border = "1px solid #555";
+      input.style.backgroundColor = "#1e1e1e";
+      input.style.color = "#eee";
+    }
 
     input.addEventListener("input", () => {
       calculateArrival();
@@ -312,7 +320,7 @@ function calculateRecommendedSpeed() {
     label.style.fontSize = "13px";
     label.style.opacity = "0.7";
     label.style.marginLeft = "4px";
-    label.style.color = "var(--text-color, #aaa)";
+    label.style.color = document.body.classList.contains('dark') ? "#aaa" : "#666";
 
     inputCell.appendChild(input);
     inputCell.appendChild(label);
