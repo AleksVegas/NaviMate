@@ -111,10 +111,10 @@ const translations = {
     planFeature4: "Страница поддержки проекта",
   
     // --- Благодарность ---
-    thanksText: "🙏 Спасибо, что используете <strong>NaviMate</strong>! Приложение активно развивается — всё только начинается.",
+    thanksText: "🙏 Спасибо, что используете <strong>NaviMate</strong>! Приложение активно развивается — всё только начинается."
 
- 
-  },
+  }
+  };
 
   en: {
     // --- Common ---
@@ -226,8 +226,8 @@ const translations = {
     planFeature4: "Project support page",
   
     // --- Thanks ---
-    thanksText: "🙏 Thank you for using <strong>NaviMate</strong>! The app is actively developing — this is just the beginning.",
-    }
+    thanksText: "🙏 Thank you for using <strong>NaviMate</strong>! The app is actively developing — this is just the beginning."
+  }
 };
 
 // --- Инициализация языка ---
