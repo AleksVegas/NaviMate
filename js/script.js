@@ -33,11 +33,6 @@ function toggleTheme() {
 
   if (themeBtnHeader) {
     themeBtnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
-    // Обновляем aria-label и title при смене темы
-    const t = window.translations[window.lang || 'ru'] || {};
-    const themeText = t.themeToggle || "Переключить тему";
-    themeBtnHeader.setAttribute('aria-label', themeText);
-    themeBtnHeader.setAttribute('title', themeText);
   }
   if (themeSwitch) themeSwitch.checked = document.body.classList.contains("dark");
 }
@@ -47,11 +42,6 @@ if (localStorage.getItem("theme") === "dark") {
 }
 
 if (themeBtnHeader) {
-  // Обновляем aria-label при инициализации
-  const t = window.translations[window.lang || 'ru'] || {};
-  const themeText = t.themeToggle || "Переключить тему";
-  themeBtnHeader.setAttribute('aria-label', themeText);
-  themeBtnHeader.setAttribute('title', themeText);
   themeBtnHeader.addEventListener("click", toggleTheme);
 }
 if (themeSwitch) {
@@ -289,6 +279,17 @@ document.addEventListener("DOMContentLoaded", () => {
   const navButtons = document.querySelectorAll('nav#sidebar button.nav-btn');
   const sections = document.querySelectorAll('main .section');
 
+  // Восстанавливаем активную секцию
+  const savedSection = localStorage.getItem('activeSection');
+  if (savedSection) {
+    const targetButton = document.querySelector(`[data-section="${savedSection}"]`);
+    if (targetButton) {
+      navButtons.forEach(b => b.classList.remove('active'));
+      targetButton.classList.add('active');
+      sections.forEach(sec => sec.id === savedSection ? sec.classList.add('active') : sec.classList.remove('active'));
+    }
+  }
+
   if (menuToggleBtn && sidebar) {
     menuToggleBtn.addEventListener('click', () => sidebar.classList.toggle('open'));
   }
@@ -300,6 +301,9 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.classList.add('active');
       sections.forEach(sec => sec.id === target ? sec.classList.add('active') : sec.classList.remove('active'));
       if (sidebar) sidebar.classList.remove('open');
+      
+      // Сохраняем активную секцию
+      localStorage.setItem('activeSection', target);
     });
   });
 });

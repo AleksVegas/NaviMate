@@ -136,7 +136,7 @@ if (!borderDelaysInitialized) {
       (direction === -1 && startKm >= km1 && endKm <= km2)
     ) {
       travelHours += lock.delay;
-      passedLocks.push(`⚓ ${t.lockFeature1.replace('ключевые шлюзы', lock.name)} — задержка ${lock.delay} ${pluralizeHours(lock.delay)}`);
+      passedLocks.push(`⚓ ${lock.name} — задержка ${lock.delay} ${pluralizeHours(lock.delay)}`);
     }
   });
 
@@ -179,9 +179,9 @@ if (!borderDelaysInitialized) {
   const locksInfo = passedLocks.length > 0 ? "<br>" + passedLocks.join("<br>") : "";
 
 resultDiv.innerHTML = `
-🚢 <strong>${t.arrivalHeading}:</strong> ${formattedArrival}<br>
-⏳ <strong>${t.workHours}:</strong> ${travelHours.toFixed(2)} ч<br>
-📍 <strong>Расстояние:</strong> ${distance} км${locksInfo}${bordersInfo}
+🚢 <strong>${t.arrivalHeading || 'Расчёт времени прибытия'}:</strong> ${formattedArrival}<br>
+⏳ <strong>${t.workHours || 'Длительность рабочего дня (часов)'}:</strong> ${travelHours.toFixed(2)} ч<br>
+📍 <strong>${t.distance || 'Расстояние'}:</strong> ${distance} км${locksInfo}${bordersInfo}
 `;
 
 

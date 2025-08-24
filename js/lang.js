@@ -46,6 +46,7 @@ window.translations = {
     btnArrival: "Рассчитать время прибытия",
     desiredArrival: "Желаемое время прибытия (если хотите получить рекомендованную скорость):",
     btnSpeed: "Рассчитать необходимую скорость 🚀",
+    distance: "Расстояние",
     
 
     // --- Настройки ---
@@ -161,6 +162,7 @@ window.translations = {
     btnArrival: "Calculate arrival time",
     desiredArrival: "Desired arrival time (to get recommended speed):",
     btnSpeed: "Calculate required speed 🚀",
+    distance: "Distance",
 
     // --- Settings ---
     settingsHeading: "⚙️ Settings",
