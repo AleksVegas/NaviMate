@@ -40,7 +40,10 @@ if (localStorage.getItem("theme") === "dark") {
 }
 
 if (themeBtnHeader) themeBtnHeader.addEventListener("click", toggleTheme);
-if (themeSwitch) themeSwitch.addEventListener("change", toggleTheme);
+if (themeSwitch) {
+  themeSwitch.checked = document.body.classList.contains("dark");
+  themeSwitch.addEventListener("change", toggleTheme);
+}
 
 // Форматирование числа
 function formatNumber(n) {
@@ -175,6 +178,12 @@ function calculate(index) {
   const os = parseFloat(document.getElementById(`our_speed_${index}`).value);
   const result = document.getElementById(`result_${index}`);
 
+  // Проверяем существование элемента результата
+  if (!result) {
+    console.error('Элемент результата не найден для индекса:', index);
+    return;
+  }
+
   if (os <= 0.1 || os > 70 || es <= 0.1 || es > 70) {
     result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 70 км/ч.";
     return;
@@ -236,15 +245,18 @@ function copyOurSpeed(index) {
 
 // DOMContentLoaded один раз
 document.addEventListener("DOMContentLoaded", () => {
-  const container = document.getElementById('blocks');
-  for (let i = 0; i < 3; i++) container.appendChild(createBlock(i));
+  // Ждем загрузки переводов
+  setTimeout(() => {
+    const container = document.getElementById('blocks');
+    for (let i = 0; i < 3; i++) container.appendChild(createBlock(i));
 
-  const clearAllBtn = document.querySelector('.btn-clear-all');
-  if (clearAllBtn) {
-    clearAllBtn.addEventListener('click', () => {
-      for (let i = 0; i < 3; i++) clearFields(i);
-    });
-  }
+    const clearAllBtn = document.querySelector('.btn-clear-all');
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener('click', () => {
+        for (let i = 0; i < 3; i++) clearFields(i);
+      });
+    }
+  }, 200);
 
   // Меню
   const menuToggleBtn = document.getElementById('menu-toggle');
