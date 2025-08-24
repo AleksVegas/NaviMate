@@ -1,13 +1,9 @@
 // 1️⃣ Язык по умолчанию
 // при загрузке страницы
-let currentLang = window.lang || localStorage.getItem('lang') || 'ru';
+let currentLang = window.lang || 'ru';
 
-//Сохраняем выбор пользователя
-function setLanguage(lang) {
-  currentLang = lang;
-  localStorage.setItem('lang', lang); // сохраняем выбор
-  window.lang = lang; // Делаем доступным глобально
-  applyTranslations(); // переводим все элементы
+// Функция для обновления расчетов при смене языка
+function updateArrivalCalculations() {
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   if (!isNaN(startKm) && !isNaN(endKm)) {
@@ -17,24 +13,7 @@ function setLanguage(lang) {
 }
 
 
-// 2️⃣ Функции перевода
-function translateElement(el) {
-  const t = translations[currentLang];
-  const key = el.getAttribute("data-i18n");
-  if (!key || !t[key]) return;
-
-  if (el.tagName === "INPUT" || el.tagName === "TEXTAREA") {
-    el.placeholder = t[key];
-  } else if (el.tagName === "OPTION") {
-    el.textContent = t[key];
-  } else {
-    el.innerHTML = t[key]; // <--- вместо textContent
-  }
-}
-
-function applyTranslations(root = document) {
-  root.querySelectorAll("[data-i18n]").forEach(translateElement);
-}
+// 2️⃣ Функции перевода (удалены - теперь используются из lang.js)
 
 
 function pluralizeHours(n) {
@@ -76,7 +55,7 @@ let prevStartKm = null;
 let prevEndKm = null;
 
 function calculateArrival() {
-  const t = window.translations[currentLang] || {};
+  const t = window.translations[window.lang || 'ru'] || {};
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   const speed = parseFloat(document.getElementById("speedArrival").value);
@@ -169,7 +148,7 @@ if (!borderDelaysInitialized) {
   }
 
   const arrivalTime = new Date(startTime.getTime() + travelHours * 3600 * 1000);
-  const formattedArrival = arrivalTime.toLocaleString(currentLang === 'ru' ? "ru-RU" : "en-US", {
+  const formattedArrival = arrivalTime.toLocaleString((window.lang || 'ru') === 'ru' ? "ru-RU" : "en-US", {
     day: "2-digit",
     month: "2-digit",
     hour: "2-digit",
@@ -190,7 +169,7 @@ resultDiv.innerHTML = `
 }
 
 function calculateRecommendedSpeed() {
-  const t = window.translations[currentLang] || {};
+  const t = window.translations[window.lang || 'ru'] || {};
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   const startTimeStr = document.getElementById("startTimeArrival").value;
@@ -271,7 +250,7 @@ function calculateRecommendedSpeed() {
 
 
     function showBorderDelays(startKm, endKm) {
-    const t = window.translations[currentLang] || {};
+    const t = window.translations[window.lang || 'ru'] || {};
     const container = document.getElementById("borderDelaysSection");
     container.innerHTML = "";
 
