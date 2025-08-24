@@ -55,6 +55,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 2px;
 }
   
   #header-language-select:hover {
@@ -81,6 +82,16 @@ body {
   body.dark #header-language-select option {
     background: #2a2a2a;
     color: #eee;
+  }
+  
+  /* Убираем белую полоску в селекторе */
+  #header-language-select {
+    outline: none;
+  }
+  
+  #header-language-select:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.3);
   }
   
   /* Мобильная версия - выравнивание селекторов */
