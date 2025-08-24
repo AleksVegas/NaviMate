@@ -1,4 +1,4 @@
-RU/EN <br>
+<h3>RU/EN</h3>
  <h2 data-i18n="aboutHeading">ℹ️ О приложении</h2>
   <hr style="margin: 12px 0; border-color: #ccc;">
   
@@ -45,31 +45,49 @@ RU/EN <br>
 
   <p data-i18n="thanksText">🙏 Спасибо, что используете <strong>NaviMate</strong>! Приложение активно развивается — всё только начинается.</p>
 
-ℹ️ About
-📱 NaviMate — a digital navigation tool for inland waterway captains.
 
-🚢 Available Tools
-🔁 Meeting Calculation
-Main feature — instant calculation of meeting kilometer, greatly simplifying and speeding up navigation tasks.
-Shows meeting km, distance to it, and estimated time to meet.
-Supports multiple simultaneous calculations.
-Quickly copy our ship's data (position and speed) from the first block.
-Error notifications and boundary values.
-Supports dark and light themes.
-🕒 Arrival Time Calculation
-Allows calculating arrival time and required speed for a given time.
-Takes into account distance, speed, delays at locks and borders, and ship working hours.
-Direction of movement is determined automatically.
-⚓ Locks and 🛃 Borders
-Automatically accounts for all key locks from Iron Gates to Asah.
-Border crossings are determined along the route, with the option to manually edit delays.
-🔐 Privacy and Offline Mode
-All calculations are performed locally in your browser.
-Data is not saved and not transmitted to the server.
-The app works offline after first opening.
-💡 Roadmap
-Determining the nearest waiting points for upstream vessels (for special sections).
-Determining the recommended passing side.
-Adding information about water levels
-Project support page
-🙏 Thank you for using NaviMate! The app is actively developing — this is just the beginning.
+ <h2 data-i18n="aboutHeading">ℹ️ About</h2>
+  <hr style="margin: 12px 0; border-color: #ccc;">
+  
+  <p data-i18n="aboutText"><strong>📱 NaviMate</strong> — a digital navigation tool for inland waterway captains.</p>  
+  
+  <h3 data-i18n="toolsHeading">🚢 Available Tools</h3> 
+  <h4 data-i18n="toolCalc">🔁 Meeting Calculation</h4>
+  <ul>
+    <li data-i18n="aboutFeature1"><strong>Main feature</strong> — instant calculation of <strong>meeting kilometer</strong>, greatly simplifying and speeding up navigation tasks.</li>
+    <li data-i18n="aboutFeature2">Shows meeting km, distance to it, and estimated time to meet.</li>
+    <li data-i18n="aboutFeature3">Supports multiple simultaneous calculations.</li>
+    <li data-i18n="aboutFeature4">Quickly copy our ship's data (position and speed) from the first block.</li>
+    <li data-i18n="aboutFeature5">Error notifications and boundary values.</li>
+    <li data-i18n="aboutFeature6">Supports <strong>dark and light</strong> themes.</li>
+  </ul>  
+  
+  <h4 data-i18n="toolArrival">🕒 Arrival Time Calculation</h4>
+  <ul>
+    <li data-i18n="arrivalFeature1">Allows calculating <strong>arrival time</strong> and <strong>required speed</strong> for a given time.</li>
+    <li data-i18n="arrivalFeature2">Takes into account distance, speed, delays at locks and borders, and ship working hours.</li>
+    <li data-i18n="arrivalFeature3">Direction of movement is determined automatically.</li>
+  </ul>  
+  
+  <h4 data-i18n="toolLocks">⚓ Locks and 🛃 Borders</h4>
+  <ul>
+    <li data-i18n="lockFeature1">Automatically accounts for all key locks from <strong>Iron Gates to Asah</strong>.</li>
+    <li data-i18n="lockFeature2">Border crossings are determined along the route, with the option to manually edit delays.</li>
+  </ul> 
+  
+  <h4 data-i18n="toolPrivacy">🔐 Privacy and Offline Mode</h4>
+  <ul>
+    <li data-i18n="privacyFeature1">All calculations are performed <strong>locally in your browser</strong>.</li>
+    <li data-i18n="privacyFeature2">Data <strong>is not saved</strong> and <strong>нnot transmitted </strong> to the server.</li>
+    <li data-i18n="privacyFeature3">The app works <strong>offline</strong> after first opening.</li>
+  </ul>  
+  
+  <h4 data-i18n="plansHeading">💡 Roadmap</h4>
+  <ul>
+    <li data-i18n="planFeature1">Determining the nearest waiting points for upstream vessels (for special sections).</li>
+    <li data-i18n="planFeature2">Determining the recommended passing side.</li>
+    <li data-i18n="planFeature3">Adding information about water levels</li>
+    <li data-i18n="planFeature4">Project support page</li>
+  </ul> 
+
+  <p data-i18n="thanksText">🙏 Thank you for using  <strong>NaviMate</strong>! The app is actively developing — this is just the beginning.</p>
