@@ -32,10 +32,15 @@ function toggleTheme() {
   const theme = document.body.classList.contains("dark") ? "dark" : "light";
   localStorage.setItem("theme", theme);
 
+  // Обновляем кнопку в header
   if (themeBtnHeader) {
     themeBtnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
   }
-  if (themeSwitch) themeSwitch.checked = document.body.classList.contains("dark");
+  
+  // Обновляем переключатель в настройках
+  if (themeSwitch) {
+    themeSwitch.checked = document.body.classList.contains("dark");
+  }
 }
 
 // Функция для синхронизации темы из настроек
@@ -44,16 +49,23 @@ function syncThemeFromSettings() {
   if (themeBtnHeader) {
     themeBtnHeader.innerText = isDark ? "☀️" : "🌙";
   }
+  if (themeSwitch) {
+    themeSwitch.checked = isDark;
+  }
 }
 
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
 }
 
-// Обновляем кнопку темы при инициализации
+// Обновляем кнопку темы и переключатель при инициализации
 if (themeBtnHeader) {
   const isDark = document.body.classList.contains("dark");
   themeBtnHeader.innerText = isDark ? "☀️" : "🌙";
+}
+if (themeSwitch) {
+  const isDark = document.body.classList.contains("dark");
+  themeSwitch.checked = isDark;
 }
 
 if (themeBtnHeader) {
@@ -63,7 +75,6 @@ if (themeSwitch) {
   themeSwitch.checked = document.body.classList.contains("dark");
   themeSwitch.addEventListener("change", () => {
     toggleTheme();
-    syncThemeFromSettings();
   });
 }
 
