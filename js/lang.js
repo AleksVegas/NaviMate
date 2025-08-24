@@ -1,4 +1,4 @@
-const translations = {
+window.translations = {
   ru: {
     // --- Общие ---
     metaDescription: "Приложение для расчёта встречи и обгона судов. Удобно, быстро и просто для судоводителей на внутренних водных путях.",
@@ -231,74 +231,71 @@ const translations = {
 
 // --- Инициализация языка ---
 let lang = localStorage.getItem("lang") || "ru";
-if (!translations[lang]) {
+if (!window.translations[lang]) {
   lang = "ru";
   localStorage.setItem("lang", lang);
 }
+window.lang = lang; // Делаем доступным глобально
 
 
 // --- Переключение языка ---
 function setLanguage(selectedLang) {
   lang = selectedLang;
   localStorage.setItem("lang", lang);
+  window.lang = lang; // Делаем доступным глобально
 
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
-    if (translations[lang] && translations[lang][key]) {
+    if (window.translations[lang] && window.translations[lang][key]) {
       if (["input","select","textarea"].includes(el.tagName.toLowerCase())) {
-        el.placeholder = translations[lang][key];
+        el.placeholder = window.translations[lang][key];
       } else {
-        el.innerHTML = translations[lang][key];
+        el.innerHTML = window.translations[lang][key];
       }
     }
   });
+
+  // Обновляем блоки встречи при смене языка
+  updateMeetingBlocks();
 } 
 
 
- // --- Минимальные изменения: обновление форм блоков встречи судов ---
+ // Функция для обновления блоков встречи судов
+function updateMeetingBlocks() {
   document.querySelectorAll('.block').forEach((block, index) => {
     const enemyPos = block.querySelector(`#enemy_pos_${index}`);
     const enemySpeed = block.querySelector(`#enemy_speed_${index}`);
     const ourPos = block.querySelector(`#our_pos_${index}`);
     const ourSpeed = block.querySelector(`#our_speed_${index}`);
 
-    if (enemyPos) enemyPos.placeholder = translations[lang].phStartKm;
-    if (enemySpeed) enemySpeed.placeholder = translations[lang].phSpeed;
-    if (ourPos) ourPos.placeholder = translations[lang].phStartKm;
-    if (ourSpeed) ourSpeed.placeholder = translations[lang].phSpeed;
+    if (enemyPos) enemyPos.placeholder = window.translations[lang].phStartKm;
+    if (enemySpeed) enemySpeed.placeholder = window.translations[lang].phSpeed;
+    if (ourPos) ourPos.placeholder = window.translations[lang].phStartKm;
+    if (ourSpeed) ourSpeed.placeholder = window.translations[lang].phSpeed;
 
     const btnCopyPos = block.querySelector('.btn-copy[onclick*="copyOurPos"]');
-    if (btnCopyPos) btnCopyPos.innerText = translations[lang].copyPos;
+    if (btnCopyPos) btnCopyPos.innerText = window.translations[lang].copyPos;
 
     const btnCopySpeed = block.querySelector('.btn-copy[onclick*="copyOurSpeed"]');
-    if (btnCopySpeed) btnCopySpeed.innerText = translations[lang].copySpeed;
+    if (btnCopySpeed) btnCopySpeed.innerText = window.translations[lang].copySpeed;
+
+    // Labels
+    const labels = block.querySelectorAll('label');
+    if (labels.length >= 4) {
+      labels[0].innerText = window.translations[lang].enemyLabel.replace("{n}", index + 1) + ": " + window.translations[lang].posLabel;
+      labels[1].innerText = window.translations[lang].enemyLabel.replace("{n}", index + 1) + ": " + window.translations[lang].speedLabel;
+      labels[2].innerText = window.translations[lang].ourLabel + ": " + window.translations[lang].posLabel;
+      labels[3].innerText = window.translations[lang].ourLabel + ": " + window.translations[lang].speedLabel;
+    }
+
+    // Кнопки: Рассчитать и Очистить
+    const calcBtn = block.querySelector('.calc-btn');
+    if (calcBtn) calcBtn.innerText = window.translations[lang].calcBtn;
+
+    const clearBtn = block.querySelector('.btn-clear');
+    if (clearBtn) clearBtn.innerText = window.translations[lang].clearBtn;
   });
-
-// --- Обновление подписей, кнопок и результата для блоков встречи ---
-document.querySelectorAll('.block').forEach((block, index) => {
-  // Labels
-  const labels = block.querySelectorAll('label');
-  if (labels.length >= 4) {
-    labels[0].innerText = translations[lang].enemyLabel.replace("{n}", index + 1) + ": " + translations[lang].posLabel;
-    labels[1].innerText = translations[lang].enemyLabel.replace("{n}", index + 1) + ": " + translations[lang].speedLabel;
-    labels[2].innerText = translations[lang].ourLabel + ": " + translations[lang].posLabel;
-    labels[3].innerText = translations[lang].ourLabel + ": " + translations[lang].speedLabel;
-  }
-
-  // Кнопки: Рассчитать и Очистить
-  const calcBtn = block.querySelector('.calc-btn');
-  if (calcBtn) calcBtn.innerText = translations[lang].calcBtn;
-
-  const clearBtn = block.querySelector('.btn-clear');
-  if (clearBtn) clearBtn.innerText = translations[lang].clearBtn;
-
-  // Output блок (если нужно, можно очистить/обновить текст)
-  const result = block.querySelector('.output');
-  if (result) {
-    // При смене языка можно просто оставить результат пустым или показывать подсказку
-    // result.innerText = ""; // если хочешь очищать при смене языка
-  }
-});
+}
 
 
 // загрузка сохранённого языка
@@ -318,4 +315,9 @@ document.addEventListener("DOMContentLoaded", () => {
       setLanguage(e.target.value);
     });
   }
+
+  // Обновляем блоки встречи после загрузки DOM
+  setTimeout(() => {
+    updateMeetingBlocks();
+  }, 100);
 });

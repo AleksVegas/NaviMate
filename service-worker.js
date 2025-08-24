@@ -7,6 +7,8 @@ const urlsToCache = [
   '/offline.html',
   '/css/style.css',
   '/js/script.js',
+  '/js/arrivalcalc.js',
+  '/js/lang.js',
   '/manifest.json',
   '/icons/icon-192.png',
   '/icons/icon-512.png'

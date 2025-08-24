@@ -1,11 +1,12 @@
 // 1️⃣ Язык по умолчанию
 // при загрузке страницы
-let currentLang = localStorage.getItem('lang') || 'ru';
+let currentLang = window.lang || localStorage.getItem('lang') || 'ru';
 
 //Сохраняем выбор пользователя
 function setLanguage(lang) {
   currentLang = lang;
   localStorage.setItem('lang', lang); // сохраняем выбор
+  window.lang = lang; // Делаем доступным глобально
   applyTranslations(); // переводим все элементы
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
@@ -75,7 +76,7 @@ let prevStartKm = null;
 let prevEndKm = null;
 
 function calculateArrival() {
-  const t = translations[currentLang];
+  const t = window.translations[currentLang];
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   const speed = parseFloat(document.getElementById("speedArrival").value);
@@ -83,7 +84,15 @@ function calculateArrival() {
   const workHours = parseFloat(document.getElementById("workHoursArrival").value);
   const resultDiv = document.getElementById("resultArrival");
 
-if (prevStartKm === startKm && prevEndKm === endKm && borderDelaysInitialized) return;
+  // Проверяем, изменились ли значения
+  if (prevStartKm === startKm && prevEndKm === endKm && borderDelaysInitialized) {
+    // Если значения не изменились, но нужно пересчитать из-за других параметров
+    if (speed && startTimeStr && workHours) {
+      // Продолжаем расчет
+    } else {
+      return;
+    }
+  }
 
   prevStartKm = startKm;
   prevEndKm = endKm;
@@ -181,7 +190,7 @@ resultDiv.innerHTML = `
 }
 
 function calculateRecommendedSpeed() {
-  const t = translations[currentLang];
+  const t = window.translations[currentLang];
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   const startTimeStr = document.getElementById("startTimeArrival").value;
@@ -262,7 +271,7 @@ function calculateRecommendedSpeed() {
 
 
     function showBorderDelays(startKm, endKm) {
-    const t = translations[currentLang];
+    const t = window.translations[currentLang];
     const container = document.getElementById("borderDelaysSection");
     container.innerHTML = "";
 

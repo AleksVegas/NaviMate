@@ -1,6 +1,3 @@
-let lang = localStorage.getItem("lang") || 'ru';
-
-
 // Проверка offline и standalone
 function isStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
@@ -27,7 +24,6 @@ if (!navigator.onLine && !isStandalone()) {
 
 // Тема
 const themeBtnHeader = document.getElementById("toggle-theme");
-const themeBtnSettings = document.getElementById("toggle-theme-settings");
 const themeSwitch = document.getElementById("toggle-theme-switch");
 
 function toggleTheme() {
@@ -36,7 +32,6 @@ function toggleTheme() {
   localStorage.setItem("theme", theme);
 
   if (themeBtnHeader) themeBtnHeader.innerText = theme === "dark" ? "☀️" : "🌙";
-  if (themeBtnSettings) themeBtnSettings.innerText = theme === "dark" ? "☀️ Светлая тема" : "🌙 Тёмная тема";
   if (themeSwitch) themeSwitch.checked = document.body.classList.contains("dark");
 }
 
@@ -45,7 +40,6 @@ if (localStorage.getItem("theme") === "dark") {
 }
 
 if (themeBtnHeader) themeBtnHeader.addEventListener("click", toggleTheme);
-if (themeBtnSettings) themeBtnSettings.addEventListener("click", toggleTheme);
 if (themeSwitch) themeSwitch.addEventListener("change", toggleTheme);
 
 // Форматирование числа
@@ -139,8 +133,15 @@ function createBlock(index) {
   const block = document.createElement('div');
   block.className = 'block';
 
-  const enemyLabel = translations[lang].enemyLabel.replace("{n}", index + 1);
-  const ourLabel = translations[lang].ourLabel;
+  // Получаем переводы из глобального объекта
+  const translations = window.translations || {};
+  const lang = window.lang || 'ru';
+  const enemyLabel = (translations[lang] && translations[lang].enemyLabel) 
+    ? translations[lang].enemyLabel.replace("{n}", index + 1) 
+    : `Встречное судно ${index + 1}`;
+  const ourLabel = (translations[lang] && translations[lang].ourLabel) 
+    ? translations[lang].ourLabel 
+    : 'Наше судно';
 
   block.innerHTML = `
     <label>${enemyLabel}: Позиция (км):</label>
@@ -184,21 +185,33 @@ function calculate(index) {
     return;
   }
 
+  // Проверка на деление на ноль
+  if (os + es === 0) {
+    result.innerText = "Ошибка: суммарная скорость не может быть равна нулю.";
+    return;
+  }
+
   const meeting_km = (op * es + ep * os) / (os + es);
   const distance_to_meeting = Math.abs(meeting_km - op);
   const time_to_meeting = Math.abs(ep - op) / (os + es) * 60;
 
+  // Получаем переводы из глобального объекта
+  const translations = window.translations || {};
+  const lang = window.lang || 'ru';
+  const t = translations[lang] || {};
+  
   let output = `
-    <div>${translations[lang].meetingKm} <b>${formatNumber(meeting_km)}</b></div>
-    <div>${translations[lang].distanceToMeeting} <b>${formatNumber(distance_to_meeting)}</b></div>
-    <div>${translations[lang].timeToMeeting} <b>${formatNumber(time_to_meeting)}</b></div>
+    <div>${t.meetingKm || '📍 Км встречи:'} <b>${formatNumber(meeting_km)}</b></div>
+    <div>${t.distanceToMeeting || '📏 Расстояние до встречи (км):'} <b>${formatNumber(distance_to_meeting)}</b></div>
+    <div>${t.timeToMeeting || '⏱️ Время до встречи (мин):'} <b>${formatNumber(time_to_meeting)}</b></div>
   `;
 
   const nearestZone = findNearestWaitingZone(meeting_km);
   if (nearestZone) {
-    output += `<div>${translations[lang].waitingZone} <b>${nearestZone.display} км</b></div>`;
+    output += `<div>${t.waitingZone || '⚠️ Ближайшее место ожидания:'} <b>${nearestZone.display} км</b></div>`;
     if (nearestZone.restricted) {
-      output += `<div>${translations[lang].restricted.replace("{from}", nearestZone.from).replace("{to}", nearestZone.to)}</div>`;
+      const restrictedText = t.restricted || '⛔ Расхождение и обгон запрещен с {from} по {to} км';
+      output += `<div>${restrictedText.replace("{from}", nearestZone.from).replace("{to}", nearestZone.to)}</div>`;
     }
   }
 
