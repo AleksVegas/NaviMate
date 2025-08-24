@@ -1,4 +1,5 @@
-const lang = 'ru';
+let lang = localStorage.getItem("lang") || 'ru';
+
 
 // Проверка offline и standalone
 function isStandalone() {
@@ -255,6 +256,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Перезагрузка при появлении интернета
 window.addEventListener('online', () => location.reload());
+
 
 
 
