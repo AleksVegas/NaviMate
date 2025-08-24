@@ -380,6 +380,10 @@ function updateCalculationResults() {
 function updateArrivalSection() {
   const t = window.translations[lang] || {};
   
+  // Проверяем, что секция существует
+  const arrivalSection = document.getElementById('arrival-calc');
+  if (!arrivalSection) return;
+  
   // Обновляем заголовки и labels
   const arrivalHeading = document.querySelector('#arrival-calc h2[data-i18n="arrivalHeading"]');
   if (arrivalHeading) arrivalHeading.innerHTML = t.arrivalHeading || 'Расчёт времени прибытия';
@@ -424,6 +428,8 @@ function updateArrivalSection() {
       const formattedDate = date.toISOString().slice(0, 16);
       startTimeInput.value = formattedDate;
     }
+    // Устанавливаем атрибут lang для форматирования
+    startTimeInput.setAttribute('lang', lang);
   }
   if (desiredTimeInput) {
     desiredTimeInput.setAttribute('data-lang', lang);
@@ -433,6 +439,8 @@ function updateArrivalSection() {
       const formattedDate = date.toISOString().slice(0, 16);
       desiredTimeInput.value = formattedDate;
     }
+    // Устанавливаем атрибут lang для форматирования
+    desiredTimeInput.setAttribute('lang', lang);
   }
   
   // Обновляем кнопки
@@ -481,5 +489,5 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMeetingBlocks();
     updateArrivalSection();
     updateCalculationResults();
-  }, 500);
+  }, 1000);
 });
