@@ -249,6 +249,11 @@ function setLanguage(selectedLang) {
   const t = window.translations[lang] || {};
   
   document.querySelectorAll("[data-i18n]").forEach(el => {
+    // Пропускаем элементы в секции времени прибытия
+    if (el.closest('#arrival-calc')) {
+      return;
+    }
+    
     const key = el.getAttribute("data-i18n");
     if (t[key]) {
       if (["input","select","textarea"].includes(el.tagName.toLowerCase())) {
@@ -260,7 +265,12 @@ function setLanguage(selectedLang) {
   });
 
   // Обновляем блоки встречи при смене языка
-  updateMeetingBlocks();
+  if (typeof updateMeetingBlocks === 'function') {
+    updateMeetingBlocks();
+  }
+  
+  // Обновляем секцию времени прибытия
+  updateArrivalSection();
 } 
 
 
@@ -307,6 +317,64 @@ function updateMeetingBlocks() {
   });
 }
 
+// Функция для обновления секции времени прибытия
+function updateArrivalSection() {
+  const t = window.translations[lang] || {};
+  
+  // Обновляем заголовки и labels
+  const arrivalHeading = document.querySelector('#arrival-calc h2[data-i18n="arrivalHeading"]');
+  if (arrivalHeading) arrivalHeading.innerHTML = t.arrivalHeading || 'Расчёт времени прибытия';
+  
+  const startKmLabel = document.querySelector('#arrival-calc label[for="startKmArrival"]');
+  if (startKmLabel) startKmLabel.innerHTML = t.startKm || 'Начальный километр (км):';
+  
+  const endKmLabel = document.querySelector('#arrival-calc label[for="endKmArrival"]');
+  if (endKmLabel) endKmLabel.innerHTML = t.endKm || 'Конечный километр (км):';
+  
+  const speedLabel = document.querySelector('#arrival-calc label[for="speedArrival"]');
+  if (speedLabel) speedLabel.innerHTML = t.speed || 'Скорость (км/ч):';
+  
+  const startTimeLabel = document.querySelector('#arrival-calc label[for="startTimeArrival"]');
+  if (startTimeLabel) startTimeLabel.innerHTML = t.startTime || 'Время начала движения:';
+  
+  const workHoursLabel = document.querySelector('#arrival-calc label[for="workHoursArrival"]');
+  if (workHoursLabel) workHoursLabel.innerHTML = t.workHours || 'Длительность рабочего дня (часов):';
+  
+  const desiredArrivalLabel = document.querySelector('#arrival-calc label[for="desiredArrivalTimeArrival"]');
+  if (desiredArrivalLabel) desiredArrivalLabel.innerHTML = t.desiredArrival || 'Желаемое время прибытия (если хотите получить рекомендованную скорость):';
+  
+  // Обновляем placeholders
+  const startKmInput = document.getElementById('startKmArrival');
+  if (startKmInput) startKmInput.placeholder = t.phStartKm || 'Например, 1640';
+  
+  const endKmInput = document.getElementById('endKmArrival');
+  if (endKmInput) endKmInput.placeholder = t.phEndKm || 'Например, 2130';
+  
+  const speedInput = document.getElementById('speedArrival');
+  if (speedInput) speedInput.placeholder = t.phSpeed || 'Например, 12';
+  
+  // Обновляем кнопки
+  const btnArrival = document.querySelector('#arrival-calc .calc-btn[onclick="calculateArrival()"]');
+  if (btnArrival) btnArrival.innerHTML = t.btnArrival || 'Рассчитать время прибытия';
+  
+  const btnSpeed = document.querySelector('#arrival-calc .calc-btn[onclick="calculateRecommendedSpeed()"]');
+  if (btnSpeed) btnSpeed.innerHTML = t.btnSpeed || 'Рассчитать необходимую скорость 🚀';
+  
+  // Обновляем опции в select
+  const workHoursSelect = document.getElementById('workHoursArrival');
+  if (workHoursSelect) {
+    const options = workHoursSelect.querySelectorAll('option');
+    options.forEach(option => {
+      const value = option.value;
+      if (value === '12' && t.work12) option.innerHTML = t.work12;
+      if (value === '14' && t.work14) option.innerHTML = t.work14;
+      if (value === '16' && t.work16) option.innerHTML = t.work16;
+      if (value === '18' && t.work18) option.innerHTML = t.work18;
+      if (value === '24' && t.work24) option.innerHTML = t.work24;
+    });
+  }
+}
+
 
 // загрузка сохранённого языка
 // --- При загрузке ---
@@ -329,5 +397,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Обновляем блоки встречи после загрузки DOM
   setTimeout(() => {
     updateMeetingBlocks();
+    updateArrivalSection();
   }, 100);
 });

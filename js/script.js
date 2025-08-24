@@ -22,9 +22,10 @@ if (!navigator.onLine && !isStandalone()) {
   showOfflineNotice();
 }
 
-// Тема
+// Тема и язык
 const themeBtnHeader = document.getElementById("toggle-theme");
 const themeSwitch = document.getElementById("toggle-theme-switch");
+const languageBtnHeader = document.getElementById("toggle-language");
 
 function toggleTheme() {
   document.body.classList.toggle("dark");
@@ -47,6 +48,32 @@ if (themeBtnHeader) {
 if (themeSwitch) {
   themeSwitch.checked = document.body.classList.contains("dark");
   themeSwitch.addEventListener("change", toggleTheme);
+}
+
+// Функция переключения языка
+function toggleLanguage() {
+  const currentLang = window.lang || 'ru';
+  const newLang = currentLang === 'ru' ? 'en' : 'ru';
+  
+  if (typeof setLanguage === 'function') {
+    setLanguage(newLang);
+  }
+  
+  // Обновляем кнопку
+  if (languageBtnHeader) {
+    languageBtnHeader.innerText = newLang === 'ru' ? '🇷🇺' : '🇺🇸';
+    languageBtnHeader.setAttribute('title', newLang === 'ru' ? 'Переключить на английский' : 'Switch to Russian');
+    languageBtnHeader.setAttribute('aria-label', newLang === 'ru' ? 'Переключить на английский' : 'Switch to Russian');
+  }
+}
+
+if (languageBtnHeader) {
+  // Устанавливаем начальное состояние
+  const currentLang = window.lang || 'ru';
+  languageBtnHeader.innerText = currentLang === 'ru' ? '🇷🇺' : '🇺🇸';
+  languageBtnHeader.setAttribute('title', currentLang === 'ru' ? 'Переключить на английский' : 'Switch to Russian');
+  languageBtnHeader.setAttribute('aria-label', currentLang === 'ru' ? 'Переключить на английский' : 'Switch to Russian');
+  languageBtnHeader.addEventListener("click", toggleLanguage);
 }
 
 // Форматирование числа
