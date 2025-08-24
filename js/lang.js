@@ -308,6 +308,8 @@ function setLanguage(selectedLang) {
 function updateMeetingBlocks() {
   const t = window.translations[lang] || {};
   document.querySelectorAll('.block').forEach((block, index) => {
+    // Пропускаем секцию времени прибытия
+    if (block.closest('#arrival-calc')) return;
     const enemyPos = block.querySelector(`#enemy_pos_${index}`);
     const enemySpeed = block.querySelector(`#enemy_speed_${index}`);
     const ourPos = block.querySelector(`#our_pos_${index}`);
@@ -430,6 +432,7 @@ function updateArrivalSection() {
     }
     // Устанавливаем атрибут lang для форматирования
     startTimeInput.setAttribute('lang', lang);
+    console.log('Updated startTimeInput lang to:', lang);
   }
   if (desiredTimeInput) {
     desiredTimeInput.setAttribute('data-lang', lang);
