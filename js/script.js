@@ -196,22 +196,24 @@ function createBlock(index) {
   const copySpeedText = t.copySpeed || "Скопировать скорость из 1 блока";
   const calcBtnText = t.calcBtn || "Рассчитать";
   const clearBtnText = t.clearBtn || "Очистить";
-  const phPos = t.phPos || "например: 2025";
-  const phSpeedMeeting = t.phSpeedMeeting || "например: 20.5";
+  const phEnemyPos = t.phEnemyPos || "например: 2025";
+  const phEnemySpeed = t.phEnemySpeed || "например: 25";
+  const phOurPos = t.phOurPos || "например: 2008";
+  const phOurSpeed = t.phOurSpeed || "например: 12";
 
   block.innerHTML = `
     <label>${enemyLabel}: ${posLabel}</label>
-    <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="${phPos}">
+    <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="${phEnemyPos}">
     
     <label>${enemyLabel}: ${speedLabel}</label>
-    <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="${phSpeedMeeting}">
+    <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="${phEnemySpeed}">
     
     <label>${ourLabel}: ${posLabel}</label>
-    <input type="number" id="our_pos_${index}" step="0.1" placeholder="${phPos}">
+    <input type="number" id="our_pos_${index}" step="0.1" placeholder="${phOurPos}">
     ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurPos(${index})">${copyPosText}</button>` : ''}
     
     <label>${ourLabel}: ${speedLabel}</label>
-    <input type="number" id="our_speed_${index}" step="0.1" placeholder="${phSpeedMeeting}">
+    <input type="number" id="our_speed_${index}" step="0.1" placeholder="${phOurSpeed}">
     ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurSpeed(${index})">${copySpeedText}</button>` : ''}
     
     <div style="margin-top:10px;">

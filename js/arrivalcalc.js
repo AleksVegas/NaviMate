@@ -138,7 +138,7 @@ if (!borderDelaysInitialized) {
   }
 
   const bordersInfo = passedBorders.length > 0
-    ? "<br><strong>🛃 " + t.arrivalFeature2 + ":</strong><br>" + passedBorders.join("<br>")
+    ? "<br><strong>🛃 " + (t.borderDelays || 'Пограничные задержки') + ":</strong><br>" + passedBorders.join("<br>")
     : "";
 
   if (workHours < 24) {
@@ -151,11 +151,12 @@ if (!borderDelaysInitialized) {
   const formattedArrival = arrivalTime.toLocaleString((window.lang || 'ru') === 'ru' ? "ru-RU" : "en-US", {
     day: "2-digit",
     month: "2-digit",
+    year: "2-digit",
     hour: "2-digit",
     minute: "2-digit"
   });
 
-  const locksInfo = passedLocks.length > 0 ? "<br>" + passedLocks.join("<br>") : "";
+  const locksInfo = passedLocks.length > 0 ? "<br><strong>⚓ " + (t.lockDelays || 'Задержки на шлюзах') + ":</strong><br>" + passedLocks.join("<br>") : "";
 
 resultDiv.innerHTML = `
 🚢 <strong>${t.arrivalHeading || 'Расчёт времени прибытия'}:</strong> ${formattedArrival}<br>
@@ -263,7 +264,7 @@ function calculateRecommendedSpeed() {
     if (relevantBorders.length === 0) return;
   
     const title = document.createElement("h3");
-    title.textContent = "🛃 " + t.arrivalFeature2; // вместо "Пограничные задержки:"
+    title.textContent = "🛃 " + (t.borderDelays || 'Пограничные задержки');
     title.style.marginBottom = "8px";
     container.appendChild(title);
   
@@ -271,6 +272,7 @@ function calculateRecommendedSpeed() {
     table.style.borderCollapse = "collapse";
     table.style.width = "100%";
     table.style.maxWidth = "380px";
+    table.style.marginLeft = "0";
 
     relevantBorders.forEach((border, i) => {
     const row = document.createElement("tr");
@@ -348,7 +350,10 @@ window.addEventListener('DOMContentLoaded', () => {
     selector.addEventListener('change', (e) => setLanguage(e.target.value));
   }
 
-  applyTranslations();
+  // Применяем переводы к секции времени прибытия
+  if (typeof updateArrivalSection === 'function') {
+    updateArrivalSection();
+  }
 
 //блок обеспечивает пересчёт и обновление отображения, когда значения километров уже есть на странице.
 const startInput = document.getElementById("startKmArrival");

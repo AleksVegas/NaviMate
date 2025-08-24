@@ -35,8 +35,10 @@ window.translations = {
     phStartKm: "Например, 1640",
     phEndKm: "Например, 2130",
     phSpeed: "Например, 12",
-    phPos: "например: 2025",
-    phSpeedMeeting: "например: 20.5",
+    phEnemyPos: "например: 2025",
+    phEnemySpeed: "например: 25",
+    phOurPos: "например: 2008",
+    phOurSpeed: "например: 12",
 
     // --- Раздел: Время прибытия ---
     arrivalHeading: "Расчёт времени прибытия",
@@ -49,6 +51,8 @@ window.translations = {
     desiredArrival: "Желаемое время прибытия (если хотите получить рекомендованную скорость):",
     btnSpeed: "Рассчитать необходимую скорость 🚀",
     distance: "Расстояние",
+    borderDelays: "Пограничные задержки",
+    lockDelays: "Задержки на шлюзах",
     
 
     // --- Настройки ---
@@ -153,8 +157,10 @@ window.translations = {
     phStartKm: "E.g., 1640",
     phEndKm: "E.g., 2130",
     phSpeed: "E.g., 12",
-    phPos: "e.g., 2025",
-    phSpeedMeeting: "e.g., 20.5",
+    phEnemyPos: "e.g., 2025",
+    phEnemySpeed: "e.g., 25",
+    phOurPos: "e.g., 2008",
+    phOurSpeed: "e.g., 12",
 
     // --- Section: Arrival ---
     arrivalHeading: "Arrival Time Calculation",
@@ -167,6 +173,8 @@ window.translations = {
     desiredArrival: "Desired arrival time (to get recommended speed):",
     btnSpeed: "Calculate required speed 🚀",
     distance: "Distance",
+    borderDelays: "Border delays",
+    lockDelays: "Lock delays",
 
     // --- Settings ---
     settingsHeading: "⚙️ Settings",
@@ -305,10 +313,10 @@ function updateMeetingBlocks() {
     const ourPos = block.querySelector(`#our_pos_${index}`);
     const ourSpeed = block.querySelector(`#our_speed_${index}`);
 
-    if (enemyPos) enemyPos.placeholder = t.phPos || "например: 2025";
-    if (enemySpeed) enemySpeed.placeholder = t.phSpeedMeeting || "например: 20.5";
-    if (ourPos) ourPos.placeholder = t.phPos || "например: 2025";
-    if (ourSpeed) ourSpeed.placeholder = t.phSpeedMeeting || "например: 20.5";
+    if (enemyPos) enemyPos.placeholder = t.phEnemyPos || "например: 2025";
+    if (enemySpeed) enemySpeed.placeholder = t.phEnemySpeed || "например: 25";
+    if (ourPos) ourPos.placeholder = t.phOurPos || "например: 2008";
+    if (ourSpeed) ourSpeed.placeholder = t.phOurSpeed || "например: 12";
 
     const btnCopyPos = block.querySelector('.btn-copy[onclick*="copyOurPos"]');
     if (btnCopyPos) btnCopyPos.innerText = t.copyPos || "Скопировать позицию из 1 блока";
