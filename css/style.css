@@ -12,7 +12,7 @@ body {
   
   header {
 	display: flex;
-	align-items: center;
+	align-items: flex-start;
 	background: #2f5597;
 	color: white;
 	padding: 8px 15px;
@@ -41,7 +41,7 @@ body {
   color: white;
   cursor: pointer;
   user-select: none;
-  padding: 3px 6px;
+  padding: 3px 0px;
   margin-left: 10px;
   border-radius: 4px;
   transition: background-color 0.3s;
@@ -52,7 +52,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 3px;
+  margin-top: 10px;
 }
   
   #header-language-select:hover {
