@@ -24,6 +24,7 @@ function pluralizeHours(n) {
     return n === 1 ? t.hour || 'hour' : t.hours || 'hours';
   }
   
+  // Для русского языка правильное склонение
   if (Number.isInteger(n)) {
     if (n % 10 === 1 && n % 100 !== 11) return t.hour || 'час';
     if ([2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100)) return t.hours || 'часа';
@@ -83,10 +84,7 @@ function calculateArrival() {
   prevEndKm = endKm;
   borderDelaysInitialized = false;
 
-if (!borderDelaysInitialized) {
-    showBorderDelays(startKm, endKm);
-    borderDelaysInitialized = true;
-  }
+
 
   if (isNaN(startKm) || isNaN(endKm) || isNaN(speed) || !startTimeStr) {
     resultDiv.innerHTML = t.errorData;
@@ -126,23 +124,23 @@ if (!borderDelaysInitialized) {
     }
   });
 
-  const borderDelaysSection = document.getElementById("borderDelaysSection");
+  // Используем фиксированные значения задержек на границах
   let borderDelayTotal = 0;
   let passedBorders = [];
 
-  if (borderDelaysSection) {
-    const inputs = borderDelaysSection.querySelectorAll("input[type='number']");
-    const labels = borderDelaysSection.querySelectorAll("td:first-child");
-    inputs.forEach((input, i) => {
-      const delay = parseFloat(input.value);
-      if (!isNaN(delay) && delay > 0) {
-        borderDelayTotal += delay;
-        const name = labels[i] ? labels[i].textContent : `Граница ${i + 1}`;
-        passedBorders.push(`${name.trim()} — ${delay} ${pluralizeHours(delay)}`);
-      }
-    });
-    travelHours += borderDelayTotal;
-  }
+  const relevantBorders = borderPoints.filter(b =>
+    (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
+    (startKm > endKm && b.km <= startKm && b.km >= endKm)
+  );
+
+  relevantBorders.forEach(border => {
+    if (border.defaultDelay > 0) {
+      borderDelayTotal += border.defaultDelay;
+      const borderName = t[border.nameKey] || border.nameKey;
+      passedBorders.push(`${borderName} — ${border.defaultDelay} ${pluralizeHours(border.defaultDelay)}`);
+    }
+  });
+  travelHours += borderDelayTotal;
 
   const bordersInfo = passedBorders.length > 0
     ? "<br><strong>" + (t.borderDelays || 'Пограничные задержки') + ":</strong><br>" + passedBorders.join("<br>")
@@ -167,8 +165,9 @@ if (!borderDelaysInitialized) {
 
 resultDiv.innerHTML = `
 🚢 <strong>${t.arrivalHeading || 'Расчёт времени прибытия'}:</strong> ${formattedArrival}<br>
-⏳ <strong>${t.workHours || 'Длительность рабочего дня (часов)'}:</strong> ${travelHours.toFixed(2)} ${t.hourUnit || 'ч'}<br>
-📍 <strong>${t.distance || 'Расстояние'}:</strong> ${distance} ${t.kmUnit || 'км'}${locksInfo}${bordersInfo}
+⏳ <strong>${t.workHours || 'Длительность перехода'}:</strong> ${travelHours.toFixed(2)} ${t.hourUnit || 'ч'}<br>
+📍 <strong>${t.distance || 'Расстояние'}:</strong> ${distance} ${t.kmUnit || 'км'}<br>
+${locksInfo}${bordersInfo}
 `;
 
 
@@ -257,102 +256,7 @@ function calculateRecommendedSpeed() {
 }
 
 
-    function showBorderDelays(startKm, endKm) {
-    const t = window.translations[window.lang || 'ru'] || {};
-    const container = document.getElementById("borderDelaysSection");
-    container.innerHTML = "";
 
-    const relevantBorders = borderPoints.filter(b =>
-    (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
-    (startKm > endKm && b.km <= startKm && b.km >= endKm)
-  );
-
-
-    if (relevantBorders.length === 0) return;
-  
-    const title = document.createElement("h3");
-    title.textContent = "🛃 " + (t.borderDelays || 'Пограничные задержки');
-    title.style.marginBottom = "8px";
-    container.appendChild(title);
-  
-    const table = document.createElement("table");
-    table.style.borderCollapse = "collapse";
-    table.style.width = "auto";
-    table.style.maxWidth = "300px";
-    table.style.marginLeft = "0";
-
-    relevantBorders.forEach((border, i) => {
-    const row = document.createElement("tr");
-
-    const nameCell = document.createElement("td");
-    const borderName = t[border.nameKey] || border.nameKey;
-    nameCell.textContent = borderName;
-    nameCell.style.padding = "4px 8px 4px 0";
-    nameCell.style.fontSize = "13px";
-    nameCell.style.whiteSpace = "nowrap";
-    nameCell.style.color = document.body.classList.contains('dark') ? "#eee" : "#222";
-
-    const inputCell = document.createElement("td");
-
-    const input = document.createElement("input");
-    input.type = "number";
-    input.min = "0";
-    input.step = "0.1";
-    input.value = border.defaultDelay;
-    input.id = `borderDelay_${i}`;
-
-    // ✅ Универсальные стили под тёмную/светлую темы
-    input.style.width = "40px";
-    input.style.padding = "2px 4px";
-    input.style.fontSize = "12px";
-    input.style.borderRadius = "4px";
-    input.style.border = "1px solid #ccc";
-    input.style.backgroundColor = "#fff";
-    input.style.color = "#000";
-    input.style.caretColor = "auto";
-    
-    // Адаптация под темную тему
-    if (document.body.classList.contains('dark')) {
-      input.style.border = "1px solid #555";
-      input.style.backgroundColor = "#1e1e1e";
-      input.style.color = "#eee";
-    }
-
-    // Обработчики для всех событий изменения
-    const updateCalculation = () => {
-      // Обновляем значение в объекте borderPoints
-      border.defaultDelay = parseFloat(input.value) || 0;
-      // Пересчитываем результат
-      setTimeout(() => calculateArrival(), 50);
-    };
-    
-    input.addEventListener("input", updateCalculation);
-    input.addEventListener("change", updateCalculation);
-    input.addEventListener("blur", updateCalculation);
-    input.addEventListener("keyup", updateCalculation);
-    
-    // Убеждаемся, что поле можно редактировать
-    input.readOnly = false;
-    input.disabled = false;
-
-    const label = document.createElement("span");
-    const hourUnit = t.hourUnit || 'ч';
-    label.textContent = hourUnit;
-    label.style.fontSize = "12px";
-    label.style.opacity = "0.7";
-    label.style.marginLeft = "3px";
-    label.style.color = document.body.classList.contains('dark') ? "#aaa" : "#666";
-
-    inputCell.appendChild(input);
-    inputCell.appendChild(label);
-
-    row.appendChild(nameCell);
-    row.appendChild(inputCell);
-    table.appendChild(row);
-  });
-
-  container.appendChild(table);
-}
 
 
 (function () {
@@ -375,16 +279,6 @@ window.addEventListener('DOMContentLoaded', () => {
     updateArrivalSection();
   }
 
-  //блок обеспечивает пересчёт и обновление отображения, когда значения километров уже есть на странице.
-  const startInput = document.getElementById("startKmArrival");
-  const endInput = document.getElementById("endKmArrival");
-  if (startInput && endInput) {
-    const startKm = parseFloat(startInput.value);
-    const endKm = parseFloat(endInput.value);
-    if (!isNaN(startKm) && !isNaN(endKm)) {
-      showBorderDelays(startKm, endKm);
-      calculateArrival();
-    }
-  }
+
 });
 
