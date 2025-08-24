@@ -104,6 +104,18 @@ body {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
+  background-image: none !important;
+}
+
+#header-language-select::-ms-expand {
+  display: none;
+}
+
+#header-language-select option {
+  background: #2f5597;
+  color: white;
+  padding: 2px;
+  border: none;
 }
   
   /* Мобильная версия - выравнивание селекторов */

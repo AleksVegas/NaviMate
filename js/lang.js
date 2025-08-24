@@ -47,6 +47,7 @@ window.translations = {
     endKm: "Конечный километр (км):",
     speed: "Скорость (км/ч):",
     startTime: "Время начала движения:",
+    dateFormatNote: "* Формат даты зависит от настроек вашего устройства",
     workHours: "Длительность рабочего дня (часов):",
     btnArrival: "Рассчитать время прибытия",
     desiredArrival: "Желаемое время прибытия (если хотите получить рекомендованную скорость):",
@@ -58,7 +59,7 @@ window.translations = {
 
     // --- Настройки ---
     settingsHeading: "⚙️ Настройки",
-    themeLabel: "🌗 Тема (день/ночь)",
+    themeLabel: "🌗 Тема",
     lightTheme: "Светлая",
     darkTheme: "Тёмная",
     langLabel: "🌍 Язык:",
@@ -172,6 +173,7 @@ window.translations = {
     endKm: "End kilometer (km):",
     speed: "Speed (km/h):",
     startTime: "Start time:",
+    dateFormatNote: "* Date format depends on your device settings",
     workHours: "Working day duration (hours):",
     btnArrival: "Calculate arrival time",
     desiredArrival: "Desired arrival time (to get recommended speed):",
@@ -182,7 +184,7 @@ window.translations = {
 
     // --- Settings ---
     settingsHeading: "⚙️ Settings",
-    themeLabel: "🌗 Theme (day/night)",
+    themeLabel: "🌗 Theme",
     lightTheme: "Light",
     darkTheme: "Dark",
     langLabel: "🌍 Language:",
