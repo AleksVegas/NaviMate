@@ -122,8 +122,7 @@ if (!borderDelaysInitialized) {
     ) {
       travelHours += lock.delay;
       const lockName = t[lock.nameKey] || lock.nameKey;
-      const delayText = t.delay || 'задержка';
-      passedLocks.push(`⚓ ${lockName} — ${delayText} ${lock.delay} ${pluralizeHours(lock.delay)}`);
+      passedLocks.push(`⚓ ${lockName} — ${lock.delay} ${pluralizeHours(lock.delay)}`);
     }
   });
 
@@ -321,13 +320,20 @@ function calculateRecommendedSpeed() {
 
     // Обработчики для всех событий изменения
     const updateCalculation = () => {
-      setTimeout(() => calculateArrival(), 100);
+      // Обновляем значение в объекте borderPoints
+      border.defaultDelay = parseFloat(input.value) || 0;
+      // Пересчитываем результат
+      setTimeout(() => calculateArrival(), 50);
     };
     
     input.addEventListener("input", updateCalculation);
     input.addEventListener("change", updateCalculation);
     input.addEventListener("blur", updateCalculation);
     input.addEventListener("keyup", updateCalculation);
+    
+    // Убеждаемся, что поле можно редактировать
+    input.readOnly = false;
+    input.disabled = false;
 
     const label = document.createElement("span");
     const hourUnit = t.hourUnit || 'ч';
