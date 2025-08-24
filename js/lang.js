@@ -47,7 +47,6 @@ window.translations = {
     endKm: "Конечный километр (км):",
     speed: "Скорость (км/ч):",
     startTime: "Время начала движения:",
-    dateFormatNote: "* Формат даты зависит от настроек вашего устройства",
     workHours: "Длительность рабочего дня (часов):",
     btnArrival: "Рассчитать время прибытия",
     desiredArrival: "Желаемое время прибытия (если хотите получить рекомендованную скорость):",
@@ -173,7 +172,6 @@ window.translations = {
     endKm: "End kilometer (km):",
     speed: "Speed (km/h):",
     startTime: "Start time:",
-    dateFormatNote: "* Date format depends on your device settings",
     workHours: "Working day duration (hours):",
     btnArrival: "Calculate arrival time",
     desiredArrival: "Desired arrival time (to get recommended speed):",
@@ -441,7 +439,6 @@ function updateArrivalSection() {
     // Устанавливаем атрибут lang для форматирования
     startTimeInput.setAttribute('lang', lang);
     startTimeInput.setAttribute('data-date-format', lang === 'ru' ? 'dd.mm.yyyy' : 'mm/dd/yyyy');
-    console.log('Updated startTimeInput lang to:', lang, 'for element:', startTimeInput);
   }
   if (desiredTimeInput) {
     desiredTimeInput.setAttribute('data-lang', lang);

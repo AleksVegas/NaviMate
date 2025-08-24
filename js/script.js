@@ -43,16 +43,7 @@ function toggleTheme() {
   }
 }
 
-// Функция для синхронизации темы из настроек
-function syncThemeFromSettings() {
-  const isDark = document.body.classList.contains("dark");
-  if (themeBtnHeader) {
-    themeBtnHeader.innerText = isDark ? "☀️" : "🌙";
-  }
-  if (themeSwitch) {
-    themeSwitch.checked = isDark;
-  }
-}
+
 
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
@@ -249,7 +240,6 @@ function calculate(index) {
 
   // Проверяем существование элемента результата
   if (!result) {
-    console.error('Элемент результата не найден для индекса:', index);
     return;
   }
 

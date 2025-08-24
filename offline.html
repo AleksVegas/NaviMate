@@ -46,27 +46,6 @@
   </style>
 </head>
 <body>
-  <script>
-  function isInStandaloneMode() {
-    return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  }
 
-  const offlineBanner = document.getElementById('offline-banner');
-
-  // Показываем баннер только если это НЕ установленное приложение
-  if (!isInStandaloneMode() && !navigator.onLine) {
-    offlineBanner.style.display = 'block';
-  }
-
-  window.addEventListener('offline', () => {
-    if (!isInStandaloneMode()) {
-      offlineBanner.style.display = 'block';
-    }
-  });
-
-  window.addEventListener('online', () => {
-    offlineBanner.style.display = 'none';
-  });
-</script>
 </body>
 </html>

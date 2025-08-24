@@ -48,7 +48,6 @@
 
     <label for="startTimeArrival" data-i18n="startTime">Время начала движения:</label>
     <input type="datetime-local" id="startTimeArrival" data-lang="ru" />
-    <small style="color: #666; font-size: 0.8rem;" data-i18n="dateFormatNote">* Формат даты зависит от настроек вашего устройства</small>
 
     <label for="workHoursArrival" data-i18n="workHours">Длительность рабочего дня (часов):</label>
     <select id="workHoursArrival">
@@ -68,7 +67,6 @@
     <div id="desiredBlockArrival" style="display:none; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ccc;">
       <label for="desiredArrivalTimeArrival" data-i18n="desiredArrival">Желаемое время прибытия (если хотите получить рекомендованную скорость):</label>
       <input type="datetime-local" id="desiredArrivalTimeArrival" data-lang="ru" />
-      <small style="color: #666; font-size: 0.8rem;" data-i18n="dateFormatNote">* Формат даты зависит от настроек вашего устройства</small>
       <button class="calc-btn" onclick="calculateRecommendedSpeed()" data-i18n="btnSpeed">Рассчитать необходимую скорость 🚀</button>
       <div class="output" id="requiredSpeedResultArrival"></div>
     </div>
