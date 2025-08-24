@@ -1,6 +1,6 @@
 // 1️⃣ Язык по умолчанию
 // при загрузке страницы
-let currentLang = window.lang || 'ru';
+// Используем window.lang из lang.js
 
 // Функция для обновления расчетов при смене языка
 function updateArrivalCalculations() {
@@ -341,22 +341,13 @@ function calculateRecommendedSpeed() {
 
 //Вызываем функцию после загрузки страницы
 window.addEventListener('DOMContentLoaded', () => {
-  const selector = document.getElementById('langSelector');
-  const savedLang = localStorage.getItem('lang') || 'ru';
-  currentLang = savedLang;
-
-  if (selector) {
-    selector.value = savedLang;
-    selector.addEventListener('change', (e) => setLanguage(e.target.value));
-  }
-
   // Применяем переводы к секции времени прибытия
   if (typeof updateArrivalSection === 'function') {
     updateArrivalSection();
   }
 
-//блок обеспечивает пересчёт и обновление отображения, когда значения километров уже есть на странице.
-const startInput = document.getElementById("startKmArrival");
+  //блок обеспечивает пересчёт и обновление отображения, когда значения километров уже есть на странице.
+  const startInput = document.getElementById("startKmArrival");
   const endInput = document.getElementById("endKmArrival");
   if (startInput && endInput) {
     const startKm = parseFloat(startInput.value);
