@@ -236,7 +236,6 @@ if (!translations[lang]) {
   localStorage.setItem("lang", lang);
 }
 
-//Переключение языка
 
 // --- Переключение языка ---
 function setLanguage(selectedLang) {
@@ -253,6 +252,8 @@ function setLanguage(selectedLang) {
       }
     }
   });
+} 
+
 
  // --- Минимальные изменения: обновление форм блоков встречи судов ---
   document.querySelectorAll('.block').forEach((block, index) => {
