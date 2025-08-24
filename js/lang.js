@@ -31,6 +31,7 @@ window.translations = {
     timeToMeeting: "⏱️ Время до встречи (мин):",
     waitingZone: "⚠️ Ближайшее место ожидания:",
     restricted: "⛔ Расхождение и обгон запрещен с {from} по {to} км",
+    kmUnit: " км",
 
     phStartKm: "Например, 1640",
     phEndKm: "Например, 2130",
@@ -156,6 +157,7 @@ window.translations = {
     timeToMeeting: "⏱️ Time to meeting (min):",
     waitingZone: "⚠️ Nearest waiting area:",
     restricted: "⛔ Passing/overtaking prohibited from {from} to {to} km",
+    kmUnit: " km",
     phStartKm: "E.g., 1640",
     phEndKm: "E.g., 2130",
     phSpeed: "E.g., 12",

@@ -55,7 +55,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 4px;
+  margin-top: 10px;
 }
   
   #header-language-select:hover {
@@ -90,9 +90,21 @@ body {
   }
   
   #header-language-select:focus {
-    outline: none;
-    border-color: rgba(255, 255, 255, 0.3);
-  }
+  outline: none;
+  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+#header-language-select::-ms-expand {
+  display: none;
+}
+
+#header-language-select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
   
   /* Мобильная версия - выравнивание селекторов */
   @media (max-width: 768px) {
