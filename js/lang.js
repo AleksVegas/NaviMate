@@ -58,6 +58,8 @@ window.translations = {
     // --- Настройки ---
     settingsHeading: "⚙️ Настройки",
     themeLabel: "🌗 Тема (день/ночь)",
+    lightTheme: "Светлая",
+    darkTheme: "Тёмная",
     langLabel: "🌍 Язык:",
     waterwayLabel: "🌊 Водный путь:",
 
@@ -179,6 +181,8 @@ window.translations = {
     // --- Settings ---
     settingsHeading: "⚙️ Settings",
     themeLabel: "🌗 Theme (day/night)",
+    lightTheme: "Light",
+    darkTheme: "Dark",
     langLabel: "🌍 Language:",
     waterwayLabel: "🌊 Waterway:",
 
@@ -466,6 +470,17 @@ function updateArrivalSection() {
       if (value === '16' && t.work16) option.innerHTML = t.work16;
       if (value === '18' && t.work18) option.innerHTML = t.work18;
       if (value === '24' && t.work24) option.innerHTML = t.work24;
+    });
+  }
+  
+  // Обновляем опции переключателя темы
+  const themeSwitch = document.getElementById('toggle-theme-switch');
+  if (themeSwitch) {
+    const options = themeSwitch.querySelectorAll('option');
+    options.forEach(option => {
+      const value = option.value;
+      if (value === 'light' && t.lightTheme) option.innerHTML = t.lightTheme;
+      if (value === 'dark' && t.darkTheme) option.innerHTML = t.darkTheme;
     });
   }
 }
