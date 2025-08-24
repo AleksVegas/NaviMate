@@ -229,3 +229,93 @@ const translations = {
     thanksText: "🙏 Thank you for using <strong>NaviMate</strong>! The app is actively developing — this is just the beginning.",
     }
 };
+
+// --- Инициализация языка ---
+let lang = localStorage.getItem("lang") || "ru";
+if (!translations[lang]) {
+  lang = "ru";
+  localStorage.setItem("lang", lang);
+}
+
+//Переключение языка
+
+// --- Переключение языка ---
+function setLanguage(selectedLang) {
+  lang = selectedLang;
+  localStorage.setItem("lang", lang);
+
+  document.querySelectorAll("[data-i18n]").forEach(el => {
+    const key = el.getAttribute("data-i18n");
+    if (translations[lang] && translations[lang][key]) {
+      if (["input","select","textarea"].includes(el.tagName.toLowerCase())) {
+        el.placeholder = translations[lang][key];
+      } else {
+        el.innerHTML = translations[lang][key];
+      }
+    }
+  });
+
+ // --- Минимальные изменения: обновление форм блоков встречи судов ---
+  document.querySelectorAll('.block').forEach((block, index) => {
+    const enemyPos = block.querySelector(`#enemy_pos_${index}`);
+    const enemySpeed = block.querySelector(`#enemy_speed_${index}`);
+    const ourPos = block.querySelector(`#our_pos_${index}`);
+    const ourSpeed = block.querySelector(`#our_speed_${index}`);
+
+    if (enemyPos) enemyPos.placeholder = translations[lang].phStartKm;
+    if (enemySpeed) enemySpeed.placeholder = translations[lang].phSpeed;
+    if (ourPos) ourPos.placeholder = translations[lang].phStartKm;
+    if (ourSpeed) ourSpeed.placeholder = translations[lang].phSpeed;
+
+    const btnCopyPos = block.querySelector('.btn-copy[onclick*="copyOurPos"]');
+    if (btnCopyPos) btnCopyPos.innerText = translations[lang].copyPos;
+
+    const btnCopySpeed = block.querySelector('.btn-copy[onclick*="copyOurSpeed"]');
+    if (btnCopySpeed) btnCopySpeed.innerText = translations[lang].copySpeed;
+  });
+
+// --- Обновление подписей, кнопок и результата для блоков встречи ---
+document.querySelectorAll('.block').forEach((block, index) => {
+  // Labels
+  const labels = block.querySelectorAll('label');
+  if (labels.length >= 4) {
+    labels[0].innerText = translations[lang].enemyLabel.replace("{n}", index + 1) + ": " + translations[lang].posLabel;
+    labels[1].innerText = translations[lang].enemyLabel.replace("{n}", index + 1) + ": " + translations[lang].speedLabel;
+    labels[2].innerText = translations[lang].ourLabel + ": " + translations[lang].posLabel;
+    labels[3].innerText = translations[lang].ourLabel + ": " + translations[lang].speedLabel;
+  }
+
+  // Кнопки: Рассчитать и Очистить
+  const calcBtn = block.querySelector('.calc-btn');
+  if (calcBtn) calcBtn.innerText = translations[lang].calcBtn;
+
+  const clearBtn = block.querySelector('.btn-clear');
+  if (clearBtn) clearBtn.innerText = translations[lang].clearBtn;
+
+  // Output блок (если нужно, можно очистить/обновить текст)
+  const result = block.querySelector('.output');
+  if (result) {
+    // При смене языка можно просто оставить результат пустым или показывать подсказку
+    // result.innerText = ""; // если хочешь очищать при смене языка
+  }
+});
+
+
+// загрузка сохранённого языка
+// --- При загрузке ---
+document.addEventListener("DOMContentLoaded", () => {
+  const savedLang = localStorage.getItem("lang") || "ru";
+  setLanguage(savedLang);
+
+  const langSelect = document.getElementById("language-select");
+  if (langSelect) {
+    langSelect.disabled = false;
+    langSelect.innerHTML = `
+      <option value="ru" ${savedLang === "ru" ? "selected" : ""}>Русский</option>
+      <option value="en" ${savedLang === "en" ? "selected" : ""}>English</option>
+    `;
+    langSelect.addEventListener("change", e => {
+      setLanguage(e.target.value);
+    });
+  }
+});
