@@ -35,6 +35,8 @@ window.translations = {
     phStartKm: "Например, 1640",
     phEndKm: "Например, 2130",
     phSpeed: "Например, 12",
+    phPos: "например: 2025",
+    phSpeedMeeting: "например: 20.5",
 
     // --- Раздел: Время прибытия ---
     arrivalHeading: "Расчёт времени прибытия",
@@ -151,6 +153,8 @@ window.translations = {
     phStartKm: "E.g., 1640",
     phEndKm: "E.g., 2130",
     phSpeed: "E.g., 12",
+    phPos: "e.g., 2025",
+    phSpeedMeeting: "e.g., 20.5",
 
     // --- Section: Arrival ---
     arrivalHeading: "Arrival Time Calculation",
@@ -269,6 +273,9 @@ function setLanguage(selectedLang) {
     updateMeetingBlocks();
   }
   
+  // Обновляем результаты расчетов
+  updateCalculationResults();
+  
   // Обновляем секцию времени прибытия
   updateArrivalSection();
   
@@ -298,10 +305,10 @@ function updateMeetingBlocks() {
     const ourPos = block.querySelector(`#our_pos_${index}`);
     const ourSpeed = block.querySelector(`#our_speed_${index}`);
 
-    if (enemyPos) enemyPos.placeholder = t.phStartKm || "Например, 1640";
-    if (enemySpeed) enemySpeed.placeholder = t.phSpeed || "Например, 12";
-    if (ourPos) ourPos.placeholder = t.phStartKm || "Например, 1640";
-    if (ourSpeed) ourSpeed.placeholder = t.phSpeed || "Например, 12";
+    if (enemyPos) enemyPos.placeholder = t.phPos || "например: 2025";
+    if (enemySpeed) enemySpeed.placeholder = t.phSpeedMeeting || "например: 20.5";
+    if (ourPos) ourPos.placeholder = t.phPos || "например: 2025";
+    if (ourSpeed) ourSpeed.placeholder = t.phSpeedMeeting || "например: 20.5";
 
     const btnCopyPos = block.querySelector('.btn-copy[onclick*="copyOurPos"]');
     if (btnCopyPos) btnCopyPos.innerText = t.copyPos || "Скопировать позицию из 1 блока";
@@ -330,6 +337,35 @@ function updateMeetingBlocks() {
     const clearBtn = block.querySelector('.btn-clear');
     if (clearBtn) clearBtn.innerText = t.clearBtn || "Очистить";
   });
+}
+
+// Функция для обновления результатов расчетов
+function updateCalculationResults() {
+  // Обновляем результаты блоков встречи
+  for (let i = 0; i < 3; i++) {
+    const result = document.getElementById(`result_${i}`);
+    if (result && result.innerHTML.trim() !== '') {
+      // Если есть результат, пересчитываем его
+      if (typeof calculate === 'function') {
+        calculate(i);
+      }
+    }
+  }
+  
+  // Обновляем результаты времени прибытия
+  const resultArrival = document.getElementById('resultArrival');
+  if (resultArrival && resultArrival.innerHTML.trim() !== '') {
+    if (typeof calculateArrival === 'function') {
+      calculateArrival();
+    }
+  }
+  
+  const requiredSpeedResult = document.getElementById('requiredSpeedResultArrival');
+  if (requiredSpeedResult && requiredSpeedResult.innerHTML.trim() !== '') {
+    if (typeof calculateRecommendedSpeed === 'function') {
+      calculateRecommendedSpeed();
+    }
+  }
 }
 
 // Функция для обновления секции времени прибытия
@@ -413,5 +449,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setTimeout(() => {
     updateMeetingBlocks();
     updateArrivalSection();
+    updateCalculationResults();
   }, 100);
 });

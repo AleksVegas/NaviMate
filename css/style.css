@@ -35,17 +35,18 @@ body {
   }
   
   #header-language-select {
-	font-size: 0.9rem;
+	font-size: 0.85rem;
 	background: rgba(255, 255, 255, 0.1);
 	border: 1px solid rgba(255, 255, 255, 0.2);
 	color: white;
 	cursor: pointer;
 	user-select: none;
-	padding: 4px 6px;
+	padding: 3px 5px;
 	margin-left: 10px;
 	border-radius: 4px;
 	transition: background-color 0.3s;
-	min-width: 60px;
+	min-width: 45px;
+	text-align: center;
   }
   
   #header-language-select:hover {
