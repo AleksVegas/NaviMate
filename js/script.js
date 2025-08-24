@@ -39,7 +39,7 @@ function toggleTheme() {
   
   // Обновляем переключатель в настройках
   if (themeSwitch) {
-    themeSwitch.value = document.body.classList.contains("dark") ? "dark" : "light";
+    themeSwitch.checked = document.body.classList.contains("dark");
   }
 }
 
@@ -65,19 +65,16 @@ if (themeBtnHeader) {
 }
 if (themeSwitch) {
   const isDark = document.body.classList.contains("dark");
-  themeSwitch.value = isDark ? "dark" : "light";
+  themeSwitch.checked = isDark;
 }
 
 if (themeBtnHeader) {
   themeBtnHeader.addEventListener("click", toggleTheme);
 }
 if (themeSwitch) {
-  themeSwitch.value = document.body.classList.contains("dark") ? "dark" : "light";
+  themeSwitch.checked = document.body.classList.contains("dark");
   themeSwitch.addEventListener("change", () => {
-    const isDark = themeSwitch.value === "dark";
-    if (isDark !== document.body.classList.contains("dark")) {
-      toggleTheme();
-    }
+    toggleTheme();
   });
 }
 

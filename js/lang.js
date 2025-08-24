@@ -430,6 +430,7 @@ function updateArrivalSection() {
     }
     // Устанавливаем атрибут lang для форматирования
     startTimeInput.setAttribute('lang', lang);
+    startTimeInput.setAttribute('data-date-format', lang === 'ru' ? 'dd.mm.yyyy' : 'mm/dd/yyyy');
   }
   if (desiredTimeInput) {
     desiredTimeInput.setAttribute('data-lang', lang);
@@ -441,6 +442,7 @@ function updateArrivalSection() {
     }
     // Устанавливаем атрибут lang для форматирования
     desiredTimeInput.setAttribute('lang', lang);
+    desiredTimeInput.setAttribute('data-date-format', lang === 'ru' ? 'dd.mm.yyyy' : 'mm/dd/yyyy');
   }
   
   // Обновляем кнопки
@@ -489,5 +491,5 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMeetingBlocks();
     updateArrivalSection();
     updateCalculationResults();
-  }, 1000);
+  }, 100);
 });
