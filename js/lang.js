@@ -432,7 +432,7 @@ function updateArrivalSection() {
     }
     // Устанавливаем атрибут lang для форматирования
     startTimeInput.setAttribute('lang', lang);
-    console.log('Updated startTimeInput lang to:', lang);
+    console.log('Updated startTimeInput lang to:', lang, 'for element:', startTimeInput);
   }
   if (desiredTimeInput) {
     desiredTimeInput.setAttribute('data-lang', lang);
@@ -492,5 +492,5 @@ document.addEventListener("DOMContentLoaded", () => {
     updateMeetingBlocks();
     updateArrivalSection();
     updateCalculationResults();
-  }, 500);
+  }, 200);
 });

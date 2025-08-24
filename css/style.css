@@ -402,7 +402,7 @@ input:checked + .slider {
 }
 
 input:checked + .slider::before {
-  transform: translateX(22px) translateY(-50%);
+  transform: translateX(24px) translateY(-50%);
 }
 
 /* Тёмная тема */
