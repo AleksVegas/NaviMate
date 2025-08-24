@@ -76,7 +76,7 @@ let prevStartKm = null;
 let prevEndKm = null;
 
 function calculateArrival() {
-  const t = window.translations[currentLang];
+  const t = window.translations[currentLang] || {};
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   const speed = parseFloat(document.getElementById("speedArrival").value);
@@ -190,7 +190,7 @@ resultDiv.innerHTML = `
 }
 
 function calculateRecommendedSpeed() {
-  const t = window.translations[currentLang];
+  const t = window.translations[currentLang] || {};
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   const startTimeStr = document.getElementById("startTimeArrival").value;
@@ -271,7 +271,7 @@ function calculateRecommendedSpeed() {
 
 
     function showBorderDelays(startKm, endKm) {
-    const t = window.translations[currentLang];
+    const t = window.translations[currentLang] || {};
     const container = document.getElementById("borderDelaysSection");
     container.innerHTML = "";
 
