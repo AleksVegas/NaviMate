@@ -54,8 +54,6 @@ window.translations = {
     distance: "Расстояние",
     borderDelays: "Пограничные задержки",
     lockDelays: "Задержки на шлюзах",
-    borderDelaysEditor: "🛃 Редактирование пограничных задержек",
-    borderDelaysDescription: "Настройте задержки на границах (в часах). Оставьте 0 для пропуска границы.",
     
 
     // --- Настройки ---
@@ -212,8 +210,6 @@ window.translations = {
     distance: "Distance",
     borderDelays: "Border delays",
     lockDelays: "Lock delays",
-    borderDelaysEditor: "🛃 Border Delays Editor",
-    borderDelaysDescription: "Configure border delays (in hours). Leave 0 to skip border.",
 
     // --- Settings ---
     settingsHeading: "⚙️ Settings",
@@ -549,12 +545,7 @@ function updateArrivalSection() {
     });
   }
   
-  // Обновляем редактор задержек
-  const borderDelaysEditor = document.querySelector('#borderDelaysSection h3[data-i18n="borderDelaysEditor"]');
-  if (borderDelaysEditor) borderDelaysEditor.innerHTML = t.borderDelaysEditor || '🛃 Редактирование пограничных задержек';
-  
-  const borderDelaysDescription = document.querySelector('#borderDelaysSection p[data-i18n="borderDelaysDescription"]');
-  if (borderDelaysDescription) borderDelaysDescription.innerHTML = t.borderDelaysDescription || 'Настройте задержки на границах (в часах). Оставьте 0 для пропуска границы.';
+
 }
 
 

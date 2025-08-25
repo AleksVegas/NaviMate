@@ -147,9 +147,26 @@ function calculateArrival() {
   });
   travelHours += borderDelayTotal;
 
-  const bordersInfo = passedBorders.length > 0
-    ? "<br><strong>" + (t.borderDelays || 'Пограничные задержки') + ":</strong><br>" + passedBorders.join("<br>")
-    : "";
+  // Создаем редактируемые поля для задержек
+  let bordersInfo = "";
+  if (passedBorders.length > 0) {
+    bordersInfo = "<br><strong>" + (t.borderDelays || 'Пограничные задержки') + ":</strong><br>";
+    
+    relevantBorders.forEach(border => {
+      const inputId = border.nameKey;
+      const input = document.getElementById(inputId);
+      const delay = input ? parseFloat(input.value) || 0 : border.defaultDelay;
+      
+      if (delay > 0) {
+        const borderName = t[border.nameKey] || border.nameKey;
+        bordersInfo += `<div class="border-delay-item">
+          <span>${borderName} — задержка </span>
+          <input type="number" class="border-delay-input" data-border="${inputId}" value="${delay}" min="0" max="24" step="0.5" style="width: 60px; margin: 0 5px;">
+          <span> ${pluralizeHours(delay)}</span>
+        </div>`;
+      }
+    });
+  }
 
   if (workHours < 24) {
     const fullShifts = Math.floor(travelHours / workHours);
@@ -219,7 +236,7 @@ function calculateRecommendedSpeed() {
     }
   });
 
-  // Используем значения из редактора задержек на границах
+  // Используем значения из скрытых полей задержек
   let borderDelayTotal = 0;
   const relevantBorders = borderPoints.filter(b =>
     (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
@@ -288,16 +305,30 @@ window.addEventListener('DOMContentLoaded', () => {
     updateArrivalSection();
   }
 
-  // Добавляем обработчики для автоматического пересчета при изменении задержек
-  const borderInputs = document.querySelectorAll('#borderDelaysSection input[type="number"]');
-  borderInputs.forEach(input => {
-    input.addEventListener('change', () => {
-      // Пересчитываем только если есть результат
+  // Добавляем обработчики для редактируемых полей задержек
+  document.addEventListener('change', (e) => {
+    if (e.target.classList.contains('border-delay-input')) {
+      const borderId = e.target.getAttribute('data-border');
+      const newValue = parseFloat(e.target.value) || 0;
+      
+      // Обновляем скрытое поле
+      const hiddenInput = document.getElementById(borderId);
+      if (hiddenInput) {
+        hiddenInput.value = newValue;
+      }
+      
+      // Обновляем склонение в тексте
+      const spanElement = e.target.nextElementSibling;
+      if (spanElement && spanElement.tagName === 'SPAN') {
+        spanElement.textContent = ' ' + pluralizeHours(newValue);
+      }
+      
+      // Пересчитываем результат
       const resultDiv = document.getElementById('resultArrival');
       if (resultDiv && resultDiv.innerHTML.trim() !== '') {
         calculateArrival();
       }
-    });
+    }
   });
 
 });

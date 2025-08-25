@@ -14,8 +14,8 @@
     <button id="menu-toggle" aria-label="Открыть меню ☰">☰</button>
     <h1>NaviMate</h1>  
     <select id="header-language-select" title="Выбрать язык" aria-label="Выбрать язык">
-      <option value="ru">🇷🇺 RU</option>
-      <option value="en">🇺🇸 EN</option>
+      <option value="ru">RU</option>
+      <option value="en">EN</option>
     </select>
     <button id="toggle-theme" title="Переключить тему" aria-label="Переключить тему">🌙</button>
   </header>    <nav id="sidebar" class="sidebar-closed" aria-label="Главное меню">  
@@ -35,44 +35,6 @@
     <!--Раздел 2 -->
    <section id="arrival-calc" class="section">
   <h2 data-i18n="arrivalHeading">Расчёт времени прибытия</h2>
-  
-  <!-- Редактор задержек на границах -->
-  <div class="block" id="borderDelaysSection">
-    <h3 data-i18n="borderDelaysEditor">🛃 Редактирование пограничных задержек</h3>
-    <p data-i18n="borderDelaysDescription">Настройте задержки на границах (в часах). Оставьте 0 для пропуска границы.</p>
-    
-    <div class="grid">
-      <div>
-        <label for="borderRomaniaGalati">🇷🇴 Румыния: Галац (км 150):</label>
-        <input type="number" id="borderRomaniaGalati" value="2" min="0" max="24" step="0.5">
-      </div>
-      <div>
-        <label for="borderRomaniaGiurgiu">🇷🇴 Румыния: Джурджу (км 497):</label>
-        <input type="number" id="borderRomaniaGiurgiu" value="0" min="0" max="24" step="0.5">
-      </div>
-      <div>
-        <label for="borderBulgariaRuse">🇧🇬 Болгария: Русе (км 495):</label>
-        <input type="number" id="borderBulgariaRuse" value="0" min="0" max="24" step="0.5">
-      </div>
-      <div>
-        <label for="borderRomaniaTurnu">🇷🇴 Румыния: Турну-Северин (км 931):</label>
-        <input type="number" id="borderRomaniaTurnu" value="0" min="0" max="24" step="0.5">
-      </div>
-      <div>
-        <label for="borderSerbiaVeliko">🇷🇸 Сербия: Велико-Градиште (км 1050):</label>
-        <input type="number" id="borderSerbiaVeliko" value="2" min="0" max="24" step="0.5">
-      </div>
-      <div>
-        <label for="borderSerbiaBezdan">🇷🇸 Сербия: Бездан (км 1433):</label>
-        <input type="number" id="borderSerbiaBezdan" value="2" min="0" max="24" step="0.5">
-      </div>
-      <div>
-        <label for="borderHungaryMohacs">🇭🇺 Венгрия: Мохач (км 1446):</label>
-        <input type="number" id="borderHungaryMohacs" value="2" min="0" max="24" step="0.5">
-      </div>
-    </div>
-  </div>
-
   <div class="block">
 
     <label for="startKmArrival" data-i18n="startKm">Начальный километр (км):</label>
@@ -99,6 +61,15 @@
     <button class="calc-btn" onclick="calculateArrival()" data-i18n="btnArrival">Рассчитать время прибытия</button>
 
     <div class="output" id="resultArrival"></div>
+    
+    <!-- Скрытые поля для хранения значений задержек -->
+    <input type="hidden" id="borderRomaniaGalati" value="2">
+    <input type="hidden" id="borderRomaniaGiurgiu" value="0">
+    <input type="hidden" id="borderBulgariaRuse" value="0">
+    <input type="hidden" id="borderRomaniaTurnu" value="0">
+    <input type="hidden" id="borderSerbiaVeliko" value="2">
+    <input type="hidden" id="borderSerbiaBezdan" value="2">
+    <input type="hidden" id="borderHungaryMohacs" value="2">
 
     <div id="desiredBlockArrival" style="display:none; margin-top: 30px; padding-top: 20px; border-top: 1px solid #ccc;">
       <label for="desiredArrivalTimeArrival" data-i18n="desiredArrival">Желаемое время прибытия (если хотите получить рекомендованную скорость):</label>
