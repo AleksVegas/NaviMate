@@ -615,8 +615,8 @@ body.dark .settings-row select {
 }
 
 .border-delay-item span:first-child {
-  flex: 1;
-  margin-right: 4px;
+  /* Убираем flex: 1 чтобы название порта не растягивалось */
+  margin-right: 2px;
 }
 
 .border-delay-input {
@@ -632,7 +632,7 @@ body.dark .settings-row select {
   max-width: 30px;
   height: 20px;
   line-height: 16px;
-  margin: 0 4px;
+  margin: 0 2px;
   font-weight: 500;
 }
 
