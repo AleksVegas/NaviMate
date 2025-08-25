@@ -608,9 +608,14 @@ body.dark .settings-row select {
 .border-delay-item {
   display: flex;
   align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
   font-size: 14px;
   line-height: 1.4;
+}
+
+.border-delay-item span:first-child {
+  flex: 1 1 auto;
 }
 
 .border-delay-input {
@@ -621,7 +626,8 @@ body.dark .settings-row select {
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
-  width: 40px;
+  width: 7%;
+  min-width: 40px;
   margin: 0 3px;
 }
 

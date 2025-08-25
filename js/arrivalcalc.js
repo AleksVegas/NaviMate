@@ -152,23 +152,20 @@ function calculateArrival() {
 
   // Создаем редактируемые поля для задержек
   let bordersInfo = "";
-  if (passedBorders.length > 0) {
+  if (relevantBorders.length > 0) {
     bordersInfo = "<br><div class='border-delays-header'><strong>" + (t.borderDelays || 'Пограничные задержки') + ":</strong></div>";
-    
+
     relevantBorders.forEach(border => {
       const inputId = border.nameKey;
       const input = document.getElementById(inputId);
       const delay = input ? parseFloat(input.value) || 0 : border.defaultDelay;
-      
-      if (delay > 0) {
-        const borderName = t[border.nameKey] || border.nameKey;
-        const delayText = t.delay || 'задержка';
-        bordersInfo += `<div class="border-delay-item">
-          <span>${borderName} — ${delayText} </span>
-          <input type="number" class="border-delay-input" data-border="${inputId}" value="${delay}" min="0" max="24" step="0.5">
-          <span> ${pluralizeHours(delay)}</span>
-        </div>`;
-      }
+
+      const borderName = t[border.nameKey] || border.nameKey;
+      bordersInfo += `<div class="border-delay-item">
+        <span>${borderName}</span>
+        <input type="number" class="border-delay-input" data-border="${inputId}" value="${delay}" min="0" max="24" step="0.5">
+        <span>${pluralizeHours(delay)}</span>
+      </div>`;
     });
   }
 
