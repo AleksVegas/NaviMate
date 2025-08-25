@@ -140,7 +140,7 @@ window.translations = {
     borderSerbiaBezdan: "🇷🇸 Сербия: Бездан",
     borderHungaryMohacs: "🇭🇺 Венгрия: Мохач",
     borderCroatiaVukovar: "🇭🇷 Хорватия: Вуковар",
-    borderSlovakiaKomarno: "🇸🇰 Словакия: Комарно",
+  
     borderAustriaVienna: "🇦🇹 Австрия: Вена",
   
     // --- Раздел "Приватность" ---
@@ -298,7 +298,7 @@ window.translations = {
     borderSerbiaBezdan: "🇷🇸 Serbia: Bezdan",
     borderHungaryMohacs: "🇭🇺 Hungary: Mohacs",
     borderCroatiaVukovar: "🇭🇷 Croatia: Vukovar",
-    borderSlovakiaKomarno: "🇸🇰 Slovakia: Komarno",
+
     borderAustriaVienna: "🇦🇹 Austria: Vienna",
   
     // --- Section: Privat ---

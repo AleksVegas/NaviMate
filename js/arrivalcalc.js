@@ -25,11 +25,21 @@ function pluralizeHours(n) {
   }
   
   // Для русского языка правильное склонение
-  if (Number.isInteger(n)) {
+  // Для дробных чисел используем склонение от целой части
+  const integerPart = Math.floor(n);
+  const decimalPart = n - integerPart;
+  
+  if (decimalPart > 0) {
+    // Для дробных чисел (например, 1.5, 2.5) используем "часа"
+    if (integerPart === 1) return t.hour || 'час';
+    if ([2, 3, 4].includes(integerPart % 10) && ![12, 13, 14].includes(integerPart % 100)) return t.hours || 'часа';
+    return t.hoursMany || 'часов';
+  } else {
+    // Для целых чисел обычная логика
     if (n % 10 === 1 && n % 100 !== 11) return t.hour || 'час';
     if ([2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100)) return t.hours || 'часа';
+    return t.hoursMany || 'часов';
   }
-  return t.hoursMany || 'часов';
 }
 
 const locks = [
@@ -56,7 +66,6 @@ const borderPoints = [
   { nameKey: "borderSerbiaBezdan", km: 1433, defaultDelay: 2 },
   { nameKey: "borderHungaryMohacs", km: 1446, defaultDelay: 2 },
   { nameKey: "borderCroatiaVukovar", km: 1385, defaultDelay: 0 },
-  { nameKey: "borderSlovakiaKomarno", km: 1795, defaultDelay: 0 },
   { nameKey: "borderAustriaVienna", km: 1930, defaultDelay: 0 },
 ];
 
