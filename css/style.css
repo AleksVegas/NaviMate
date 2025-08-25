@@ -606,39 +606,40 @@ body.dark .settings-row select {
 
 /* Стили для редактируемых полей задержек в выводе */
 .border-delay-item {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 4px;
-  margin-right: 12px;
-  margin-bottom: 4px;
+  gap: 6px;
+  margin-bottom: 6px;
   font-size: 14px;
   line-height: 1.4;
-  white-space: nowrap;
 }
 
 .border-name {
   /* Название порта */
+  font-weight: normal;
 }
 
 .border-delay-input {
-  padding: 1px 2px;
+  padding: 2px 4px;
   border: 1px solid var(--input-border);
-  border-radius: 2px;
-  font-size: 12px;
+  border-radius: 3px;
+  font-size: 13px;
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
-  width: 28px;
-  min-width: 28px;
-  max-width: 28px;
-  height: 18px;
-  line-height: 16px;
+  width: 32px;
+  min-width: 32px;
+  max-width: 32px;
+  height: 22px;
+  line-height: 18px;
   font-weight: 500;
+  margin-top: 2px;
 }
 
 .border-unit {
   /* Единицы измерения */
   white-space: nowrap;
+  font-weight: normal;
 }
 
 .border-delay-input:focus {
