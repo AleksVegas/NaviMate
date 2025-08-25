@@ -604,12 +604,22 @@ body.dark .settings-row select {
   border: 1px solid #555;
 }
 
+/* Календарь в тёмной теме для datetime-local */
+body.dark input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(1.2);
+}
+
+/* Firefox calendar icon */
+body.dark input[type="datetime-local"]::-moz-focus-inner {
+  filter: invert(1) brightness(1.2);
+}
+
 /* Стили для редактируемых полей задержек в выводе */
 .border-delay-item {
   display: flex;
   align-items: center;
   gap: 1px;
-  margin-bottom: 1px;
+  margin-bottom: 0;
   font-size: inherit;
   line-height: inherit;
   font-weight: inherit;
@@ -617,24 +627,24 @@ body.dark .settings-row select {
 
 .border-name {
   /* Название порта */
-  font-weight: normal;
+  font-weight: 600;
 }
 
 .border-delay-input {
-  padding: 0 2px;
+  padding: 0 4px;
   border: 1px solid var(--input-border);
   border-radius: 2px;
   font-size: inherit;
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
-  width: 30px;
-  min-width: 30px;
-  max-width: 30px;
+  width: 26px;
+  min-width: 26px;
+  max-width: 26px;
   height: 18px;
   line-height: 18px;
   font-weight: normal;
-  margin-top: 2px;
+  margin: 2px 4px 0 4px;
   -moz-appearance: textfield;
 }
 
