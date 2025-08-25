@@ -107,7 +107,6 @@ window.translations = {
     arrivalFeature3: "Автоматически определяется направление движения.",
     
     // --- Единицы времени ---
-    delay: "задержка",
     hour: "час",
     hours: "часа",
     hoursMany: "часов",
@@ -266,7 +265,6 @@ window.translations = {
     arrivalFeature3: "Direction of movement is determined automatically.",
     
     // --- Time units ---
-    delay: "delay",
     hour: "hour",
     hours: "hours",
     hoursMany: "hours",

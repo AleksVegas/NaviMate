@@ -1,26 +1,4 @@
-// Проверка offline и standalone
-function isStandalone() {
-  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-}
-
-function showOfflineNotice() {
-  const banner = document.createElement('div');
-  banner.textContent = '⚠️ Связь с цивилизацией потеряна. Некоторые функции могут быть недоступны.';
-  banner.style.position = 'fixed';
-  banner.style.bottom = '0';
-  banner.style.left = '0';
-  banner.style.right = '0';
-  banner.style.backgroundColor = '#d9534f';
-  banner.style.color = 'white';
-  banner.style.padding = '10px';
-  banner.style.textAlign = 'center';
-  banner.style.zIndex = '10000';
-  document.body.appendChild(banner);
-}
-
-if (!navigator.onLine && !isStandalone()) {
-  showOfflineNotice();
-}
+// Offline banner is handled in index.html via #offline-banner
 
 // Тема и язык
 const themeBtnHeader = document.getElementById("toggle-theme");
@@ -308,7 +286,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Ждем загрузки переводов
   setTimeout(() => {
     const container = document.getElementById('blocks');
-    for (let i = 0; i < 3; i++) container.appendChild(createBlock(i));
+    for (let i = 0; i < 3; i++) {
+      const block = createBlock(i);
+      const resultEl = block.querySelector(`#result_${i}`);
+      if (resultEl) {
+        resultEl.setAttribute('aria-live', 'polite');
+        resultEl.setAttribute('role', 'status');
+      }
+      container.appendChild(block);
+    }
 
     // Применяем переводы к созданным блокам
     if (typeof updateMeetingBlocks === 'function') {

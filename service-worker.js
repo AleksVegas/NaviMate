@@ -1,8 +1,7 @@
-const CACHE_NAME = 'navimate-cache-v2';
+const CACHE_NAME = 'navimate-cache-v3';
 const OFFLINE_URL = '/offline.html';
 
 const urlsToCache = [
-  '/',
   '/index.html',
   '/offline.html',
   '/css/style.css',
@@ -42,12 +41,14 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   if (event.request.mode === 'navigate') {
     event.respondWith(
-      fetch(event.request)
-        .catch(() => caches.match(OFFLINE_URL))
+      caches.match('/index.html').then(cached => {
+        return cached || fetch(event.request).catch(() => caches.match(OFFLINE_URL));
+      })
     );
-  } else {
-    event.respondWith(
-      caches.match(event.request).then(response => response || fetch(event.request))
-    );
+    return;
   }
+
+  event.respondWith(
+    caches.match(event.request).then(response => response || fetch(event.request))
+  );
 });

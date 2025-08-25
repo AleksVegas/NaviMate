@@ -78,7 +78,7 @@
   <h4 data-i18n="toolPrivacy">🔐 Privacy and Offline Mode</h4>
   <ul>
     <li data-i18n="privacyFeature1">All calculations are performed <strong>locally in your browser</strong>.</li>
-    <li data-i18n="privacyFeature2">Data <strong>is not saved</strong> and <strong>нnot transmitted </strong> to the server.</li>
+    <li data-i18n="privacyFeature2">Data <strong>is not saved</strong> and <strong>not transmitted</strong> to the server.</li>
     <li data-i18n="privacyFeature3">The app works <strong>offline</strong> after first opening.</li>
   </ul>  
   
