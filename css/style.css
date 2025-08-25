@@ -608,10 +608,10 @@ body.dark .settings-row select {
 .border-delay-item {
   display: flex;
   align-items: center;
-  gap: 4px;
-  margin-bottom: 4px;
-  font-size: 14px;
-  line-height: 1.4;
+  gap: 2px;
+  margin-bottom: 2px;
+  font-size: inherit;
+  line-height: inherit;
 }
 
 .border-name {
@@ -620,20 +620,28 @@ body.dark .settings-row select {
 }
 
 .border-delay-input {
-  padding: 1px 2px;
+  padding: 0 2px;
   border: 1px solid var(--input-border);
   border-radius: 2px;
-  font-size: 14px;
+  font-size: inherit;
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
-  width: 35px;
-  min-width: 35px;
-  max-width: 35px;
-  height: 20px;
+  width: 34px;
+  min-width: 34px;
+  max-width: 34px;
+  height: 18px;
   line-height: 18px;
   font-weight: normal;
-  margin-top: 0;
+  margin-top: 1px;
+  -moz-appearance: textfield;
+}
+
+/* Прячем спиннеры на десктопах (Chrome, Edge, Safari) */
+.border-delay-input::-webkit-outer-spin-button,
+.border-delay-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .border-unit {
