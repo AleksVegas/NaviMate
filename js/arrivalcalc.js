@@ -103,7 +103,7 @@ function calculateArrival() {
     resultDiv.innerHTML = t.errorData;
     return;
   }
-  if (speed < 0.1 || speed > 100) {
+  if (speed < 0.1 || speed > 70) {
     resultDiv.innerHTML = t.errorSpeed;
     return;
   }
