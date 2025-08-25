@@ -55,6 +55,9 @@ const borderPoints = [
   { nameKey: "borderSerbiaVeliko", km: 1050, defaultDelay: 2 },
   { nameKey: "borderSerbiaBezdan", km: 1433, defaultDelay: 2 },
   { nameKey: "borderHungaryMohacs", km: 1446, defaultDelay: 2 },
+  { nameKey: "borderCroatiaVukovar", km: 1385, defaultDelay: 0 },
+  { nameKey: "borderSlovakiaKomarno", km: 1795, defaultDelay: 0 },
+  { nameKey: "borderAustriaVienna", km: 1930, defaultDelay: 0 },
 ];
 
 let borderDelaysInitialized = false;
@@ -150,7 +153,7 @@ function calculateArrival() {
   // Создаем редактируемые поля для задержек
   let bordersInfo = "";
   if (passedBorders.length > 0) {
-    bordersInfo = "<br><strong>" + (t.borderDelays || 'Пограничные задержки') + ":</strong><br>";
+    bordersInfo = "<br><div class='border-delays-header'><strong>" + (t.borderDelays || 'Пограничные задержки') + ":</strong></div>";
     
     relevantBorders.forEach(border => {
       const inputId = border.nameKey;
@@ -159,9 +162,10 @@ function calculateArrival() {
       
       if (delay > 0) {
         const borderName = t[border.nameKey] || border.nameKey;
+        const delayText = t.delay || 'задержка';
         bordersInfo += `<div class="border-delay-item">
-          <span>${borderName} — задержка </span>
-          <input type="number" class="border-delay-input" data-border="${inputId}" value="${delay}" min="0" max="24" step="0.5" style="width: 60px; margin: 0 5px;">
+          <span>${borderName} — ${delayText} </span>
+          <input type="number" class="border-delay-input" data-border="${inputId}" value="${delay}" min="0" max="24" step="0.5">
           <span> ${pluralizeHours(delay)}</span>
         </div>`;
       }

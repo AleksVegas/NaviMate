@@ -54,6 +54,7 @@ window.translations = {
     distance: "Расстояние",
     borderDelays: "Пограничные задержки",
     lockDelays: "Задержки на шлюзах",
+    delay: "задержка",
     
 
     // --- Настройки ---
@@ -139,6 +140,9 @@ window.translations = {
     borderSerbiaVeliko: "🇷🇸 Сербия: Велико-Градиште",
     borderSerbiaBezdan: "🇷🇸 Сербия: Бездан",
     borderHungaryMohacs: "🇭🇺 Венгрия: Мохач",
+    borderCroatiaVukovar: "🇭🇷 Хорватия: Вуковар",
+    borderSlovakiaKomarno: "🇸🇰 Словакия: Комарно",
+    borderAustriaVienna: "🇦🇹 Австрия: Вена",
   
     // --- Раздел "Приватность" ---
     privacyFeature1: "Все расчёты выполняются <strong>локально в вашем браузере</strong>.",
@@ -210,6 +214,7 @@ window.translations = {
     distance: "Distance",
     borderDelays: "Border delays",
     lockDelays: "Lock delays",
+    delay: "delay",
 
     // --- Settings ---
     settingsHeading: "⚙️ Settings",
@@ -294,6 +299,9 @@ window.translations = {
     borderSerbiaVeliko: "🇷🇸 Serbia: Veliko-Gradiste",
     borderSerbiaBezdan: "🇷🇸 Serbia: Bezdan",
     borderHungaryMohacs: "🇭🇺 Hungary: Mohacs",
+    borderCroatiaVukovar: "🇭🇷 Croatia: Vukovar",
+    borderSlovakiaKomarno: "🇸🇰 Slovakia: Komarno",
+    borderAustriaVienna: "🇦🇹 Austria: Vienna",
   
     // --- Section: Privat ---
     privacyFeature1: "All calculations are performed <strong>locally in your browser</strong>.",

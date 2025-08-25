@@ -60,6 +60,7 @@ body {
   -moz-appearance: none;
   appearance: none;
   background-image: none !important;
+  outline: none;
 }
   
   #header-language-select:hover {
@@ -72,6 +73,9 @@ body {
   padding: 2px;
   border: none;
   outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
   
   /* Темная тема для селектора языка */
@@ -559,7 +563,7 @@ input[type="datetime-local"][data-lang="en"] {
 }
 
 /* Обеспечиваем отображение эмодзи флагов на всех устройствах */
-.output {
+.output, .border-delay-item {
   font-family: "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", "Android Emoji", "EmojiSymbols", "EmojiOne Mozilla", "Twemoji Mozilla", "Segoe UI Symbol", Arial, sans-serif;
   font-feature-settings: "liga" 1, "kern" 1;
   -webkit-font-feature-settings: "liga" 1, "kern" 1;
@@ -604,22 +608,31 @@ body.dark .settings-row select {
 .border-delay-item {
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 8px;
   font-size: 14px;
+  line-height: 1.4;
 }
 
 .border-delay-input {
-  padding: 2px 4px;
+  padding: 1px 3px;
   border: 1px solid var(--input-border);
-  border-radius: 3px;
-  font-size: 12px;
+  border-radius: 2px;
+  font-size: 11px;
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
+  width: 40px;
+  margin: 0 3px;
 }
 
 .border-delay-input:focus {
   outline: none;
   border-color: var(--btn-primary);
   box-shadow: 0 0 0 1px rgba(47, 85, 151, 0.2);
+}
+
+/* Отступ для заголовка пограничных задержек */
+.border-delays-header {
+  margin-top: 15px;
+  margin-bottom: 8px;
 }
