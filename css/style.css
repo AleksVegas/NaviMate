@@ -606,7 +606,8 @@ body.dark .settings-row select {
 
 /* Стили для редактируемых полей задержек в выводе */
 .border-delay-item {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 7% auto;
   align-items: center;
   gap: 8px;
   margin-bottom: 8px;
@@ -614,9 +615,7 @@ body.dark .settings-row select {
   line-height: 1.4;
 }
 
-.border-delay-item span:first-child {
-  flex: 1 1 auto;
-}
+.border-delay-item span:first-child { }
 
 .border-delay-input {
   padding: 1px 3px;
@@ -626,9 +625,13 @@ body.dark .settings-row select {
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
-  width: 7%;
+  width: 100%;
   min-width: 40px;
   margin: 0 3px;
+}
+
+.border-delay-item span:last-child {
+  white-space: nowrap;
 }
 
 .border-delay-input:focus {
