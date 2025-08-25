@@ -186,17 +186,17 @@ function createBlock(index) {
 
   block.innerHTML = `
     <label>${enemyLabel}: ${posLabel}</label>
-    <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="${phEnemyPos}">
+    <input type="number" id="enemy_pos_${index}" step="0.1" placeholder="${phEnemyPos}" min="0" max="3000">
     
     <label>${enemyLabel}: ${speedLabel}</label>
-    <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="${phEnemySpeed}">
+    <input type="number" id="enemy_speed_${index}" step="0.1" placeholder="${phEnemySpeed}" min="0.1" max="70">
     
     <label>${ourLabel}: ${posLabel}</label>
-    <input type="number" id="our_pos_${index}" step="0.1" placeholder="${phOurPos}">
+    <input type="number" id="our_pos_${index}" step="0.1" placeholder="${phOurPos}" min="0" max="3000">
     ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurPos(${index})">${copyPosText}</button>` : ''}
     
     <label>${ourLabel}: ${speedLabel}</label>
-    <input type="number" id="our_speed_${index}" step="0.1" placeholder="${phOurSpeed}">
+    <input type="number" id="our_speed_${index}" step="0.1" placeholder="${phOurSpeed}" min="0.1" max="70">
     ${index > 0 ? `<button type="button" class="btn-copy" onclick="copyOurSpeed(${index})">${copySpeedText}</button>` : ''}
     
     <div style="margin-top:10px;">
@@ -223,6 +223,11 @@ function calculate(index) {
 
   if (os <= 0.1 || os > 70 || es <= 0.1 || es > 70) {
     result.innerText = "⚠️ Скорость судов должна быть от 0.1 до 70 км/ч.";
+    return;
+  }
+
+  if (ep < 0 || ep > 3000 || op < 0 || op > 3000) {
+    result.innerText = "⚠️ Километры должны быть от 0 до 3000 км.";
     return;
   }
 

@@ -107,6 +107,10 @@ function calculateArrival() {
     resultDiv.innerHTML = t.errorSpeed;
     return;
   }
+  if (startKm < 0 || startKm > 3000 || endKm < 0 || endKm > 3000) {
+    resultDiv.innerHTML = "⚠️ Километры должны быть от 0 до 3000 км.";
+    return;
+  }
 
   const startTime = new Date(startTimeStr);
   if (isNaN(startTime.getTime())) {
@@ -219,6 +223,10 @@ function calculateRecommendedSpeed() {
 
   if (isNaN(startKm) || isNaN(endKm) || !startTimeStr || !desiredArrivalStr) {
     resultDiv.innerHTML = t.errorData;
+    return;
+  }
+  if (startKm < 0 || startKm > 3000 || endKm < 0 || endKm > 3000) {
+    resultDiv.innerHTML = "⚠️ Километры должны быть от 0 до 3000 км.";
     return;
   }
 

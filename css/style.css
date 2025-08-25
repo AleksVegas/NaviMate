@@ -626,8 +626,9 @@ body.dark .settings-row select {
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
-  width: 35px;
-  min-width: 35px;
+  width: 25px;
+  min-width: 25px;
+  max-width: 25px;
   margin: 0 2px;
 }
 
