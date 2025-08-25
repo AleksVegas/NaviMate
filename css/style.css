@@ -615,7 +615,7 @@ body.dark .settings-row select {
 }
 
 .border-delay-item span:first-child {
-  flex: 1;
+  /* Убираем flex: 1 чтобы поле часов не растягивалось */
 }
 
 .border-delay-input {

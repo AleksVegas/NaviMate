@@ -25,15 +25,16 @@ function pluralizeHours(n) {
   }
   
   // Для русского языка правильное склонение
-  // Для дробных чисел используем склонение от целой части
   const integerPart = Math.floor(n);
   const decimalPart = n - integerPart;
   
   if (decimalPart > 0) {
-    // Для дробных чисел (например, 1.5, 2.5) используем "часа"
-    if (integerPart === 1) return t.hour || 'час';
-    if ([2, 3, 4].includes(integerPart % 10) && ![12, 13, 14].includes(integerPart % 100)) return t.hours || 'часа';
-    return t.hoursMany || 'часов';
+    // Для дробных чисел используем специальные правила
+    if (integerPart === 1) return t.hours || 'часа';  // 1.5 часа
+    if (integerPart === 2) return t.hours || 'часа';  // 2.5 часа
+    if (integerPart === 3) return t.hours || 'часа';  // 3.5 часа
+    if (integerPart === 4) return t.hours || 'часа';  // 4.5 часа
+    return t.hoursMany || 'часов';  // 5.5 часов, 6.5 часов и т.д.
   } else {
     // Для целых чисел обычная логика
     if (n % 10 === 1 && n % 100 !== 11) return t.hour || 'час';
