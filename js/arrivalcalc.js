@@ -124,7 +124,7 @@ function calculateArrival() {
     }
   });
 
-  // Используем фиксированные значения задержек на границах
+  // Используем значения из редактора задержек на границах
   let borderDelayTotal = 0;
   let passedBorders = [];
 
@@ -134,10 +134,15 @@ function calculateArrival() {
   );
 
   relevantBorders.forEach(border => {
-    if (border.defaultDelay > 0) {
-      borderDelayTotal += border.defaultDelay;
+    // Получаем значение из соответствующего input
+    const inputId = border.nameKey;
+    const input = document.getElementById(inputId);
+    const delay = input ? parseFloat(input.value) || 0 : border.defaultDelay;
+    
+    if (delay > 0) {
+      borderDelayTotal += delay;
       const borderName = t[border.nameKey] || border.nameKey;
-      passedBorders.push(`${borderName} — ${border.defaultDelay} ${pluralizeHours(border.defaultDelay)}`);
+      passedBorders.push(`${borderName} — ${delay} ${pluralizeHours(delay)}`);
     }
   });
   travelHours += borderDelayTotal;
@@ -214,17 +219,21 @@ function calculateRecommendedSpeed() {
     }
   });
 
-  const borderDelaysSection = document.getElementById("borderDelaysSection");
+  // Используем значения из редактора задержек на границах
   let borderDelayTotal = 0;
-  if (borderDelaysSection) {
-    const inputs = borderDelaysSection.querySelectorAll("input[type='number']");
-    inputs.forEach(input => {
-      const delay = parseFloat(input.value);
-      if (!isNaN(delay) && delay > 0) {
-        borderDelayTotal += delay;
-      }
-    });
-  }
+  const relevantBorders = borderPoints.filter(b =>
+    (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
+    (startKm > endKm && b.km <= startKm && b.km >= endKm)
+  );
+
+  relevantBorders.forEach(border => {
+    const inputId = border.nameKey;
+    const input = document.getElementById(inputId);
+    const delay = input ? parseFloat(input.value) || 0 : border.defaultDelay;
+    if (delay > 0) {
+      borderDelayTotal += delay;
+    }
+  });
 
   const totalAvailableMs = desiredArrival - startTime;
   let totalAvailableHours = totalAvailableMs / (1000 * 60 * 60);
@@ -279,6 +288,17 @@ window.addEventListener('DOMContentLoaded', () => {
     updateArrivalSection();
   }
 
+  // Добавляем обработчики для автоматического пересчета при изменении задержек
+  const borderInputs = document.querySelectorAll('#borderDelaysSection input[type="number"]');
+  borderInputs.forEach(input => {
+    input.addEventListener('change', () => {
+      // Пересчитываем только если есть результат
+      const resultDiv = document.getElementById('resultArrival');
+      if (resultDiv && resultDiv.innerHTML.trim() !== '') {
+        calculateArrival();
+      }
+    });
+  });
 
 });
 
