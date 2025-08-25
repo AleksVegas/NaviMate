@@ -176,9 +176,9 @@ function calculateArrival() {
 
       const borderName = t[border.nameKey] || border.nameKey;
       bordersInfo += `<div class="border-delay-item">
-        <span>${borderName}</span>
+        <span class="border-name">${borderName}</span>
         <input type="number" class="border-delay-input" data-border="${inputId}" value="${delay}" min="0" max="24" step="0.5">
-        <span>${pluralizeHours(delay)}</span>
+        <span class="border-unit">${pluralizeHours(delay)}</span>
       </div>`;
     });
   }
