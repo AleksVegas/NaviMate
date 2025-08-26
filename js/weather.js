@@ -46,7 +46,17 @@ class WeatherService {
       
     } catch (error) {
       console.error('Ошибка получения погоды:', error);
-      this.showError(this.getTranslation('weatherError'));
+      
+      // Более детальная обработка ошибок
+      if (error.code === 1) {
+        this.showError(this.getTranslation('geolocationError'));
+      } else if (error.code === 2) {
+        this.showError(this.getTranslation('gpsPermissionError'));
+      } else if (error.code === 3) {
+        this.showError(this.getTranslation('gpsTimeoutError'));
+      } else {
+        this.showError(this.getTranslation('weatherError'));
+      }
     } finally {
       this.getWeatherBtn.disabled = false;
       this.getWeatherBtn.textContent = this.getTranslation('getWeather');
@@ -118,10 +128,28 @@ class WeatherService {
     // Детали с описанием ветра по шкале Бофорта
     const windSpeed = data.wind.speed;
     const windDescription = this.getBeaufortDescription(windSpeed);
-    document.getElementById('weatherWind').textContent = `${windSpeed} м/с (${windDescription})`;
+    const lang = window.lang || 'ru';
+    const windUnit = lang === 'en' ? 'm/s' : 'м/с';
+    document.getElementById('weatherWind').textContent = `${windSpeed} ${windUnit} (${windDescription})`;
     document.getElementById('weatherWindDir').textContent = this.getWindDirection(data.wind.deg);
     document.getElementById('weatherHumidity').textContent = `${data.main.humidity}%`;
-    document.getElementById('weatherPressure').textContent = `${Math.round(data.main.pressure)} гПа`;
+    
+    // Видимость (если есть) или заменяем на УФ индекс
+    if (data.visibility) {
+      const visibilityKm = Math.round(data.visibility / 1000);
+      const lang = window.lang || 'ru';
+      const unit = lang === 'en' ? 'km' : 'км';
+      document.getElementById('weatherVisibility').textContent = `${visibilityKm} ${unit}`;
+    } else {
+      document.getElementById('weatherVisibility').textContent = '--';
+    }
+    
+    // УФ индекс (если есть)
+    if (data.uvi !== undefined) {
+      document.getElementById('weatherUvIndex').textContent = `${data.uvi}`;
+    } else {
+      document.getElementById('weatherUvIndex').textContent = '--';
+    }
     
     // Местоположение
     document.getElementById('weatherLocation').textContent = `📍 ${data.name}, ${data.sys.country}`;
