@@ -60,7 +60,7 @@ window.translations = {
 
     // --- Настройки ---
     settingsHeading: "⚙️ Настройки",
-    themeLabel: "🌗 Тема",
+    themeLabel: "🌗 Тема (день/ночь)",
     lightTheme: "Светлая",
     darkTheme: "Тёмная",
     langLabel: "🌍 Язык:",
@@ -374,6 +374,10 @@ function setLanguage(selectedLang) {
 
   const t = window.translations[lang] || {};
   
+  console.log('Setting language:', selectedLang);
+  console.log('Translations object:', t);
+  console.log('Found elements with data-i18n:', document.querySelectorAll("[data-i18n]").length);
+  
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
     if (t[key]) {
@@ -382,6 +386,9 @@ function setLanguage(selectedLang) {
       } else {
         el.innerHTML = t[key];
       }
+      console.log('Translated:', key, '->', t[key]);
+    } else {
+      console.log('Missing translation for key:', key);
     }
   });
 

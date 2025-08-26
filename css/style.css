@@ -573,15 +573,13 @@ input[type="datetime-local"][data-lang="en"] {
 .settings-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 12px;
   margin-bottom: 12px;
   flex-wrap: nowrap;
-  max-width: none;
 }
 
 /* Не позволяем чекбоксу авто-темы сжимать селектор */
-#toggle-theme-switch { flex: 1 1 auto; }
+#toggle-theme-switch { flex: 0 0 auto; }
 #theme-auto { flex: 0 0 auto; }
 
 /* Кнопка Поделиться — акцентная, справа */
@@ -599,10 +597,6 @@ input[type="datetime-local"][data-lang="en"] {
   margin-left: auto;
 }
 
-/* Не позволяем чекбоксу авто-темы сжимать селектор */
-#toggle-theme-switch { flex: 1 1 auto; }
-#theme-auto { flex: 0 0 auto; }
-
 /* Кнопка Поделиться — акцентная, справа */
 #btn-share-arrival {
   background-color: #6a1b9a;
@@ -614,7 +608,7 @@ input[type="datetime-local"][data-lang="en"] {
 .settings-row label {
   white-space: nowrap;
   font-size: 14px;
-  flex: 1;
+  flex: 0 0 auto;
 }
 
 .settings-row select {
@@ -624,8 +618,8 @@ input[type="datetime-local"][data-lang="en"] {
   border: 1px solid #ccc;
   background-color: #fff;
   color: #000;
-  flex: 1;
-  max-width: 160px;
+  flex: 0 0 auto;
+  min-width: 120px;
 }
 
 
