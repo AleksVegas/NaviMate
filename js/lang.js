@@ -122,7 +122,14 @@ window.translations = {
     forecastMorning: "Утро",
     forecastDay: "День",
     forecastEvening: "Вечер",
-    forecastNight: "Ночь"
+    forecastNight: "Ночь",
+    geolocationError: "Геолокация не поддерживается вашим браузером",
+    weatherError: "Не удалось получить погоду. Проверьте разрешения GPS.",
+    apiKeyNotFound: "API ключ не найден",
+    apiKeyError: "Неверный API ключ",
+    apiLimitError: "Превышен лимит запросов",
+    apiError: "Ошибка API",
+    weatherGeneralError: "Ошибка получения погоды. Проверьте координаты или попробуйте позже."
   
     // --- Раздел "Шлюзы и границы" ---
     lockFeature1: "Автоматически учитываются все ключевые шлюзы от <strong>Железных Ворот до Ашаха</strong>.",
@@ -293,7 +300,14 @@ window.translations = {
     forecastMorning: "Morning",
     forecastDay: "Day",
     forecastEvening: "Evening",
-    forecastNight: "Night"
+    forecastNight: "Night",
+    geolocationError: "Geolocation is not supported by your browser",
+    weatherError: "Failed to get weather. Check GPS permissions.",
+    apiKeyNotFound: "API key not found",
+    apiKeyError: "Invalid API key",
+    apiLimitError: "API request limit exceeded",
+    apiError: "API Error",
+    weatherGeneralError: "Error getting weather. Check coordinates or try again later."
   
     // --- Section: Locks and border ---
     lockFeature1: "Automatically accounts for all key locks from <strong>Iron Gates to Asah</strong>.",

@@ -23,7 +23,7 @@ class WeatherService {
   // Получение погоды по GPS
   async getWeather() {
     if (!navigator.geolocation) {
-      this.showError('Геолокация не поддерживается вашим браузером');
+      this.showError(this.getTranslation('geolocationError'));
       return;
     }
     
@@ -46,7 +46,7 @@ class WeatherService {
       
     } catch (error) {
       console.error('Ошибка получения погоды:', error);
-      this.showError('Не удалось получить погоду. Проверьте разрешения GPS.');
+      this.showError(this.getTranslation('weatherError'));
     } finally {
       this.getWeatherBtn.disabled = false;
       this.getWeatherBtn.textContent = this.getTranslation('getWeather');
@@ -67,7 +67,7 @@ class WeatherService {
   // Запрос к API OpenWeatherMap для текущей погоды
   async fetchWeather(lat, lon) {
     if (!this.apiKey) {
-      throw new Error('API ключ не найден');
+      throw new Error(this.getTranslation('apiKeyNotFound'));
     }
     
     const url = `${this.baseUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
@@ -75,11 +75,11 @@ class WeatherService {
     const response = await fetch(url);
     if (!response.ok) {
       if (response.status === 401) {
-        throw new Error('Неверный API ключ');
+        throw new Error(this.getTranslation('apiKeyError'));
       } else if (response.status === 429) {
-        throw new Error('Превышен лимит запросов');
+        throw new Error(this.getTranslation('apiLimitError'));
       } else {
-        throw new Error(`Ошибка API: ${response.status}`);
+        throw new Error(`${this.getTranslation('apiError')}: ${response.status}`);
       }
     }
     
@@ -89,7 +89,7 @@ class WeatherService {
   // Запрос к API OpenWeatherMap для прогноза
   async fetchForecast(lat, lon) {
     if (!this.apiKey) {
-      throw new Error('API ключ не найден');
+      throw new Error(this.getTranslation('apiKeyNotFound'));
     }
     
     const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
@@ -97,11 +97,11 @@ class WeatherService {
     const response = await fetch(url);
     if (!response.ok) {
       if (response.status === 401) {
-        throw new Error('Неверный API ключ');
+        throw new Error(this.getTranslation('apiKeyError'));
       } else if (response.status === 429) {
-        throw new Error('Превышен лимит запросов');
+        throw new Error(this.getTranslation('apiLimitError'));
       } else {
-        throw new Error(`Ошибка API: ${response.status}`);
+        throw new Error(`${this.getTranslation('apiError')}: ${response.status}`);
       }
     }
     
@@ -212,9 +212,19 @@ class WeatherService {
   
   // Получение направления ветра
   getWindDirection(degrees) {
-    const directions = ['С', 'СВ', 'В', 'ЮВ', 'Ю', 'ЮЗ', 'З', 'СЗ'];
-    const index = Math.round(degrees / 45) % 8;
-    return directions[index];
+    const lang = window.lang || 'ru';
+    
+    if (lang === 'en') {
+      // Английские направления
+      const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+      const index = Math.round(degrees / 45) % 8;
+      return directions[index];
+    } else {
+      // Русские направления
+      const directions = ['С', 'СВ', 'В', 'ЮВ', 'Ю', 'ЮЗ', 'З', 'СЗ'];
+      const index = Math.round(degrees / 45) % 8;
+      return directions[index];
+    }
   }
   
   // Получение описания ветра по шкале Бофорта
@@ -298,6 +308,12 @@ class WeatherService {
         time.textContent = this.getTranslation(keys[index]);
       }
     });
+    
+    // Обновляем сообщение об ошибке
+    const weatherError = document.querySelector('.weather-error p');
+    if (weatherError) {
+      weatherError.textContent = this.getTranslation('weatherGeneralError');
+    }
   }
 }
 
