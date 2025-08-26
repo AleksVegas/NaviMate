@@ -65,6 +65,8 @@ window.translations = {
     darkTheme: "Тёмная",
     langLabel: "🌍 Язык:",
     waterwayLabel: "🌊 Водный путь:",
+    weatherApiKeyLabel: "🌤️ API ключ погоды:",
+    saveApiKey: "💾 Сохранить",
 
     // --- О приложении ---
     aboutHeading: "ℹ️ О приложении",
@@ -255,6 +257,8 @@ window.translations = {
     darkTheme: "Dark",
     langLabel: "🌍 Language:",
     waterwayLabel: "🌊 Waterway:",
+    weatherApiKeyLabel: "🌤️ Weather API Key:",
+    saveApiKey: "💾 Save",
 
     // --- About ---
     aboutHeading: "ℹ️ About",
