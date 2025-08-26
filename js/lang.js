@@ -368,15 +368,17 @@ window.lang = lang; // Делаем доступным глобально
 
 // --- Переключение языка ---
 function setLanguage(selectedLang) {
+  // Проверяем, что переводы загружены
+  if (!window.translations || !window.translations[selectedLang]) {
+    console.error('Translations not loaded for language:', selectedLang);
+    return;
+  }
+  
   lang = selectedLang;
   localStorage.setItem("lang", lang);
   window.lang = lang; // Делаем доступным глобально
 
-  const t = window.translations[lang] || {};
-  
-  console.log('Setting language:', selectedLang);
-  console.log('Translations object:', t);
-  console.log('Found elements with data-i18n:', document.querySelectorAll("[data-i18n]").length);
+  const t = window.translations[lang];
   
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
@@ -386,9 +388,6 @@ function setLanguage(selectedLang) {
       } else {
         el.innerHTML = t[key];
       }
-      console.log('Translated:', key, '->', t[key]);
-    } else {
-      console.log('Missing translation for key:', key);
     }
   });
 
@@ -617,10 +616,13 @@ function updateArrivalSection() {
 // загрузка сохранённого языка
 // --- При загрузке ---
 document.addEventListener("DOMContentLoaded", () => {
-  console.log('DOM loaded, setting language...');
-  
   const savedLang = localStorage.getItem("lang") || "ru";
-  console.log('Saved language:', savedLang);
+  
+  // Проверяем, что переводы загружены
+  if (!window.translations) {
+    console.error('Translations not loaded');
+    return;
+  }
   
   // Небольшая задержка для полной загрузки DOM
   setTimeout(() => {
@@ -634,7 +636,6 @@ document.addEventListener("DOMContentLoaded", () => {
         <option value="en" ${savedLang === "en" ? "selected" : ""}>English</option>
       `;
       langSelect.addEventListener("change", e => {
-        console.log('Language changed to:', e.target.value);
         setLanguage(e.target.value);
       });
     }
