@@ -117,6 +117,7 @@ window.translations = {
     // --- Раздел: Погода ---
     weatherHeading: "Погода",
     getWeather: "Получить погоду по GPS",
+    gettingWeather: "Получение...",
     weatherHint: "Нажмите кнопку, чтобы получить погоду в вашей позиции",
     forecastHeading: "📅 Прогноз на завтра",
     forecastMorning: "Утро",
@@ -130,8 +131,8 @@ window.translations = {
     windSpeed: "Скорость ветра",
     windUnit: "м/с",
     windUnitEn: "m/s",
-    uvIndex: "УФ индекс",
-    uvIndexEn: "UV Index",
+    waterLevel: "Уровень воды",
+    waterLevelEn: "Water Level",
     geolocationError: "Геолокация не поддерживается вашим браузером",
     weatherError: "Не удалось получить погоду. Проверьте разрешения GPS.",
     gpsPermissionError: "Не удалось определить местоположение. Проверьте подключение к интернету.",
@@ -306,6 +307,7 @@ window.translations = {
     // --- Section: Weather ---
     weatherHeading: "Weather",
     getWeather: "Get weather by GPS",
+    gettingWeather: "Getting...",
     weatherHint: "Click the button to get weather at your location",
     forecastHeading: "📅 Tomorrow's forecast",
     forecastMorning: "Morning",

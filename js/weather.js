@@ -147,11 +147,12 @@ class WeatherService {
       document.getElementById('weatherVisibility').textContent = '--';
     }
     
-    // УФ индекс (если есть)
-    if (data.uvi !== undefined) {
-      document.getElementById('weatherUvIndex').textContent = `${data.uvi}`;
-    } else {
-      document.getElementById('weatherUvIndex').textContent = '--';
+    // Уровень воды (показываем заглушку, так как API не предоставляет эти данные)
+    const waterLevelElement = document.getElementById('weatherWaterLevel');
+    if (waterLevelElement) {
+      const lang = window.lang || 'ru';
+      const unit = lang === 'en' ? 'm' : 'м';
+      waterLevelElement.textContent = `-- ${unit}`;
     }
     
     // Местоположение
@@ -376,8 +377,7 @@ class WeatherService {
         'Bratislava': 'Братислава',
         'Bucharest': 'Бухарест',
         'Sofia': 'София',
-        'Zagreb': 'Загреб',
-        'Belgrade': 'Белград'
+        'Zagreb': 'Загреб'
       },
       en: {
         'Белград': 'Belgrade',
@@ -509,9 +509,9 @@ class WeatherService {
       visibilityLabel.textContent = this.getTranslation('visibility');
     }
     
-    const uvIndexLabel = document.querySelector('.weather-item[data-type="uvIndex"] .weather-label');
-    if (uvIndexLabel) {
-      uvIndexLabel.textContent = this.getTranslation('uvIndex');
+    const waterLevelLabel = document.querySelector('.weather-item[data-type="waterLevel"] .weather-label');
+    if (waterLevelLabel) {
+      waterLevelLabel.textContent = this.getTranslation('waterLevel');
     }
     
     // Обновляем единицы измерения ветра и шкалу Бофорта
@@ -541,6 +541,14 @@ class WeatherService {
         forecastWind.textContent = `${windSpeed} ${windUnit} (${windDescription})`;
       }
     });
+    
+    // Обновляем единицы видимости
+    const visibilityElement = document.getElementById('weatherVisibility');
+    if (visibilityElement && visibilityElement.textContent.includes('м') || visibilityElement.textContent.includes('m')) {
+      const visibilityValue = visibilityElement.textContent.match(/^(\d+)/)[1];
+      const unit = lang === 'en' ? 'm' : 'м';
+      visibilityElement.textContent = `${visibilityValue} ${unit}`;
+    }
   }
 }
 

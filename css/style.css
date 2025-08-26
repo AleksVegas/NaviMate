@@ -582,17 +582,19 @@ input[type="datetime-local"][data-lang="en"] {
   gap: 12px;
   margin-bottom: 12px;
   flex-wrap: wrap;
-  max-width: 360px;
+  max-width: 400px;
+  padding-left: 20px;
 }
 
 /* Настройки для селектора темы */
 #toggle-theme-switch { 
   flex: 0 0 auto; 
   min-width: 120px;
+  margin-left: auto;
 }
 #theme-auto { 
   flex: 0 0 auto; 
-  margin-left: auto;
+  margin-right: 12px;
 }
 
 /* Кнопка Поделиться — акцентная, справа */

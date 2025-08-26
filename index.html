@@ -125,10 +125,10 @@
             <span class="weather-label" data-i18n="visibility">👁️ Видимость:</span>
             <span class="weather-value" id="weatherVisibility">-- км</span>
           </div>
-          <div class="weather-item" data-type="uvIndex">
-            <span class="weather-label" data-i18n="uvIndex">☀️ УФ индекс:</span>
-            <span class="weather-value" id="weatherUvIndex">--</span>
-          </div>
+                          <div class="weather-item" data-type="waterLevel">
+                  <span class="weather-label" data-i18n="waterLevel">🌊 Уровень воды:</span>
+                  <span class="weather-value" id="weatherWaterLevel">-- м</span>
+                </div>
         </div>
         
         <div class="weather-location" id="weatherLocation">📍 --</div>
@@ -177,13 +177,13 @@
   <!-- Переключатель темы -->
   <div class="settings-row">
     <label for="toggle-theme-switch" data-i18n="themeLabel">🌗 Тема (день/ночь)</label>
+    <label style="display:flex; align-items:center; gap:6px;">
+      <input type="checkbox" id="theme-auto" /> Авто
+    </label>
     <select id="toggle-theme-switch">
       <option value="light" data-i18n="lightTheme">Светлая</option>
       <option value="dark" data-i18n="darkTheme">Тёмная</option>
     </select>
-    <label style="display:flex; align-items:center; gap:6px;">
-      <input type="checkbox" id="theme-auto" /> Авто
-    </label>
   </div>
 
   <div class="settings-row">
