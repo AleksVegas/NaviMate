@@ -109,20 +109,20 @@
         </div>
         
         <div class="weather-details-grid">
-          <div class="weather-item">
-            <span class="weather-label">💨 Ветер:</span>
+          <div class="weather-item" data-type="wind">
+            <span class="weather-label" data-i18n="wind">💨 Ветер:</span>
             <span class="weather-value" id="weatherWind">-- м/с</span>
           </div>
-          <div class="weather-item">
-            <span class="weather-label">🧭 Направление:</span>
+          <div class="weather-item" data-type="windDirection">
+            <span class="weather-label" data-i18n="windDirection">🧭 Направление:</span>
             <span class="weather-value" id="weatherWindDir">--</span>
           </div>
-          <div class="weather-item">
-            <span class="weather-label">💧 Влажность:</span>
+          <div class="weather-item" data-type="humidity">
+            <span class="weather-label" data-i18n="humidity">💧 Влажность:</span>
             <span class="weather-value" id="weatherHumidity">--%</span>
           </div>
-          <div class="weather-item">
-            <span class="weather-label">📊 Давление:</span>
+          <div class="weather-item" data-type="pressure">
+            <span class="weather-label" data-i18n="pressure">📊 Давление:</span>
             <span class="weather-value" id="weatherPressure">-- гПа</span>
           </div>
         </div>
@@ -171,7 +171,7 @@
   <hr style="margin: 12px 0; border-color: #ccc;">
 
   <!-- Переключатель темы -->
-  <div class="settings-row">
+  <div class="settings-row theme-row">
     <label for="toggle-theme-switch" data-i18n="themeLabel">🌗 Тема (день/ночь)</label>
     <label style="display:flex; align-items:center; gap:6px; margin-left:6px;">
       <input type="checkbox" id="theme-auto" /> Авто

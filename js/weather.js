@@ -215,13 +215,13 @@ class WeatherService {
     const lang = window.lang || 'ru';
     
     if (lang === 'en') {
-      // Английские направления
-      const directions = ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'];
+      // Английские направления с стрелками
+      const directions = ['↑N', '↗NE', '→E', '↘SE', '↓S', '↙SW', '←W', '↖NW'];
       const index = Math.round(degrees / 45) % 8;
       return directions[index];
     } else {
-      // Русские направления
-      const directions = ['С', 'СВ', 'В', 'ЮВ', 'Ю', 'ЮЗ', 'З', 'СЗ'];
+      // Русские направления с стрелками
+      const directions = ['↑С', '↗СВ', '→В', '↘ЮВ', '↓Ю', '↙ЮЗ', '←З', '↖СЗ'];
       const index = Math.round(degrees / 45) % 8;
       return directions[index];
     }
@@ -313,6 +313,27 @@ class WeatherService {
     const weatherError = document.querySelector('.weather-error p');
     if (weatherError) {
       weatherError.textContent = this.getTranslation('weatherGeneralError');
+    }
+    
+    // Обновляем текущую погоду (если есть)
+    this.updateCurrentWeatherLanguage();
+  }
+  
+  // Обновление языка для текущей погоды
+  updateCurrentWeatherLanguage() {
+    const windLabel = document.querySelector('.weather-item[data-type="wind"] .weather-label');
+    if (windLabel) {
+      windLabel.textContent = this.getTranslation('wind');
+    }
+    
+    const humidityLabel = document.querySelector('.weather-item[data-type="humidity"] .weather-label');
+    if (humidityLabel) {
+      humidityLabel.textContent = this.getTranslation('humidity');
+    }
+    
+    const pressureLabel = document.querySelector('.weather-item[data-type="pressure"] .weather-label');
+    if (pressureLabel) {
+      pressureLabel.textContent = this.getTranslation('pressure');
     }
   }
 }
