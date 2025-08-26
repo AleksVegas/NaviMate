@@ -375,11 +375,6 @@ function setLanguage(selectedLang) {
   const t = window.translations[lang] || {};
   
   document.querySelectorAll("[data-i18n]").forEach(el => {
-    // Пропускаем элементы в секции времени прибытия
-    if (el.closest('#arrival-calc')) {
-      return;
-    }
-    
     const key = el.getAttribute("data-i18n");
     if (t[key]) {
       if (["input","select","textarea"].includes(el.tagName.toLowerCase())) {
@@ -407,7 +402,7 @@ function setLanguage(selectedLang) {
   }
   
   // Обновляем раздел погоды
-  if (window.weatherService) {
+  if (typeof window.weatherService !== 'undefined' && window.weatherService && typeof window.weatherService.updateLanguage === 'function') {
     window.weatherService.updateLanguage();
   }
   
