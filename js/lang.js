@@ -406,6 +406,11 @@ function setLanguage(selectedLang) {
     updateArrivalCalculations();
   }
   
+  // Обновляем раздел погоды
+  if (window.weatherService) {
+    window.weatherService.updateLanguage();
+  }
+  
   // Обновляем селекторы языка
   const langSelect = document.getElementById('language-select');
   const headerLangSelect = document.getElementById('header-language-select');

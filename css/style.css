@@ -576,8 +576,8 @@ input[type="datetime-local"][data-lang="en"] {
   justify-content: space-between;
   gap: 12px;
   margin-bottom: 12px;
-  flex-wrap: wrap;
-  max-width: 360px;
+  flex-wrap: nowrap;
+  max-width: none;
 }
 
 /* Не позволяем чекбоксу авто-темы сжимать селектор */
