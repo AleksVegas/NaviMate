@@ -368,17 +368,14 @@ window.lang = lang; // Делаем доступным глобально
 
 // --- Переключение языка ---
 function setLanguage(selectedLang) {
-  // Проверяем, что переводы загружены
-  if (!window.translations || !window.translations[selectedLang]) {
-    console.error('Translations not loaded for language:', selectedLang);
-    return;
-  }
-  
   lang = selectedLang;
   localStorage.setItem("lang", lang);
   window.lang = lang; // Делаем доступным глобально
 
-  const t = window.translations[lang];
+  const t = window.translations[lang] || {};
+  
+  console.log('Setting language:', selectedLang, 'Translations:', t);
+  console.log('Found elements with data-i18n:', document.querySelectorAll("[data-i18n]").length);
   
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
@@ -388,6 +385,9 @@ function setLanguage(selectedLang) {
       } else {
         el.innerHTML = t[key];
       }
+      console.log('Translated:', key, '->', t[key]);
+    } else {
+      console.log('Missing translation for key:', key);
     }
   });
 
@@ -617,12 +617,6 @@ function updateArrivalSection() {
 // --- При загрузке ---
 document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("lang") || "ru";
-  
-  // Проверяем, что переводы загружены
-  if (!window.translations) {
-    console.error('Translations not loaded');
-    return;
-  }
   
   // Небольшая задержка для полной загрузки DOM
   setTimeout(() => {
