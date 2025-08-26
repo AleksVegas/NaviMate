@@ -34,8 +34,14 @@ class WeatherService {
       const position = await this.getCurrentPosition();
       const { latitude, longitude } = position.coords;
       
-      const weatherData = await this.fetchWeather(latitude, longitude);
+      // Получаем текущую погоду и прогноз
+      const [weatherData, forecastData] = await Promise.all([
+        this.fetchWeather(latitude, longitude),
+        this.fetchForecast(latitude, longitude)
+      ]);
+      
       this.displayWeather(weatherData);
+      this.displayForecast(forecastData);
       this.hideError();
       
     } catch (error) {
@@ -58,13 +64,35 @@ class WeatherService {
     });
   }
   
-  // Запрос к API OpenWeatherMap
+  // Запрос к API OpenWeatherMap для текущей погоды
   async fetchWeather(lat, lon) {
     if (!this.apiKey) {
       throw new Error('API ключ не найден');
     }
     
     const url = `${this.baseUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
+    
+    const response = await fetch(url);
+    if (!response.ok) {
+      if (response.status === 401) {
+        throw new Error('Неверный API ключ');
+      } else if (response.status === 429) {
+        throw new Error('Превышен лимит запросов');
+      } else {
+        throw new Error(`Ошибка API: ${response.status}`);
+      }
+    }
+    
+    return await response.json();
+  }
+  
+  // Запрос к API OpenWeatherMap для прогноза
+  async fetchForecast(lat, lon) {
+    if (!this.apiKey) {
+      throw new Error('API ключ не найден');
+    }
+    
+    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
     
     const response = await fetch(url);
     if (!response.ok) {
@@ -98,6 +126,58 @@ class WeatherService {
     
     // Показываем информацию
     this.weatherInfo.style.display = 'block';
+  }
+  
+  // Отображение прогноза погоды
+  displayForecast(data) {
+    // Получаем прогноз на завтра (24 часа вперед)
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    // Находим прогнозы для разных периодов дня
+    const forecasts = {
+      morning: this.findForecastForTime(data.list, 6), // 6:00
+      day: this.findForecastForTime(data.list, 12),   // 12:00
+      evening: this.findForecastForTime(data.list, 18), // 18:00
+      night: this.findForecastForTime(data.list, 0)   // 0:00
+    };
+    
+    // Обновляем UI
+    Object.keys(forecasts).forEach(period => {
+      const forecast = forecasts[period];
+      if (forecast) {
+        document.getElementById(`forecastIcon${period.charAt(0).toUpperCase() + period.slice(1)}`).textContent = 
+          this.getWeatherIcon(forecast.weather[0].id);
+        document.getElementById(`forecastTemp${period.charAt(0).toUpperCase() + period.slice(1)}`).textContent = 
+          `${Math.round(forecast.main.temp)}°C`;
+      }
+    });
+    
+    // Показываем прогноз
+    document.getElementById('weatherForecast').style.display = 'block';
+  }
+  
+  // Поиск прогноза для определенного времени
+  findForecastForTime(forecastList, targetHour) {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(targetHour, 0, 0, 0);
+    
+    // Ищем ближайший прогноз к целевому времени
+    let closest = null;
+    let minDiff = Infinity;
+    
+    forecastList.forEach(forecast => {
+      const forecastTime = new Date(forecast.dt * 1000);
+      const diff = Math.abs(forecastTime.getTime() - tomorrow.getTime());
+      
+      if (diff < minDiff) {
+        minDiff = diff;
+        closest = forecast;
+      }
+    });
+    
+    return closest;
   }
   
   // Получение иконки погоды
@@ -148,6 +228,27 @@ class WeatherService {
   // Обновление языка
   updateLanguage() {
     this.getWeatherBtn.textContent = this.getTranslation('getWeather');
+    
+    // Обновляем подсказку
+    const weatherHint = document.querySelector('.weather-hint');
+    if (weatherHint) {
+      weatherHint.textContent = this.getTranslation('weatherHint');
+    }
+    
+    // Обновляем заголовок прогноза
+    const forecastHeading = document.querySelector('.weather-forecast h3');
+    if (forecastHeading) {
+      forecastHeading.textContent = this.getTranslation('forecastHeading');
+    }
+    
+    // Обновляем времена прогноза
+    const forecastTimes = document.querySelectorAll('.forecast-time');
+    forecastTimes.forEach((time, index) => {
+      const keys = ['forecastMorning', 'forecastDay', 'forecastEvening', 'forecastNight'];
+      if (keys[index]) {
+        time.textContent = this.getTranslation(keys[index]);
+      }
+    });
   }
 }
 
@@ -185,21 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   
-  // Обработчик для сохранения API ключа
-  const saveApiBtn = document.getElementById('save-weather-api');
-  if (saveApiBtn) {
-    saveApiBtn.addEventListener('click', () => {
-      const apiKeyInput = document.getElementById('weather-api-key');
-      const newApiKey = apiKeyInput.value.trim();
-      
-      if (newApiKey) {
-        localStorage.setItem('weather_api_key', newApiKey);
-        
-        // Перезагружаем страницу для применения ключа
-        location.reload();
-      }
-    });
-  }
+
 });
 
 // Обновление языка при смене

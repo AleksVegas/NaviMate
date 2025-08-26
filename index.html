@@ -96,7 +96,7 @@
       
       <div class="weather-simple">
         <button class="weather-btn main-btn" id="getWeatherBtn" data-i18n="getWeather">🌤️ Получить погоду по GPS</button>
-        <p class="weather-hint">Нажмите кнопку, чтобы получить погоду в вашей позиции</p>
+        <p class="weather-hint" data-i18n="weatherHint">Нажмите кнопку, чтобы получить погоду в вашей позиции</p>
       </div>
       
       <div class="weather-info" id="weatherInfo" style="display: none;">
@@ -128,6 +128,33 @@
         </div>
         
         <div class="weather-location" id="weatherLocation">📍 --</div>
+      </div>
+      
+      <!-- Прогноз погоды -->
+      <div class="weather-forecast" id="weatherForecast" style="display: none;">
+        <h3 data-i18n="forecastHeading">📅 Прогноз на завтра</h3>
+        <div class="forecast-grid">
+          <div class="forecast-item">
+            <div class="forecast-time" data-i18n="forecastMorning">Утро</div>
+            <div class="forecast-icon" id="forecastIconMorning">🌤️</div>
+            <div class="forecast-temp" id="forecastTempMorning">--°C</div>
+          </div>
+          <div class="forecast-item">
+            <div class="forecast-time" data-i18n="forecastDay">День</div>
+            <div class="forecast-icon" id="forecastIconDay">🌤️</div>
+            <div class="forecast-temp" id="forecastTempDay">--°C</div>
+          </div>
+          <div class="forecast-item">
+            <div class="forecast-time" data-i18n="forecastEvening">Вечер</div>
+            <div class="forecast-icon" id="forecastIconEvening">🌤️</div>
+            <div class="forecast-temp" id="forecastTempEvening">--°C</div>
+          </div>
+          <div class="forecast-item">
+            <div class="forecast-time" data-i18n="forecastNight">Ночь</div>
+            <div class="forecast-icon" id="forecastIconNight">🌤️</div>
+            <div class="forecast-temp" id="forecastTempNight">--°C</div>
+          </div>
+        </div>
       </div>
       
       <div class="weather-error" id="weatherError" style="display: none;">
@@ -167,11 +194,7 @@
   </select>
 </div>
 
-<div class="settings-row">
-  <label for="weather-api-key" data-i18n="weatherApiLabel">🌤️ API ключ погоды:</label>
-  <input type="text" id="weather-api-key" placeholder="Введите API ключ OpenWeatherMap">
-  <button class="btn-save" id="save-weather-api" data-i18n="saveApi">Сохранить</button>
-</div>
+
       
 </section>
     

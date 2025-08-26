@@ -628,32 +628,7 @@ input[type="datetime-local"][data-lang="en"] {
   max-width: 160px;
 }
 
-.settings-row input[type="text"] {
-  font-size: 14px;
-  padding: 4px 6px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-  background-color: #fff;
-  color: #000;
-  flex: 1;
-  max-width: 200px;
-}
 
-.btn-save {
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-left: 10px;
-  transition: background-color 0.3s;
-}
-
-.btn-save:hover {
-  background-color: #45a049;
-}
 
 /* Для тёмной темы */
 body.dark .settings-row select {
@@ -880,14 +855,80 @@ body.dark .weather-location {
   color: #bdc3c7;
 }
 
+/* Прогноз погоды */
+.weather-forecast {
+  background: linear-gradient(135deg, #FFB74D, #FF8A65);
+  border-radius: 12px;
+  padding: 20px;
+  margin-top: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.weather-forecast h3 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-size: 18px;
+}
+
+.forecast-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+}
+
+.forecast-item {
+  text-align: center;
+  padding: 15px 10px;
+  background: rgba(255,255,255,0.8);
+  border-radius: 8px;
+}
+
+.forecast-time {
+  font-weight: 600;
+  color: #555;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.forecast-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+.forecast-temp {
+  font-weight: bold;
+  color: #333;
+  font-size: 16px;
+}
+
+/* Темная тема для прогноза */
+body.dark .weather-forecast {
+  background: linear-gradient(135deg, #8D6E63, #6D4C41);
+  color: #ecf0f1;
+}
+
+body.dark .weather-forecast h3 {
+  color: #ecf0f1;
+}
+
+body.dark .forecast-item {
+  background: rgba(76, 175, 80, 0.2);
+}
+
+body.dark .forecast-time {
+  color: #bdc3c7;
+}
+
+body.dark .forecast-temp {
+  color: #ecf0f1;
+}
+
 /* Адаптивность для мобильных */
 @media (max-width: 768px) {
-  .location-inputs {
-    grid-template-columns: 1fr;
-  }
-  
-  .weather-controls {
-    flex-direction: column;
+  .forecast-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
   }
   
   .weather-details-grid {
