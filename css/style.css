@@ -907,7 +907,7 @@ body.dark .weather-location {
 
 /* Темная тема для прогноза */
 body.dark .weather-forecast {
-  background: linear-gradient(135deg, #8D6E63, #6D4C41);
+  background: linear-gradient(135deg, #424242, #616161);
   color: #ecf0f1;
 }
 
@@ -916,11 +916,11 @@ body.dark .weather-forecast h3 {
 }
 
 body.dark .forecast-item {
-  background: rgba(76, 175, 80, 0.2);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 body.dark .forecast-time {
-  color: #bdc3c7;
+  color: #ecf0f1;
 }
 
 body.dark .forecast-temp {

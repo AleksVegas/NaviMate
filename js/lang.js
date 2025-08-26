@@ -406,7 +406,7 @@ function setLanguage(selectedLang) {
   }
   
   // Обновляем раздел погоды
-  if (typeof window.weatherService !== 'undefined' && window.weatherService && typeof window.weatherService.updateLanguage === 'function') {
+  if (window.weatherService && typeof window.weatherService.updateLanguage === 'function') {
     window.weatherService.updateLanguage();
   }
   
