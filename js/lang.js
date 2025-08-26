@@ -398,10 +398,14 @@ function setLanguage(selectedLang) {
   }
   
   // Обновляем результаты расчетов
-  updateCalculationResults();
+  if (typeof updateCalculationResults === 'function') {
+    updateCalculationResults();
+  }
   
   // Обновляем секцию времени прибытия
-  updateArrivalSection();
+  if (typeof updateArrivalSection === 'function') {
+    updateArrivalSection();
+  }
   
   // Обновляем расчеты времени прибытия
   if (typeof updateArrivalCalculations === 'function') {
@@ -613,30 +617,44 @@ function updateArrivalSection() {
 // загрузка сохранённого языка
 // --- При загрузке ---
 document.addEventListener("DOMContentLoaded", () => {
-  const savedLang = localStorage.getItem("lang") || "ru";
-  setLanguage(savedLang);
-
-  const langSelect = document.getElementById("language-select");
-  if (langSelect) {
-    langSelect.disabled = false;
-    langSelect.innerHTML = `
-      <option value="ru" ${savedLang === "ru" ? "selected" : ""}>Русский</option>
-      <option value="en" ${savedLang === "en" ? "selected" : ""}>English</option>
-    `;
-    langSelect.addEventListener("change", e => {
-      setLanguage(e.target.value);
-    });
-  }
-
-  // Обновляем блоки встречи после загрузки DOM
-  setTimeout(() => {
-    updateMeetingBlocks();
-    updateArrivalSection();
-    updateCalculationResults();
-  }, 50);
+  console.log('DOM loaded, setting language...');
   
-  // Дополнительная проверка для секции времени прибытия
+  const savedLang = localStorage.getItem("lang") || "ru";
+  console.log('Saved language:', savedLang);
+  
+  // Небольшая задержка для полной загрузки DOM
   setTimeout(() => {
-    updateArrivalSection();
+    setLanguage(savedLang);
+    
+    const langSelect = document.getElementById("language-select");
+    if (langSelect) {
+      langSelect.disabled = false;
+      langSelect.innerHTML = `
+        <option value="ru" ${savedLang === "ru" ? "selected" : ""}>Русский</option>
+        <option value="en" ${savedLang === "en" ? "selected" : ""}>English</option>
+      `;
+      langSelect.addEventListener("change", e => {
+        console.log('Language changed to:', e.target.value);
+        setLanguage(e.target.value);
+      });
+    }
+
+    // Обновляем блоки встречи после загрузки DOM
+    if (typeof updateMeetingBlocks === 'function') {
+      updateMeetingBlocks();
+    }
+    if (typeof updateArrivalSection === 'function') {
+      updateArrivalSection();
+    }
+    if (typeof updateCalculationResults === 'function') {
+      updateCalculationResults();
+    }
+    
+    // Дополнительная проверка для секции времени прибытия
+    setTimeout(() => {
+      if (typeof updateArrivalSection === 'function') {
+        updateArrivalSection();
+      }
+    }, 100);
   }, 100);
 });
