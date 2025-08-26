@@ -115,8 +115,10 @@ class WeatherService {
     document.getElementById('weatherTemp').textContent = `${Math.round(data.main.temp)}°C`;
     document.getElementById('weatherDesc').textContent = data.weather[0].description;
     
-    // Детали
-    document.getElementById('weatherWind').textContent = `${data.wind.speed} м/с`;
+    // Детали с описанием ветра по шкале Бофорта
+    const windSpeed = data.wind.speed;
+    const windDescription = this.getBeaufortDescription(windSpeed);
+    document.getElementById('weatherWind').textContent = `${windSpeed} м/с (${windDescription})`;
     document.getElementById('weatherWindDir').textContent = this.getWindDirection(data.wind.deg);
     document.getElementById('weatherHumidity').textContent = `${data.main.humidity}%`;
     document.getElementById('weatherPressure').textContent = `${Math.round(data.main.pressure)} гПа`;
@@ -146,10 +148,19 @@ class WeatherService {
     Object.keys(forecasts).forEach(period => {
       const forecast = forecasts[period];
       if (forecast) {
-        document.getElementById(`forecastIcon${period.charAt(0).toUpperCase() + period.slice(1)}`).textContent = 
+        const periodId = period.charAt(0).toUpperCase() + period.slice(1);
+        document.getElementById(`forecastIcon${periodId}`).textContent = 
           this.getWeatherIcon(forecast.weather[0].id);
-        document.getElementById(`forecastTemp${period.charAt(0).toUpperCase() + period.slice(1)}`).textContent = 
+        document.getElementById(`forecastTemp${periodId}`).textContent = 
           `${Math.round(forecast.main.temp)}°C`;
+        
+        // Добавляем скорость ветра с описанием
+        if (forecast.wind && forecast.wind.speed) {
+          const windSpeed = forecast.wind.speed;
+          const windDescription = this.getBeaufortDescription(windSpeed);
+          document.getElementById(`forecastWind${periodId}`).textContent = 
+            `${windSpeed} м/с (${windDescription})`;
+        }
       }
     });
     
@@ -206,6 +217,43 @@ class WeatherService {
     return directions[index];
   }
   
+  // Получение описания ветра по шкале Бофорта
+  getBeaufortDescription(speed) {
+    const lang = window.lang || 'ru';
+    
+    if (lang === 'en') {
+      // Английские описания
+      if (speed < 0.3) return 'calm';
+      if (speed < 1.6) return 'light air';
+      if (speed < 3.4) return 'light breeze';
+      if (speed < 5.5) return 'gentle breeze';
+      if (speed < 8.0) return 'moderate breeze';
+      if (speed < 10.8) return 'fresh breeze';
+      if (speed < 13.9) return 'strong breeze';
+      if (speed < 17.2) return 'high wind';
+      if (speed < 20.8) return 'gale';
+      if (speed < 24.5) return 'strong gale';
+      if (speed < 28.5) return 'storm';
+      if (speed < 32.7) return 'violent storm';
+      return 'hurricane';
+    } else {
+      // Русские описания
+      if (speed < 0.3) return 'штиль';
+      if (speed < 1.6) return 'тихий';
+      if (speed < 3.4) return 'легкий';
+      if (speed < 5.5) return 'слабый';
+      if (speed < 8.0) return 'умеренный';
+      if (speed < 10.8) return 'свежий';
+      if (speed < 13.9) return 'сильный';
+      if (speed < 17.2) return 'крепкий';
+      if (speed < 20.8) return 'очень крепкий';
+      if (speed < 24.5) return 'шторм';
+      if (speed < 28.5) return 'сильный шторм';
+      if (speed < 32.7) return 'жестокий шторм';
+      return 'ураган';
+    }
+  }
+  
   // Показ ошибки
   showError(message) {
     this.weatherError.querySelector('p').textContent = `❌ ${message}`;
@@ -227,6 +275,7 @@ class WeatherService {
   
   // Обновление языка
   updateLanguage() {
+    // Обновляем кнопку
     this.getWeatherBtn.textContent = this.getTranslation('getWeather');
     
     // Обновляем подсказку
