@@ -155,7 +155,9 @@ window.translations = {
     planFeature4: "Страница поддержки проекта",
   
     // --- Благодарность ---
-    thanksText: "🙏 Спасибо, что используете <strong>NaviMate</strong>! Приложение активно развивается — всё только начинается."
+    thanksText: "🙏 Спасибо, что используете <strong>NaviMate</strong>! Приложение активно развивается — всё только начинается.",
+    calcShort: "Рассчитать",
+    share: "Поделиться"
 
   },
 
@@ -313,7 +315,9 @@ window.translations = {
     planFeature4: "Project support page",
   
     // --- Thanks ---
-    thanksText: "🙏 Thank you for using <strong>NaviMate</strong>! The app is actively developing — this is just the beginning."
+    thanksText: "🙏 Thank you for using <strong>NaviMate</strong>! The app is actively developing — this is just the beginning.",
+    calcShort: "Calculate",
+    share: "Share"
   }
 };
 
@@ -521,10 +525,19 @@ function updateArrivalSection() {
   
   // Обновляем кнопки
   const btnArrival = document.querySelector('#arrival-calc .calc-btn[onclick="calculateArrival()"]');
-  if (btnArrival) btnArrival.innerHTML = t.btnArrival || 'Рассчитать время прибытия';
+  if (btnArrival) {
+    const short = (window.innerWidth || 0) < 460;
+    btnArrival.innerHTML = short ? (t.calcShort || 'Рассчитать') : (t.btnArrival || 'Рассчитать время прибытия');
+  }
   
   const btnSpeed = document.querySelector('#arrival-calc .calc-btn[onclick="calculateRecommendedSpeed()"]');
   if (btnSpeed) btnSpeed.innerHTML = t.btnSpeed || 'Рассчитать необходимую скорость 🚀';
+  
+  const btnClearArrival = document.getElementById('btn-clear-arrival');
+  if (btnClearArrival) btnClearArrival.innerHTML = t.clearAll || 'Очистить всё';
+  
+  const btnShareArrival = document.getElementById('btn-share-arrival');
+  if (btnShareArrival) btnShareArrival.innerHTML = t.share || 'Поделиться';
   
   // Обновляем опции в select
   const workHoursSelect = document.getElementById('workHoursArrival');

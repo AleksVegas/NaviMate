@@ -141,6 +141,12 @@ function calculateArrival() {
     }
   });
 
+  // Доп. задержка: Вена +1ч при движении вверх (endKm > startKm)
+  if (direction === 1) {
+    travelHours += 1;
+    passedLocks.push(`⚓ ${t.borderAustriaVienna || 'Вена'} — 1 ${pluralizeHours(1)}`);
+  }
+
   // Используем значения из редактора задержек на границах
   let borderDelayTotal = 0;
   let passedBorders = [];
@@ -338,6 +344,15 @@ function calculateRecommendedSpeed() {
   document.head.appendChild(style);
 })();
 
+// Автоперерасчёт с дебаунсом
+let arrivalDebounce;
+function triggerAutoArrival() {
+  clearTimeout(arrivalDebounce);
+  arrivalDebounce = setTimeout(() => {
+    try { calculateArrival(); } catch {}
+  }, 250);
+}
+
 
 //Вызываем функцию после загрузки страницы
 window.addEventListener('DOMContentLoaded', () => {
@@ -360,14 +375,12 @@ window.addEventListener('DOMContentLoaded', () => {
   try { calculateArrival(); } catch(e) {}
 
   // Сохранение значений полей прибытия
-  document.addEventListener('input', (e) => {
-    if (e.target && mapIds.includes(e.target.id)) {
-      localStorage.setItem('arr_' + e.target.id, e.target.value);
-    }
-  });
-  document.addEventListener('change', (e) => {
-    if (e.target && mapIds.includes(e.target.id)) {
-      localStorage.setItem('arr_' + e.target.id, e.target.value);
+  const watchIds = ['startKmArrival','endKmArrival','speedArrival','startTimeArrival','workHoursArrival'];
+  watchIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.addEventListener('input', triggerAutoArrival);
+      el.addEventListener('change', triggerAutoArrival);
     }
   });
 
