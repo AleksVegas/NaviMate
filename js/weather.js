@@ -28,7 +28,7 @@ class WeatherService {
     }
     
     this.getWeatherBtn.disabled = true;
-    this.getWeatherBtn.textContent = '🌤️ Получение...';
+    this.getWeatherBtn.textContent = `🌤️ ${this.getTranslation('gettingWeather')}`;
     
     try {
       const position = await this.getCurrentPosition();
@@ -161,6 +161,9 @@ class WeatherService {
     
     // Показываем информацию
     this.weatherInfo.style.display = 'block';
+    
+    // Обновляем язык для всех элементов
+    this.updateAllWeatherElements();
   }
   
   // Отображение прогноза погоды
@@ -454,6 +457,39 @@ class WeatherService {
     
     // Обновляем текущую погоду (если есть)
     this.updateCurrentWeatherLanguage();
+    
+    // Обновляем все элементы погоды при смене языка
+    this.updateAllWeatherElements();
+  }
+  
+  // Обновление всех элементов погоды
+  updateAllWeatherElements() {
+    // Обновляем описание погоды
+    const weatherDesc = document.getElementById('weatherDesc');
+    if (weatherDesc && weatherDesc.textContent) {
+      const currentDesc = weatherDesc.textContent;
+      const translatedDesc = this.translateWeatherDescription(currentDesc);
+      if (translatedDesc !== currentDesc) {
+        weatherDesc.textContent = translatedDesc;
+      }
+    }
+    
+    // Обновляем местоположение
+    const weatherLocation = document.getElementById('weatherLocation');
+    if (weatherLocation && weatherLocation.textContent.includes('📍')) {
+      const locationText = weatherLocation.textContent;
+      const cityMatch = locationText.match(/📍 (.+?), (.+)/);
+      if (cityMatch) {
+        const cityName = cityMatch[1];
+        const countryCode = cityMatch[2];
+        const translatedCity = this.translateCityName(cityName);
+        const translatedCountry = this.translateCountryName(countryCode);
+        weatherLocation.textContent = `📍 ${translatedCity}, ${translatedCountry}`;
+      }
+    }
+    
+    // Обновляем единицы измерения
+    this.updateWindUnitsAndBeaufort();
   }
   
   // Обновление языка для текущей погоды
