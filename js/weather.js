@@ -3,21 +3,13 @@
 
 class WeatherService {
   constructor() {
-    // OpenWeatherMap API (основной)
-    this.openWeatherApiKey = 'YOUR_OPENWEATHER_API_KEY'; // Замените на ваш ключ
-    this.openWeatherUrl = 'https://api.openweathermap.org/data/2.5/weather';
-    
-    // WeatherAPI.com (альтернативный, более точный)
-    this.weatherApiKey = 'YOUR_WEATHERAPI_KEY'; // Замените на ваш ключ
-    this.weatherApiUrl = 'http://api.weatherapi.com/v1/current.json';
-    
-    // AccuWeather (еще один вариант)
-    this.accuWeatherApiKey = 'YOUR_ACCUWEATHER_KEY'; // Замените на ваш ключ
-    this.accuWeatherUrl = 'http://dataservice.accuweather.com/currentconditions/v1/';
+    // OpenWeatherMap API (основной) - используем ваш ключ
+    this.apiKey = 'd8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8'; // Ваш API ключ
+    this.baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
+    this.forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast';
     
     this.units = 'metric';
     this.lang = 'ru';
-    this.currentApi = 'openweather'; // Текущий используемый API
     
     this.weatherInfo = document.getElementById('weatherInfo');
     this.weatherError = document.getElementById('weatherError');
@@ -93,7 +85,9 @@ class WeatherService {
       throw new Error(this.getTranslation('apiKeyNotFound'));
     }
     
-    const url = `${this.baseUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
+    const lang = window.lang || 'ru';
+    const apiLang = lang === 'en' ? 'en' : 'ru';
+    const url = `${this.baseUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${apiLang}`;
     
     const response = await fetch(url);
     if (!response.ok) {
@@ -115,7 +109,9 @@ class WeatherService {
       throw new Error(this.getTranslation('apiKeyNotFound'));
     }
     
-    const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
+    const lang = window.lang || 'ru';
+    const apiLang = lang === 'en' ? 'en' : 'ru';
+    const url = `${this.forecastUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${apiLang}`;
     
     const response = await fetch(url);
     if (!response.ok) {
