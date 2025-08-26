@@ -286,33 +286,69 @@ function copyOurSpeed(index) {
   document.getElementById(`our_speed_${index}`).value = document.getElementById('our_speed_0').value;
 }
 
+function saveMeetingInputs(index) {
+  const ids = [`enemy_pos_${index}`,`enemy_speed_${index}`,`our_pos_${index}`,`our_speed_${index}`];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) localStorage.setItem('meet_' + id, el.value);
+  });
+}
+
+function restoreMeetingInputs(index) {
+  const ids = [`enemy_pos_${index}`,`enemy_speed_${index}`,`our_pos_${index}`,`our_speed_${index}`];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      const v = localStorage.getItem('meet_' + id);
+      if (v !== null) el.value = v;
+    }
+  });
+}
+
 // DOMContentLoaded один раз
 document.addEventListener("DOMContentLoaded", () => {
-  // Ждем загрузки переводов
-  setTimeout(() => {
-    const container = document.getElementById('blocks');
-    for (let i = 0; i < 3; i++) {
-      const block = createBlock(i);
-      const resultEl = block.querySelector(`#result_${i}`);
-      if (resultEl) {
-        resultEl.setAttribute('aria-live', 'polite');
-        resultEl.setAttribute('role', 'status');
+  const container = document.getElementById('blocks');
+  if (container) container.style.visibility = 'hidden';
+
+  const translations = window.translations || {};
+  const lang = window.lang || 'ru';
+  const t = translations[lang] || {};
+
+  for (let i = 0; i < 3; i++) {
+    const block = createBlock(i);
+    container.appendChild(block);
+    restoreMeetingInputs(i);
+  }
+
+  // Attach input save listeners (event delegation)
+  container.addEventListener('input', (e) => {
+    const id = e.target && e.target.id;
+    if (!id) return;
+    const m = id.match(/^(enemy_pos_|enemy_speed_|our_pos_|our_speed_)(\d+)$/);
+    if (m) {
+      localStorage.setItem('meet_' + id, e.target.value);
+    }
+  });
+
+  if (container) container.style.visibility = 'visible';
+
+  // Применяем переводы к созданным блокам
+  if (typeof updateMeetingBlocks === 'function') {
+    updateMeetingBlocks();
+  }
+
+  const clearAllBtn = document.querySelector('.btn-clear-all');
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener('click', () => {
+      for (let i = 0; i < 3; i++) clearFields(i);
+      // clear storage
+      for (let i = 0; i < 3; i++) {
+        ['enemy_pos_','enemy_speed_','our_pos_','our_speed_'].forEach(p => {
+          localStorage.removeItem('meet_' + p + i);
+        });
       }
-      container.appendChild(block);
-    }
-
-    // Применяем переводы к созданным блокам
-    if (typeof updateMeetingBlocks === 'function') {
-      updateMeetingBlocks();
-    }
-
-    const clearAllBtn = document.querySelector('.btn-clear-all');
-    if (clearAllBtn) {
-      clearAllBtn.addEventListener('click', () => {
-        for (let i = 0; i < 3; i++) clearFields(i);
-      });
-    }
-  }, 200);
+    });
+  }
 
   // Меню
   const menuToggleBtn = document.getElementById('menu-toggle');

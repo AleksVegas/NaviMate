@@ -172,7 +172,8 @@ function calculateArrival() {
     relevantBorders.forEach(border => {
       const inputId = border.nameKey;
       const input = document.getElementById(inputId);
-      const delay = input ? parseFloat(input.value) || 0 : border.defaultDelay;
+      const saved = parseFloat(localStorage.getItem('bd_' + inputId));
+      const delay = Number.isFinite(saved) ? saved : (input ? parseFloat(input.value) || 0 : border.defaultDelay);
 
       const borderName = t[border.nameKey] || border.nameKey;
       bordersInfo += `<div class="border-delay-item">
@@ -205,6 +206,7 @@ resultDiv.innerHTML = `
 ⏳ <strong>${t.workHours || 'Длительность перехода'}:</strong> ${travelHours.toFixed(2)} ${t.hourUnit || 'ч'}<br>
 📍 <strong>${t.distance || 'Расстояние'}:</strong> ${distance} ${t.kmUnit || 'км'}<br>
 ${locksInfo}${bordersInfo}
+<div style="margin-top:6px;"><button class="btn-clear" id="btn-clear-borders">${t.clearBtn || 'Очистить'}</button></div>
 `;
 
 
@@ -324,25 +326,48 @@ window.addEventListener('DOMContentLoaded', () => {
     updateArrivalSection();
   }
 
-  // Добавляем обработчики для редактируемых полей задержек
+  // Восстановление сохранённых значений полей прибытия
+  const mapIds = ['startKmArrival','endKmArrival','speedArrival','startTimeArrival','workHoursArrival'];
+  mapIds.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) {
+      const v = localStorage.getItem('arr_' + id);
+      if (v !== null) el.value = v;
+    }
+  });
+
+  // Пересчитать, если все основные поля заданы
+  try { calculateArrival(); } catch(e) {}
+
+  // Сохранение значений полей прибытия
+  document.addEventListener('input', (e) => {
+    if (e.target && mapIds.includes(e.target.id)) {
+      localStorage.setItem('arr_' + e.target.id, e.target.value);
+    }
+  });
+  document.addEventListener('change', (e) => {
+    if (e.target && mapIds.includes(e.target.id)) {
+      localStorage.setItem('arr_' + e.target.id, e.target.value);
+    }
+  });
+
+  // Обработчики для редактируемых полей задержек
   document.addEventListener('change', (e) => {
     if (e.target.classList.contains('border-delay-input')) {
       const borderId = e.target.getAttribute('data-border');
       const newValue = parseFloat(e.target.value) || 0;
-      
-      // Обновляем скрытое поле
+
       const hiddenInput = document.getElementById(borderId);
-      if (hiddenInput) {
-        hiddenInput.value = newValue;
-      }
-      
-      // Обновляем склонение в тексте
+      if (hiddenInput) hiddenInput.value = newValue;
+
       const spanElement = e.target.nextElementSibling;
       if (spanElement && spanElement.tagName === 'SPAN') {
         spanElement.textContent = ' ' + pluralizeHours(newValue);
       }
-      
-      // Пересчитываем результат
+
+      // persist
+      localStorage.setItem('bd_' + borderId, String(newValue));
+
       const resultDiv = document.getElementById('resultArrival');
       if (resultDiv && resultDiv.innerHTML.trim() !== '') {
         calculateArrival();
@@ -350,5 +375,21 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // Очистка задержек
+  document.addEventListener('click', (e) => {
+    if (e.target && e.target.id === 'btn-clear-borders') {
+      const inputs = document.querySelectorAll('.border-delay-input');
+      inputs.forEach(inp => {
+        inp.value = '0';
+        const id = inp.getAttribute('data-border');
+        if (id) localStorage.removeItem('bd_' + id);
+        const span = inp.nextElementSibling;
+        if (span && span.tagName === 'SPAN') span.textContent = ' ' + pluralizeHours(0);
+        const hidden = document.getElementById(id);
+        if (hidden) hidden.value = 0;
+      });
+      calculateArrival();
+    }
+  });
 });
 

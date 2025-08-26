@@ -631,20 +631,21 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 }
 
 .border-delay-input {
-  padding: 0 4px;
+  padding: 0 5px;
   border: 1px solid var(--input-border);
   border-radius: 2px;
   font-size: inherit;
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
-  width: 26px;
-  min-width: 26px;
-  max-width: 26px;
+  width: 22px;
+  min-width: 22px;
+  max-width: 22px;
   height: 18px;
   line-height: 18px;
   font-weight: normal;
-  margin: 2px 4px 0 4px;
+  margin: 0 6px;
+  vertical-align: baseline;
   -moz-appearance: textfield;
 }
 
