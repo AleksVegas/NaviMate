@@ -123,7 +123,10 @@ class WeatherService {
     // Основная информация
     document.getElementById('weatherIcon').textContent = this.getWeatherIcon(data.weather[0].id);
     document.getElementById('weatherTemp').textContent = `${Math.round(data.main.temp)}°C`;
-    document.getElementById('weatherDesc').textContent = data.weather[0].description;
+    
+    // Переводим описание погоды
+    const weatherDesc = this.translateWeatherDescription(data.weather[0].description, data.weather[0].id);
+    document.getElementById('weatherDesc').textContent = weatherDesc;
     
     // Детали с описанием ветра по шкале Бофорта
     const windSpeed = data.wind.speed;
@@ -136,10 +139,10 @@ class WeatherService {
     
     // Видимость (если есть) или заменяем на УФ индекс
     if (data.visibility) {
-      const visibilityKm = Math.round(data.visibility / 1000);
+      const visibilityM = Math.round(data.visibility);
       const lang = window.lang || 'ru';
-      const unit = lang === 'en' ? 'km' : 'км';
-      document.getElementById('weatherVisibility').textContent = `${visibilityKm} ${unit}`;
+      const unit = lang === 'en' ? 'm' : 'м';
+      document.getElementById('weatherVisibility').textContent = `${visibilityM} ${unit}`;
     } else {
       document.getElementById('weatherVisibility').textContent = '--';
     }
@@ -152,7 +155,9 @@ class WeatherService {
     }
     
     // Местоположение
-    document.getElementById('weatherLocation').textContent = `📍 ${data.name}, ${data.sys.country}`;
+    const cityName = this.translateCityName(data.name);
+    const countryName = this.translateCountryName(data.sys.country);
+    document.getElementById('weatherLocation').textContent = `📍 ${cityName}, ${countryName}`;
     
     // Показываем информацию
     this.weatherInfo.style.display = 'block';
@@ -186,8 +191,10 @@ class WeatherService {
         if (forecast.wind && forecast.wind.speed) {
           const windSpeed = forecast.wind.speed;
           const windDescription = this.getBeaufortDescription(windSpeed);
+          const lang = window.lang || 'ru';
+          const windUnit = lang === 'en' ? 'm/s' : 'м/с';
           document.getElementById(`forecastWind${periodId}`).textContent = 
-            `${windSpeed} м/с (${windDescription})`;
+            `${windSpeed} ${windUnit} (${windDescription})`;
         }
       }
     });
@@ -311,6 +318,108 @@ class WeatherService {
     return translations[key] || key;
   }
   
+  // Перевод описания погоды
+  translateWeatherDescription(description, weatherId) {
+    const lang = window.lang || 'ru';
+    
+    // Словарь переводов для основных описаний
+    const weatherTranslations = {
+      ru: {
+        'clear sky': 'ясно',
+        'few clouds': 'малооблачно',
+        'scattered clouds': 'рассеянные облака',
+        'broken clouds': 'облачно',
+        'overcast clouds': 'пасмурно',
+        'light rain': 'легкий дождь',
+        'moderate rain': 'умеренный дождь',
+        'heavy rain': 'сильный дождь',
+        'light snow': 'легкий снег',
+        'moderate snow': 'умеренный снег',
+        'heavy snow': 'сильный снег',
+        'mist': 'туман',
+        'fog': 'туман',
+        'thunderstorm': 'гроза'
+      },
+      en: {
+        'ясно': 'clear sky',
+        'малооблачно': 'few clouds',
+        'рассеянные облака': 'scattered clouds',
+        'облачно': 'broken clouds',
+        'пасмурно': 'overcast clouds',
+        'легкий дождь': 'light rain',
+        'умеренный дождь': 'moderate rain',
+        'сильный дождь': 'heavy rain',
+        'легкий снег': 'light snow',
+        'умеренный снег': 'moderate snow',
+        'сильный снег': 'heavy snow',
+        'туман': 'fog',
+        'гроза': 'thunderstorm'
+      }
+    };
+    
+    const translations = weatherTranslations[lang] || {};
+    return translations[description.toLowerCase()] || description;
+  }
+  
+  // Перевод названий городов
+  translateCityName(cityName) {
+    const lang = window.lang || 'ru';
+    
+    const cityTranslations = {
+      ru: {
+        'Belgrade': 'Белград',
+        'Budapest': 'Будапешт',
+        'Vienna': 'Вена',
+        'Bratislava': 'Братислава',
+        'Bucharest': 'Бухарест',
+        'Sofia': 'София',
+        'Zagreb': 'Загреб',
+        'Belgrade': 'Белград'
+      },
+      en: {
+        'Белград': 'Belgrade',
+        'Будапешт': 'Budapest',
+        'Вена': 'Vienna',
+        'Братислава': 'Bratislava',
+        'Бухарест': 'Bucharest',
+        'София': 'Sofia',
+        'Загреб': 'Zagreb'
+      }
+    };
+    
+    const translations = cityTranslations[lang] || {};
+    return translations[cityName] || cityName;
+  }
+  
+  // Перевод названий стран
+  translateCountryName(countryCode) {
+    const lang = window.lang || 'ru';
+    
+    const countryTranslations = {
+      ru: {
+        'RS': 'Сербия',
+        'HU': 'Венгрия',
+        'AT': 'Австрия',
+        'SK': 'Словакия',
+        'RO': 'Румыния',
+        'BG': 'Болгария',
+        'HR': 'Хорватия'
+      },
+      en: {
+        'RS': 'Serbia',
+        'HU': 'Hungary',
+        'AT': 'Austria',
+        'SK': 'Slovakia',
+        'RO': 'Romania',
+        'BG': 'Bulgaria',
+        'HR': 'Croatia'
+      }
+    };
+    
+    const translations = countryTranslations[lang] || {};
+    return translations[countryCode] || countryCode;
+  }
+  
   // Обновление языка
   updateLanguage() {
     // Обновляем кнопку
@@ -369,13 +478,31 @@ class WeatherService {
       uvIndexLabel.textContent = this.getTranslation('uvIndex');
     }
     
-    // Обновляем единицы измерения ветра
-    const windValues = document.querySelectorAll('.weather-value');
-    windValues.forEach(value => {
-      if (value.textContent.includes('м/с') || value.textContent.includes('m/s')) {
-        const lang = window.lang || 'ru';
-        const unit = lang === 'en' ? 'm/s' : 'м/с';
-        value.textContent = value.textContent.replace(/[м\/s\/]+/g, unit);
+    // Обновляем единицы измерения ветра и шкалу Бофорта
+    this.updateWindUnitsAndBeaufort();
+  }
+  
+  // Обновление единиц ветра и шкалы Бофорта
+  updateWindUnitsAndBeaufort() {
+    const lang = window.lang || 'ru';
+    
+    // Обновляем текущую погоду
+    const currentWind = document.getElementById('weatherWind');
+    if (currentWind && currentWind.textContent.includes('(')) {
+      const windSpeed = currentWind.textContent.match(/^([\d.]+)/)[1];
+      const windDescription = this.getBeaufortDescription(parseFloat(windSpeed));
+      const windUnit = lang === 'en' ? 'm/s' : 'м/с';
+      currentWind.textContent = `${windSpeed} ${windUnit} (${windDescription})`;
+    }
+    
+    // Обновляем прогноз
+    ['Morning', 'Day', 'Evening', 'Night'].forEach(period => {
+      const forecastWind = document.getElementById(`forecastWind${period}`);
+      if (forecastWind && forecastWind.textContent.includes('(')) {
+        const windSpeed = forecastWind.textContent.match(/^([\d.]+)/)[1];
+        const windDescription = this.getBeaufortDescription(parseFloat(windSpeed));
+        const windUnit = lang === 'en' ? 'm/s' : 'м/с';
+        forecastWind.textContent = `${windSpeed} ${windUnit} (${windDescription})`;
       }
     });
   }
