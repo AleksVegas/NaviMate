@@ -306,7 +306,7 @@ function calculate(index) {
   const nearestZone = findNearestWaitingZone(meeting_km);
   if (nearestZone) {
     const kmUnit = t.kmUnit || (lang === 'en' ? ' km' : ' км');
-    output += `<div>${t.waitingZone || '⚠️ Ближайшее место ожидания:'} <b>${nearestZone.display}${kmUnit}</b></div>`;
+    output += `<div>${t.waitingZone || '⚠️ Ближайшее место ожидания:'} <b>${nearestZone.display} ${kmUnit}</b></div>`;
     if (nearestZone.restricted) {
       const restrictedText = t.restricted || '⛔ Расхождение и обгон запрещен с {from} по {to} км';
       output += `<div>${restrictedText.replace("{from}", nearestZone.from).replace("{to}", nearestZone.to)}</div>`;

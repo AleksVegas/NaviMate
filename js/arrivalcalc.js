@@ -160,7 +160,13 @@ function calculateArrival() {
     // Получаем значение из соответствующего input
     const inputId = border.nameKey;
     const input = document.getElementById(inputId);
-    const delay = input ? parseFloat(input.value) || 0 : border.defaultDelay;
+    const saved = parseFloat(localStorage.getItem('bd_' + inputId));
+    let delay = Number.isFinite(saved) ? saved : (input ? parseFloat(input.value) || 0 : border.defaultDelay);
+
+    // Правило: Вена +1 час при движении вверх (как пограничная задержка)
+    if (border.nameKey === 'borderAustriaVienna' && direction === 1 && delay < 1) {
+      delay = 1;
+    }
     
     if (delay > 0) {
       borderDelayTotal += delay;
@@ -179,7 +185,10 @@ function calculateArrival() {
       const inputId = border.nameKey;
       const input = document.getElementById(inputId);
       const saved = parseFloat(localStorage.getItem('bd_' + inputId));
-      const delay = Number.isFinite(saved) ? saved : (input ? parseFloat(input.value) || 0 : border.defaultDelay);
+      let delay = Number.isFinite(saved) ? saved : (input ? parseFloat(input.value) || 0 : border.defaultDelay);
+      if (border.nameKey === 'borderAustriaVienna' && direction === 1 && delay < 1) {
+        delay = 1;
+      }
 
       const borderName = t[border.nameKey] || border.nameKey;
       bordersInfo += `<div class="border-delay-item">

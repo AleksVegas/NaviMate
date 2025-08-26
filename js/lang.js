@@ -526,8 +526,7 @@ function updateArrivalSection() {
   // Обновляем кнопки
   const btnArrival = document.querySelector('#arrival-calc .calc-btn[onclick="calculateArrival()"]');
   if (btnArrival) {
-    const short = (window.innerWidth || 0) < 460;
-    btnArrival.innerHTML = short ? (t.calcShort || 'Рассчитать') : (t.btnArrival || 'Рассчитать время прибытия');
+    btnArrival.innerHTML = (t.calcShort || 'Рассчитать');
   }
   
   const btnSpeed = document.querySelector('#arrival-calc .calc-btn[onclick="calculateRecommendedSpeed()"]');
