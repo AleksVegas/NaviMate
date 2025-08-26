@@ -147,12 +147,11 @@ class WeatherService {
       document.getElementById('weatherVisibility').textContent = '--';
     }
     
-    // Уровень воды (показываем заглушку, так как API не предоставляет эти данные)
-    const waterLevelElement = document.getElementById('weatherWaterLevel');
-    if (waterLevelElement) {
-      const lang = window.lang || 'ru';
-      const unit = lang === 'en' ? 'm' : 'м';
-      waterLevelElement.textContent = `-- ${unit}`;
+    // УФ индекс (если есть)
+    if (data.uvi !== undefined) {
+      document.getElementById('weatherUvIndex').textContent = `${data.uvi}`;
+    } else {
+      document.getElementById('weatherUvIndex').textContent = '--';
     }
     
     // Местоположение
@@ -509,9 +508,9 @@ class WeatherService {
       visibilityLabel.textContent = this.getTranslation('visibility');
     }
     
-    const waterLevelLabel = document.querySelector('.weather-item[data-type="waterLevel"] .weather-label');
-    if (waterLevelLabel) {
-      waterLevelLabel.textContent = this.getTranslation('waterLevel');
+    const uvIndexLabel = document.querySelector('.weather-item[data-type="uvIndex"] .weather-label');
+    if (uvIndexLabel) {
+      uvIndexLabel.textContent = this.getTranslation('uvIndex');
     }
     
     // Обновляем единицы измерения ветра и шкалу Бофорта
