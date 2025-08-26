@@ -15,45 +15,11 @@ class WeatherService {
     this.init();
   }
   
-  // Загрузка API ключа из localStorage
-  loadApiKey() {
-    const apiKeyInput = document.getElementById('weather-api-key');
-    if (apiKeyInput) {
-      apiKeyInput.value = this.apiKey;
-    }
-  }
-  
-  // Сохранение API ключа
-  saveApiKey() {
-    const apiKeyInput = document.getElementById('weather-api-key');
-    if (apiKeyInput) {
-      this.apiKey = apiKeyInput.value.trim();
-      localStorage.setItem('weather_api_key', this.apiKey);
-      
-      // Показываем уведомление
-      const saveBtn = document.getElementById('save-api-key');
-      if (saveBtn) {
-        const originalText = saveBtn.textContent;
-        saveBtn.textContent = '✅ Сохранено!';
-        saveBtn.style.backgroundColor = '#4caf50';
-        setTimeout(() => {
-          saveBtn.textContent = originalText;
-          saveBtn.style.backgroundColor = '';
-        }, 2000);
-      }
-    }
-  }
+
   
   init() {
     this.getWeatherBtn.addEventListener('click', () => this.getWeather());
     this.updateLanguage();
-    this.loadApiKey();
-    
-    // Добавляем обработчик для кнопки сохранения API ключа
-    const saveApiKeyBtn = document.getElementById('save-api-key');
-    if (saveApiKeyBtn) {
-      saveApiKeyBtn.addEventListener('click', () => this.saveApiKey());
-    }
   }
   
   // Получение погоды по GPS
