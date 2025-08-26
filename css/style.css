@@ -631,7 +631,7 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 }
 
 .border-delay-input {
-  padding: 0 5px;
+  padding: 0 6px;
   border: 1px solid var(--input-border);
   border-radius: 2px;
   font-size: inherit;
@@ -644,8 +644,8 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
   height: 18px;
   line-height: 18px;
   font-weight: normal;
-  margin: 0 6px;
-  vertical-align: baseline;
+  margin: 1px 8px 0 8px;
+  vertical-align: text-bottom;
   -moz-appearance: textfield;
 }
 

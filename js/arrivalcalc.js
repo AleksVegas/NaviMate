@@ -206,7 +206,6 @@ resultDiv.innerHTML = `
 ⏳ <strong>${t.workHours || 'Длительность перехода'}:</strong> ${travelHours.toFixed(2)} ${t.hourUnit || 'ч'}<br>
 📍 <strong>${t.distance || 'Расстояние'}:</strong> ${distance} ${t.kmUnit || 'км'}<br>
 ${locksInfo}${bordersInfo}
-<div style="margin-top:6px;"><button class="btn-clear" id="btn-clear-borders">${t.clearBtn || 'Очистить'}</button></div>
 `;
 
 
@@ -389,6 +388,32 @@ window.addEventListener('DOMContentLoaded', () => {
         if (hidden) hidden.value = 0;
       });
       calculateArrival();
+    }
+    if (e.target && e.target.id === 'btn-clear-arrival') {
+      // clear arrival fields
+      ['startKmArrival','endKmArrival','speedArrival','startTimeArrival'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = '';
+        localStorage.removeItem('arr_' + id);
+      });
+      // reset work hours to default 16
+      const wh = document.getElementById('workHoursArrival');
+      if (wh) wh.value = '16';
+      localStorage.setItem('arr_workHoursArrival', '16');
+      // clear border delays
+      const inputs = document.querySelectorAll('.border-delay-input');
+      inputs.forEach(inp => {
+        inp.value = '0';
+        const id = inp.getAttribute('data-border');
+        if (id) localStorage.removeItem('bd_' + id);
+        const span = inp.nextElementSibling;
+        if (span && span.tagName === 'SPAN') span.textContent = ' ' + pluralizeHours(0);
+        const hidden = document.getElementById(id);
+        if (hidden) hidden.value = 0;
+      });
+      // clear result
+      const resultDiv = document.getElementById('resultArrival');
+      if (resultDiv) resultDiv.innerHTML = '';
     }
   });
 });
