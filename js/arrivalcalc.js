@@ -179,12 +179,21 @@ function calculateArrival() {
       const input = document.getElementById(inputId);
       const saved = parseFloat(localStorage.getItem('bd_' + inputId));
       let delay = Number.isFinite(saved) ? saved : (input ? parseFloat(input.value) || 0 : border.defaultDelay);
-      // Вена: используем введённое значение без авто-минимума
+      
+      // Правило: Вена +1 час при движении вверх (если не введено больше)
+      if (border.nameKey === 'borderAustriaVienna' && direction === 1 && delay < 1) {
+        delay = 1;
+      }
+      
+      // Ограничение: максимум 9 часов для всех портов
+      if (delay > 9) {
+        delay = 9;
+      }
 
       const borderName = t[border.nameKey] || border.nameKey;
       bordersInfo += `<div class="border-delay-item">
         <span class="border-name">${borderName}</span>
-        <input type="number" class="border-delay-input" data-border="${inputId}" value="${delay}" min="0" max="24" step="0.5">
+        <input type="number" class="border-delay-input" data-border="${inputId}" value="${delay}" min="0" max="9" step="0.5">
         <span class="border-unit">${pluralizeHours(delay)}</span>
       </div>`;
     });
@@ -388,7 +397,13 @@ window.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('change', (e) => {
     if (e.target.classList.contains('border-delay-input')) {
       const borderId = e.target.getAttribute('data-border');
-      const newValue = parseFloat(e.target.value) || 0;
+      let newValue = parseFloat(e.target.value) || 0;
+      
+      // Ограничение: максимум 9 часов для всех портов
+      if (newValue > 9) {
+        newValue = 9;
+        e.target.value = '9';
+      }
 
       const hiddenInput = document.getElementById(borderId);
       if (hiddenInput) hiddenInput.value = newValue;
@@ -401,10 +416,33 @@ window.addEventListener('DOMContentLoaded', () => {
       // persist
       localStorage.setItem('bd_' + borderId, String(newValue));
 
-      const resultDiv = document.getElementById('resultArrival');
-      if (resultDiv && resultDiv.innerHTML.trim() !== '') {
-        calculateArrival();
+      // Автоперерасчёт при изменении задержек
+      triggerAutoArrival();
+    }
+  });
+  
+  // Автоперерасчёт при вводе в поля задержек (без ожидания change)
+  document.addEventListener('input', (e) => {
+    if (e.target.classList.contains('border-delay-input')) {
+      const borderId = e.target.getAttribute('data-border');
+      let newValue = parseFloat(e.target.value) || 0;
+      
+      // Ограничение: максимум 9 часов для всех портов
+      if (newValue > 9) {
+        newValue = 9;
+        e.target.value = '9';
       }
+
+      const hiddenInput = document.getElementById(borderId);
+      if (hiddenInput) hiddenInput.value = newValue;
+
+      const spanElement = e.target.nextElementSibling;
+      if (spanElement && spanElement.tagName === 'SPAN') {
+        spanElement.textContent = ' ' + pluralizeHours(newValue);
+      }
+
+      // Автоперерасчёт при вводе
+      triggerAutoArrival();
     }
   });
 
