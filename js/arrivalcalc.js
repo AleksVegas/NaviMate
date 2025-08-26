@@ -141,11 +141,7 @@ function calculateArrival() {
     }
   });
 
-  // Доп. задержка: Вена +1ч при движении вверх (endKm > startKm)
-  if (direction === 1) {
-    travelHours += 1;
-    passedLocks.push(`⚓ ${t.borderAustriaVienna || 'Вена'} — 1 ${pluralizeHours(1)}`);
-  }
+  // Вена как пограничная задержка реализована ниже (не добавляем в шлюзы)
 
   // Используем значения из редактора задержек на границах
   let borderDelayTotal = 0;

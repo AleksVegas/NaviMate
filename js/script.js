@@ -298,15 +298,15 @@ function calculate(index) {
   const t = translations[lang] || {};
   
   let output = `
-    <div>${t.meetingKm || '📍 Км встречи:'} <b>${formatNumber(meeting_km)}</b></div>
-    <div>${t.distanceToMeeting || '📏 Расстояние до встречи (км):'} <b>${formatNumber(distance_to_meeting)}</b></div>
-    <div>${t.timeToMeeting || '⏱️ Время до встречи (мин):'} <b>${formatNumber(time_to_meeting)}</b></div>
+    <div><b>${t.meetingKm || '📍 Км встречи:'}</b> <b>${formatNumber(meeting_km)}</b></div>
+    <div><b>${t.distanceToMeeting || '📏 Расстояние до встречи (км):'}</b> <b>${formatNumber(distance_to_meeting)}</b></div>
+    <div><b>${t.timeToMeeting || '⏱️ Время до встречи (мин):'}</b> <b>${formatNumber(time_to_meeting)}</b></div>
   `;
 
   const nearestZone = findNearestWaitingZone(meeting_km);
   if (nearestZone) {
     const kmUnit = t.kmUnit || (lang === 'en' ? ' km' : ' км');
-    output += `<div>${t.waitingZone || '⚠️ Ближайшее место ожидания:'} <b>${nearestZone.display} ${kmUnit}</b></div>`;
+    output += `<div><b>${t.waitingZone || '⚠️ Ближайшее место ожидания:'}</b> <b>${nearestZone.display}</b> ${kmUnit}</div>`;
     if (nearestZone.restricted) {
       const restrictedText = t.restricted || '⛔ Расхождение и обгон запрещен с {from} по {to} км';
       output += `<div>${restrictedText.replace("{from}", nearestZone.from).replace("{to}", nearestZone.to)}</div>`;
