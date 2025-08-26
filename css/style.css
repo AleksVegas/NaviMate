@@ -617,7 +617,7 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 /* Стили для редактируемых полей задержек в выводе */
 .border-delay-item {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   gap: 1px;
   margin-bottom: 0;
   font-size: inherit;
