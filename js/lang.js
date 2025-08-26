@@ -10,6 +10,7 @@ window.translations = {
     // --- Навигация ---
     navCalc: "🚢 Расчёт встречи судов",
     navArrival: "🕒 Расчёт времени прибытия",
+    navWeather: "🌤️ Погода",
     navSettings: "⚙️ Настройки",
     navAbout: "ℹ️ О приложении",
 
@@ -112,6 +113,12 @@ window.translations = {
     hoursMany: "часов",
     kmUnit: "км",
     hourUnit: "ч",
+    
+    // --- Раздел: Погода ---
+    weatherHeading: "Погода",
+    getLocation: "Получить мою позицию",
+    refreshWeather: "Обновить",
+    getWeather: "Получить погоду"
   
     // --- Раздел "Шлюзы и границы" ---
     lockFeature1: "Автоматически учитываются все ключевые шлюзы от <strong>Железных Ворот до Ашаха</strong>.",
@@ -172,6 +179,7 @@ window.translations = {
     // --- Navigation ---
     navCalc: "🚢 Meeting Calculation",
     navArrival: "🕒 Arrival Time Calculation",
+    navWeather: "🌤️ Weather",
     navSettings: "⚙️ Settings",
     navAbout: "ℹ️ About",
 
@@ -272,6 +280,12 @@ window.translations = {
     hoursMany: "hours",
     kmUnit: "km",
     hourUnit: "h",
+    
+    // --- Section: Weather ---
+    weatherHeading: "Weather",
+    getLocation: "Get my location",
+    refreshWeather: "Refresh",
+    getWeather: "Get weather"
   
     // --- Section: Locks and border ---
     lockFeature1: "Automatically accounts for all key locks from <strong>Iron Gates to Asah</strong>.",

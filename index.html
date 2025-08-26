@@ -20,10 +20,11 @@
     <button id="toggle-theme" title="Переключить тему" aria-label="Переключить тему">🌙</button>
   </header>    <nav id="sidebar" aria-label="Главное меню">  
     <ul>  
-      <li><button class="nav-btn active" data-section="calc-section" data-i18n="navCalc">🚢 Расчёт встречи судов</button></li>  
-      <li><button class="nav-btn" data-section="arrival-calc" data-i18n="navArrival">🕒 Расчёт времени прибытия</button></li>
-      <li><button class="nav-btn" data-section="settings-section" data-i18n="navSettings">⚙️ Настройки</button></li>  
-      <li><button class="nav-btn" data-section="about-section" data-i18n="navAbout">ℹ️ О приложении</button></li>  
+              <li><button class="nav-btn active" data-section="calc-section" data-i18n="navCalc">🚢 Расчёт встречи судов</button></li>
+        <li><button class="nav-btn" data-section="arrival-calc" data-i18n="navArrival">🕒 Расчёт времени прибытия</button></li>
+        <li><button class="nav-btn" data-section="weather-section" data-i18n="navWeather">🌤️ Погода</button></li>
+        <li><button class="nav-btn" data-section="settings-section" data-i18n="navSettings">⚙️ Настройки</button></li>
+        <li><button class="nav-btn" data-section="about-section" data-i18n="navAbout">ℹ️ О приложении</button></li>  
     </ul>  
   </nav>    <main>  
     <section id="calc-section" class="section active">  
@@ -87,7 +88,62 @@
       <div class="output" id="requiredSpeedResultArrival"></div>
     </div>
   </div>
-</section>
+    </section>
+    
+    <section id="weather-section" class="section">
+      <h2 data-i18n="weatherHeading">🌤️ Погода</h2>
+      <hr style="margin: 12px 0; border-color: #ccc;">
+      
+      <div class="weather-controls">
+        <button class="weather-btn" id="getLocationBtn" data-i18n="getLocation">📍 Получить мою позицию</button>
+        <button class="weather-btn" id="refreshWeatherBtn" data-i18n="refreshWeather">🔄 Обновить</button>
+      </div>
+      
+      <div class="location-inputs">
+        <label for="weatherLat">Широта:</label>
+        <input type="number" id="weatherLat" step="0.000001" placeholder="например: 44.7866">
+        
+        <label for="weatherLon">Долгота:</label>
+        <input type="number" id="weatherLon" step="0.000001" placeholder="например: 20.4489">
+        
+        <button class="weather-btn" id="getWeatherBtn" data-i18n="getWeather">🌤️ Получить погоду</button>
+      </div>
+      
+      <div class="weather-info" id="weatherInfo" style="display: none;">
+        <div class="weather-main">
+          <div class="weather-icon" id="weatherIcon">🌤️</div>
+          <div class="weather-details">
+            <div class="weather-temp" id="weatherTemp">--°C</div>
+            <div class="weather-desc" id="weatherDesc">--</div>
+          </div>
+        </div>
+        
+        <div class="weather-details-grid">
+          <div class="weather-item">
+            <span class="weather-label">💨 Ветер:</span>
+            <span class="weather-value" id="weatherWind">-- м/с</span>
+          </div>
+          <div class="weather-item">
+            <span class="weather-label">🧭 Направление:</span>
+            <span class="weather-value" id="weatherWindDir">--</span>
+          </div>
+          <div class="weather-item">
+            <span class="weather-label">💧 Влажность:</span>
+            <span class="weather-value" id="weatherHumidity">--%</span>
+          </div>
+          <div class="weather-item">
+            <span class="weather-label">📊 Давление:</span>
+            <span class="weather-value" id="weatherPressure">-- гПа</span>
+          </div>
+        </div>
+        
+        <div class="weather-location" id="weatherLocation">📍 --</div>
+      </div>
+      
+      <div class="weather-error" id="weatherError" style="display: none;">
+        <p>❌ Ошибка получения погоды. Проверьте координаты или попробуйте позже.</p>
+      </div>
+    </section>
     
     <section id="settings-section" class="section">  
   <h2 data-i18n="settingsHeading">⚙️ Настройки</h2>  
@@ -219,6 +275,7 @@
 <script src="js/lang.js"></script>
 <script src="js/script.js"></script>
 <script src="js/arrivalcalc.js"></script>
+<script src="js/weather.js"></script>
   
 </body>  
 </html>  
