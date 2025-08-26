@@ -634,7 +634,7 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
   padding: 0 6px;
   border: 1px solid var(--input-border);
   border-radius: 2px;
-  font-size: 14px;
+  font-size: 12px;
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
@@ -643,8 +643,8 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
   max-width: 22px;
   height: 20px;
   line-height: 20px;
-  font-weight: 600;
-  margin: 3px 8px 0 8px;
+  font-weight: 500;
+  margin: 5px 8px 0 8px;
   vertical-align: text-bottom;
   -moz-appearance: textfield;
 }
