@@ -619,7 +619,7 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
   display: flex;
   align-items: baseline;
   gap: 1px;
-  margin-bottom: 1px;
+  margin-bottom: 0;
   font-size: inherit;
   line-height: inherit;
   font-weight: inherit;
@@ -628,7 +628,6 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 .border-name {
   /* Название порта */
   font-weight: 600;
-  padding-top: 2px;
 }
 
 .border-delay-input {
@@ -639,13 +638,13 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
-  width: 25px;
-  min-width: 25px;
-  max-width: 25px;
+  width: 27px;
+  min-width: 27px;
+  max-width: 27px;
   height: 19px;
   line-height: 19px;
   font-weight: 600;
-  margin: 2px 9px 0 9px;
+  margin: 1px 9px 0 9px;
   -moz-appearance: textfield;
 }
 
