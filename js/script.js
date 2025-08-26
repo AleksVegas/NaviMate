@@ -4,6 +4,7 @@
 const themeBtnHeader = document.getElementById("toggle-theme");
 const themeSwitch = document.getElementById("toggle-theme-switch");
 const headerLanguageSelect = document.getElementById("header-language-select");
+const themeAuto = document.getElementById('theme-auto');
 
 function toggleTheme() {
   document.body.classList.toggle("dark");
@@ -21,7 +22,34 @@ function toggleTheme() {
   }
 }
 
+function applyTheme(isDark) {
+  document.body.classList.toggle('dark', isDark);
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+  if (themeBtnHeader) themeBtnHeader.innerText = isDark ? '☀️' : '🌙';
+  if (themeSwitch) themeSwitch.value = isDark ? 'dark' : 'light';
+}
 
+function computeAutoTheme() {
+  const now = new Date();
+  const h = now.getHours();
+  const autoDark = !(h >= 7 && h < 20); // с 20:00 до 06:59 — тёмная
+  return autoDark;
+}
+
+function initTheme() {
+  const auto = localStorage.getItem('theme_auto') === '1';
+  if (themeAuto) themeAuto.checked = auto;
+
+  if (auto) {
+    const isDark = computeAutoTheme();
+    applyTheme(isDark);
+  } else {
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark') applyTheme(true);
+    else if (stored === 'light') applyTheme(false);
+    else applyTheme(false);
+  }
+}
 
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
@@ -47,6 +75,24 @@ if (themeSwitch) {
     if (isDark !== document.body.classList.contains("dark")) {
       toggleTheme();
     }
+  });
+}
+
+if (themeAuto) {
+  themeAuto.addEventListener('change', () => {
+    const auto = themeAuto.checked;
+    localStorage.setItem('theme_auto', auto ? '1' : '0');
+    if (auto) {
+      applyTheme(computeAutoTheme());
+    }
+  });
+}
+
+if (themeSwitch) {
+  themeSwitch.addEventListener('change', () => {
+    const isDark = themeSwitch.value === 'dark';
+    localStorage.setItem('theme_auto', '0'); // ручной выбор отменяет авто
+    applyTheme(isDark);
   });
 }
 
@@ -383,6 +429,9 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem('activeSection', target);
     });
   });
+
+  // Выполнить инициализацию темы после загрузки DOM
+  initTheme();
 });
 
 // Перезагрузка при появлении интернета

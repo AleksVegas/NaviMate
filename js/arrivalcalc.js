@@ -208,6 +208,27 @@ resultDiv.innerHTML = `
 ${locksInfo}${bordersInfo}
 `;
 
+  // Подготовим текст для шаринга
+  const shareText = `Прибытие: ${formattedArrival}\nДлительность: ${travelHours.toFixed(2)} ${t.hourUnit || 'ч'}\nРасстояние: ${distance} ${t.kmUnit || 'км'}\nМаршрут: ${startKm}–${endKm} км`;
+  const shareBtn = document.getElementById('btn-share-arrival');
+  if (shareBtn) {
+    shareBtn.onclick = async () => {
+      try {
+        if (navigator.share) {
+          await navigator.share({ text: shareText });
+        } else {
+          await navigator.clipboard.writeText(shareText);
+          alert('Скопировано в буфер обмена');
+        }
+      } catch (e) {
+        try {
+          await navigator.clipboard.writeText(shareText);
+          alert('Скопировано в буфер обмена');
+        } catch {}
+      }
+    };
+  }
+
 
   document.getElementById("desiredBlockArrival").style.display = "block";
   document.getElementById("requiredSpeedResultArrival").innerHTML = "";

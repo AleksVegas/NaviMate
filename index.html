@@ -60,6 +60,7 @@
 
     <button class="calc-btn" onclick="calculateArrival()" data-i18n="btnArrival">Рассчитать время прибытия</button>
     <button class="btn-clear" id="btn-clear-arrival" data-i18n="clearAll">Очистить</button>
+    <button class="calc-btn" id="btn-share-arrival">Поделиться</button>
 
     <div class="output" id="resultArrival"></div>
     
@@ -95,6 +96,9 @@
       <option value="light" data-i18n="lightTheme">Светлая</option>
       <option value="dark" data-i18n="darkTheme">Тёмная</option>
     </select>
+    <label style="display:flex; align-items:center; gap:6px; margin-left:6px;">
+      <input type="checkbox" id="theme-auto" /> Авто
+    </label>
   </div>
 
   <div class="settings-row">
