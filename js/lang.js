@@ -129,7 +129,7 @@ window.translations = {
     apiKeyError: "Неверный API ключ",
     apiLimitError: "Превышен лимит запросов",
     apiError: "Ошибка API",
-    weatherGeneralError: "Ошибка получения погоды. Проверьте координаты или попробуйте позже."
+    weatherGeneralError: "Ошибка получения погоды. Проверьте координаты или попробуйте позже.",
   
     // --- Раздел "Шлюзы и границы" ---
     lockFeature1: "Автоматически учитываются все ключевые шлюзы от <strong>Железных Ворот до Ашаха</strong>.",
@@ -307,7 +307,7 @@ window.translations = {
     apiKeyError: "Invalid API key",
     apiLimitError: "API request limit exceeded",
     apiError: "API Error",
-    weatherGeneralError: "Error getting weather. Check coordinates or try again later."
+    weatherGeneralError: "Error getting weather. Check coordinates or try again later.",
   
     // --- Section: Locks and border ---
     lockFeature1: "Automatically accounts for all key locks from <strong>Iron Gates to Asah</strong>.",
