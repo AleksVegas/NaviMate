@@ -3,8 +3,8 @@
 
 class WeatherService {
   constructor() {
-    // OpenWeatherMap API (основной) - используем ваш ключ
-    this.apiKey = 'd8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8'; // Ваш API ключ
+    // OpenWeatherMap API (основной) - ЗАМЕНИТЕ НА ВАШ РЕАЛЬНЫЙ API КЛЮЧ!
+    this.apiKey = 'd8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8'; // ← Замените на ваш ключ с openweathermap.org
     this.baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
     this.forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast';
     
@@ -59,6 +59,8 @@ class WeatherService {
         this.showError(this.getTranslation('gpsPermissionError'));
       } else if (error.code === 3) {
         this.showError(this.getTranslation('gpsTimeoutError'));
+      } else if (error.message && error.message.includes('API')) {
+        this.showError(this.getTranslation('apiKeyError'));
       } else {
         this.showError(this.getTranslation('weatherError'));
       }
