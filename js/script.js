@@ -322,6 +322,11 @@ function clearFields(index) {
   document.getElementById(`our_pos_${index}`).value = '';
   document.getElementById(`our_speed_${index}`).value = '';
   document.getElementById(`result_${index}`).innerText = '';
+  
+  // Очищаем localStorage для этого блока
+  ['enemy_pos_','enemy_speed_','our_pos_','our_speed_'].forEach(prefix => {
+    localStorage.removeItem('meet_' + prefix + index);
+  });
 }
 
 function copyOurPos(index) {
@@ -373,6 +378,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const m = id.match(/^(enemy_pos_|enemy_speed_|our_pos_|our_speed_)(\d+)$/);
     if (m) {
       localStorage.setItem('meet_' + id, e.target.value);
+      
+      // Автоперерасчет только если уже был расчет
+      const index = parseInt(m[2]);
+      const resultDiv = document.getElementById(`result_${index}`);
+      if (resultDiv && resultDiv.innerHTML.trim() !== '') {
+        calculate(index);
+      }
     }
   });
 

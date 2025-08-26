@@ -388,8 +388,18 @@ window.addEventListener('DOMContentLoaded', () => {
   watchIds.forEach(id => {
     const el = document.getElementById(id);
     if (el) {
-      el.addEventListener('input', triggerAutoArrival);
-      el.addEventListener('change', triggerAutoArrival);
+      // Сохраняем при изменении
+      el.addEventListener('input', (e) => {
+        localStorage.setItem('arr_' + id, e.target.value);
+        // Автоперерасчет только если уже был расчет
+        const resultDiv = document.getElementById('resultArrival');
+        if (resultDiv && resultDiv.innerHTML.trim() !== '') {
+          triggerAutoArrival();
+        }
+      });
+      el.addEventListener('change', (e) => {
+        localStorage.setItem('arr_' + id, e.target.value);
+      });
     }
   });
 
