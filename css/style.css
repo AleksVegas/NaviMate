@@ -617,9 +617,9 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 /* Стили для редактируемых полей задержек в выводе */
 .border-delay-item {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: 1px;
-  margin-bottom: 0;
+  margin-bottom: 1px;
   font-size: inherit;
   line-height: inherit;
   font-weight: inherit;
@@ -634,18 +634,18 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
   padding: 0 6px;
   border: 1px solid var(--input-border);
   border-radius: 2px;
-  font-size: 12px;
+  font-size: 11px;
   background: var(--card-bg);
   color: var(--text);
   text-align: center;
-  width: 22px;
-  min-width: 22px;
-  max-width: 22px;
+  width: 24px;
+  min-width: 24px;
+  max-width: 24px;
   height: 20px;
   line-height: 20px;
   font-weight: 500;
-  margin: 5px 8px 0 8px;
-  vertical-align: text-bottom;
+  margin: 0 8px;
+  transform: translateY(3px);
   -moz-appearance: textfield;
 }
 
