@@ -58,9 +58,13 @@
       <option value="24" data-i18n="work24">24 часа (нон-стоп)</option>
     </select>
 
-    <button class="calc-btn" onclick="calculateArrival()" data-i18n="btnArrival">Рассчитать время прибытия</button>
-    <button class="btn-clear" id="btn-clear-arrival" data-i18n="clearAll">Очистить</button>
-    <button class="calc-btn" id="btn-share-arrival">Поделиться</button>
+    <div class="arrival-actions">
+      <div class="left-actions">
+        <button class="calc-btn" onclick="calculateArrival()" data-i18n="btnArrival">Рассчитать время прибытия</button>
+        <button class="btn-clear" id="btn-clear-arrival" data-i18n="clearAll">Очистить</button>
+      </div>
+      <button class="calc-btn" id="btn-share-arrival">Поделиться</button>
+    </div>
 
     <div class="output" id="resultArrival"></div>
     
@@ -92,13 +96,13 @@
   <!-- Переключатель темы -->
   <div class="settings-row">
     <label for="toggle-theme-switch" data-i18n="themeLabel">🌗 Тема (день/ночь)</label>
+    <label style="display:flex; align-items:center; gap:6px; margin-left:6px;">
+      <input type="checkbox" id="theme-auto" /> Авто
+    </label>
     <select id="toggle-theme-switch">
       <option value="light" data-i18n="lightTheme">Светлая</option>
       <option value="dark" data-i18n="darkTheme">Тёмная</option>
     </select>
-    <label style="display:flex; align-items:center; gap:6px; margin-left:6px;">
-      <input type="checkbox" id="theme-auto" /> Авто
-    </label>
   </div>
 
   <div class="settings-row">

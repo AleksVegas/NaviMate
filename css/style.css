@@ -585,6 +585,25 @@ input[type="datetime-local"][data-lang="en"] {
 #theme-auto { flex: 0 0 auto; }
 
 /* Кнопка Поделиться — акцентная, справа */
+.arrival-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.arrival-actions .left-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.arrival-actions #btn-share-arrival {
+  margin-left: auto;
+}
+
+/* Не позволяем чекбоксу авто-темы сжимать селектор */
+#toggle-theme-switch { flex: 1 1 auto; }
+#theme-auto { flex: 0 0 auto; }
+
+/* Кнопка Поделиться — акцентная, справа */
 #btn-share-arrival {
   background-color: #6a1b9a;
   color: #fff;
