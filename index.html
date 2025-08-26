@@ -94,19 +94,9 @@
       <h2 data-i18n="weatherHeading">🌤️ Погода</h2>
       <hr style="margin: 12px 0; border-color: #ccc;">
       
-      <div class="weather-controls">
-        <button class="weather-btn" id="getLocationBtn" data-i18n="getLocation">📍 Получить мою позицию</button>
-        <button class="weather-btn" id="refreshWeatherBtn" data-i18n="refreshWeather">🔄 Обновить</button>
-      </div>
-      
-      <div class="location-inputs">
-        <label for="weatherLat">Широта:</label>
-        <input type="number" id="weatherLat" step="0.000001" placeholder="например: 44.7866">
-        
-        <label for="weatherLon">Долгота:</label>
-        <input type="number" id="weatherLon" step="0.000001" placeholder="например: 20.4489">
-        
-        <button class="weather-btn" id="getWeatherBtn" data-i18n="getWeather">🌤️ Получить погоду</button>
+      <div class="weather-simple">
+        <button class="weather-btn main-btn" id="getWeatherBtn" data-i18n="getWeather">🌤️ Получить погоду по GPS</button>
+        <p class="weather-hint">Нажмите кнопку, чтобы получить погоду в вашей позиции</p>
       </div>
       
       <div class="weather-info" id="weatherInfo" style="display: none;">
@@ -170,11 +160,17 @@
 </div>
 
 
-<div class="settings-row">
+  <div class="settings-row">
   <label for="waterway-select" data-i18n="waterwayLabel">🌊 Водный путь:</label>
   <select id="waterway-select" disabled>
     <option selected data-i18n="waterwayDanube">Дунай</option>
   </select>
+</div>
+
+<div class="settings-row">
+  <label for="weather-api-key" data-i18n="weatherApiLabel">🌤️ API ключ погоды:</label>
+  <input type="text" id="weather-api-key" placeholder="Введите API ключ OpenWeatherMap">
+  <button class="btn-save" id="save-weather-api" data-i18n="saveApi">Сохранить</button>
 </div>
       
 </section>

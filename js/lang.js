@@ -65,6 +65,8 @@ window.translations = {
     darkTheme: "Тёмная",
     langLabel: "🌍 Язык:",
     waterwayLabel: "🌊 Водный путь:",
+    weatherApiLabel: "🌤️ API ключ погоды:",
+    saveApi: "Сохранить",
 
     // --- О приложении ---
     aboutHeading: "ℹ️ О приложении",
@@ -116,9 +118,7 @@ window.translations = {
     
     // --- Раздел: Погода ---
     weatherHeading: "Погода",
-    getLocation: "Получить мою позицию",
-    refreshWeather: "Обновить",
-    getWeather: "Получить погоду"
+    getWeather: "Получить погоду по GPS"
   
     // --- Раздел "Шлюзы и границы" ---
     lockFeature1: "Автоматически учитываются все ключевые шлюзы от <strong>Железных Ворот до Ашаха</strong>.",
@@ -232,6 +232,8 @@ window.translations = {
     darkTheme: "Dark",
     langLabel: "🌍 Language:",
     waterwayLabel: "🌊 Waterway:",
+    weatherApiLabel: "🌤️ Weather API key:",
+    saveApi: "Save",
 
     // --- About ---
     aboutHeading: "ℹ️ About",
@@ -283,9 +285,7 @@ window.translations = {
     
     // --- Section: Weather ---
     weatherHeading: "Weather",
-    getLocation: "Get my location",
-    refreshWeather: "Refresh",
-    getWeather: "Get weather"
+    getWeather: "Get weather by GPS"
   
     // --- Section: Locks and border ---
     lockFeature1: "Automatically accounts for all key locks from <strong>Iron Gates to Asah</strong>.",

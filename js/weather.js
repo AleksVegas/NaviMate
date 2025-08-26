@@ -1,67 +1,49 @@
 // Weather functionality for NaviMate
-// OpenWeatherMap API integration with GPS support
+// Simple GPS weather with OpenWeatherMap API
 
 class WeatherService {
   constructor() {
-    this.apiKey = 'YOUR_API_KEY'; // Замените на ваш API ключ
+    this.apiKey = localStorage.getItem('weather_api_key') || '';
     this.baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
-    this.units = 'metric'; // Метрическая система (Цельсии, м/с)
-    this.lang = 'ru'; // Язык описания погоды
+    this.units = 'metric';
+    this.lang = 'ru';
     
     this.weatherInfo = document.getElementById('weatherInfo');
     this.weatherError = document.getElementById('weatherError');
-    this.getLocationBtn = document.getElementById('getLocationBtn');
-    this.refreshWeatherBtn = document.getElementById('refreshWeatherBtn');
     this.getWeatherBtn = document.getElementById('getWeatherBtn');
-    this.weatherLat = document.getElementById('weatherLat');
-    this.weatherLon = document.getElementById('weatherLon');
     
     this.init();
   }
   
   init() {
-    // Привязываем обработчики событий
-    this.getLocationBtn.addEventListener('click', () => this.getCurrentLocation());
-    this.refreshWeatherBtn.addEventListener('click', () => this.refreshWeather());
-    this.getWeatherBtn.addEventListener('click', () => this.getWeatherByCoords());
-    
-    // Загружаем сохраненные координаты
-    this.loadSavedCoords();
-    
-    // Обновляем язык при изменении
+    this.getWeatherBtn.addEventListener('click', () => this.getWeather());
     this.updateLanguage();
   }
   
-  // Получение текущей позиции через GPS
-  async getCurrentLocation() {
+  // Получение погоды по GPS
+  async getWeather() {
     if (!navigator.geolocation) {
       this.showError('Геолокация не поддерживается вашим браузером');
       return;
     }
     
-    this.getLocationBtn.disabled = true;
-    this.getLocationBtn.textContent = '📍 Получение...';
+    this.getWeatherBtn.disabled = true;
+    this.getWeatherBtn.textContent = '🌤️ Получение...';
     
     try {
       const position = await this.getCurrentPosition();
       const { latitude, longitude } = position.coords;
       
-      // Сохраняем координаты
-      this.saveCoords(latitude, longitude);
-      
-      // Обновляем поля ввода
-      this.weatherLat.value = latitude.toFixed(6);
-      this.weatherLon.value = longitude.toFixed(6);
-      
-      // Получаем погоду
-      await this.getWeatherByCoords();
+      const weatherData = await this.fetchWeather(latitude, longitude);
+      this.displayWeather(weatherData);
+      this.hideError();
       
     } catch (error) {
-      console.error('Ошибка получения позиции:', error);
-      this.showError('Не удалось получить вашу позицию. Проверьте разрешения GPS.');
+      console.error('Ошибка получения погоды:', error);
+      this.showError('Не удалось получить погоду. Проверьте разрешения GPS.');
     } finally {
-      this.getLocationBtn.disabled = false;
-      this.getLocationBtn.textContent = this.getTranslation('getLocation');
+      this.getWeatherBtn.disabled = false;
+      this.getWeatherBtn.textContent = this.getTranslation('getWeather');
     }
   }
   
@@ -70,54 +52,29 @@ class WeatherService {
     return new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, {
         enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 60000
+        timeout: 15000,
+        maximumAge: 300000 // 5 минут
       });
     });
   }
   
-  // Получение погоды по координатам
-  async getWeatherByCoords() {
-    const lat = parseFloat(this.weatherLat.value);
-    const lon = parseFloat(this.weatherLon.value);
-    
-    if (isNaN(lat) || isNaN(lon)) {
-      this.showError('Введите корректные координаты');
-      return;
-    }
-    
-    if (lat < -90 || lat > 90 || lon < -180 || lon > 180) {
-      this.showError('Координаты вне допустимого диапазона');
-      return;
-    }
-    
-    this.getWeatherBtn.disabled = true;
-    this.getWeatherBtn.textContent = '🌤️ Получение...';
-    
-    try {
-      const weatherData = await this.fetchWeather(lat, lon);
-      this.displayWeather(weatherData);
-      this.hideError();
-      
-      // Сохраняем координаты
-      this.saveCoords(lat, lon);
-      
-    } catch (error) {
-      console.error('Ошибка получения погоды:', error);
-      this.showError('Не удалось получить погоду. Проверьте координаты или попробуйте позже.');
-    } finally {
-      this.getWeatherBtn.disabled = false;
-      this.getWeatherBtn.textContent = this.getTranslation('getWeather');
-    }
-  }
-  
   // Запрос к API OpenWeatherMap
   async fetchWeather(lat, lon) {
+    if (!this.apiKey) {
+      throw new Error('API ключ не найден');
+    }
+    
     const url = `${this.baseUrl}?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=${this.units}&lang=${this.lang}`;
     
     const response = await fetch(url);
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      if (response.status === 401) {
+        throw new Error('Неверный API ключ');
+      } else if (response.status === 429) {
+        throw new Error('Превышен лимит запросов');
+      } else {
+        throw new Error(`Ошибка API: ${response.status}`);
+      }
     }
     
     return await response.json();
@@ -169,30 +126,6 @@ class WeatherService {
     return directions[index];
   }
   
-  // Обновление погоды
-  async refreshWeather() {
-    if (this.weatherInfo.style.display !== 'none') {
-      await this.getWeatherByCoords();
-    }
-  }
-  
-  // Сохранение координат в localStorage
-  saveCoords(lat, lon) {
-    localStorage.setItem('weather_lat', lat.toString());
-    localStorage.setItem('weather_lon', lon.toString());
-  }
-  
-  // Загрузка сохраненных координат
-  loadSavedCoords() {
-    const lat = localStorage.getItem('weather_lat');
-    const lon = localStorage.getItem('weather_lon');
-    
-    if (lat && lon) {
-      this.weatherLat.value = lat;
-      this.weatherLon.value = lon;
-    }
-  }
-  
   // Показ ошибки
   showError(message) {
     this.weatherError.querySelector('p').textContent = `❌ ${message}`;
@@ -214,8 +147,6 @@ class WeatherService {
   
   // Обновление языка
   updateLanguage() {
-    this.getLocationBtn.textContent = this.getTranslation('getLocation');
-    this.refreshWeatherBtn.textContent = this.getTranslation('refreshWeather');
     this.getWeatherBtn.textContent = this.getTranslation('getWeather');
   }
 }
@@ -223,25 +154,20 @@ class WeatherService {
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
   // Проверяем, есть ли API ключ
-  const apiKey = prompt('Введите ваш API ключ OpenWeatherMap (или нажмите Отмена для демо):');
+  const apiKey = localStorage.getItem('weather_api_key');
   
   if (apiKey) {
     // Создаем экземпляр сервиса погоды
     const weatherService = new WeatherService();
-    
-    // Устанавливаем API ключ
-    weatherService.apiKey = apiKey;
-    
-    // Сохраняем в localStorage
-    localStorage.setItem('weather_api_key', apiKey);
-    
-    // Делаем глобально доступным
     window.weatherService = weatherService;
     
-  } else {
-    // Демо режим без API
-    console.log('Демо режим погоды - API ключ не введен');
+    // Заполняем поле в настройках
+    const apiKeyInput = document.getElementById('weather-api-key');
+    if (apiKeyInput) {
+      apiKeyInput.value = apiKey;
+    }
     
+  } else {
     // Показываем сообщение о необходимости API ключа
     const weatherSection = document.getElementById('weather-section');
     if (weatherSection) {
@@ -252,11 +178,27 @@ document.addEventListener('DOMContentLoaded', () => {
           <p>Для работы с погодой необходим API ключ OpenWeatherMap</p>
           <p><a href="https://openweathermap.org/api" target="_blank" style="color: #2196F3;">Получить бесплатный ключ</a></p>
           <p style="font-size: 14px; color: #666; margin-top: 20px;">
-            После получения ключа обновите страницу и введите его
+            Введите ключ в настройках и нажмите "Сохранить"
           </p>
         </div>
       `;
     }
+  }
+  
+  // Обработчик для сохранения API ключа
+  const saveApiBtn = document.getElementById('save-weather-api');
+  if (saveApiBtn) {
+    saveApiBtn.addEventListener('click', () => {
+      const apiKeyInput = document.getElementById('weather-api-key');
+      const newApiKey = apiKeyInput.value.trim();
+      
+      if (newApiKey) {
+        localStorage.setItem('weather_api_key', newApiKey);
+        
+        // Перезагружаем страницу для применения ключа
+        location.reload();
+      }
+    });
   }
 });
 
