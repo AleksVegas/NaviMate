@@ -166,6 +166,11 @@ class WeatherService {
     
     // Обновляем язык для всех элементов
     this.updateAllWeatherElements();
+    
+    // Принудительно обновляем язык после отображения
+    setTimeout(() => {
+      this.forceUpdateAllElements();
+    }, 100);
   }
   
   // Отображение прогноза погоды
@@ -206,6 +211,11 @@ class WeatherService {
     
     // Показываем прогноз
     document.getElementById('weatherForecast').style.display = 'block';
+    
+    // Обновляем язык для прогноза
+    setTimeout(() => {
+      this.forceUpdateAllElements();
+    }, 100);
   }
   
   // Поиск прогноза для определенного времени
@@ -489,8 +499,50 @@ class WeatherService {
       }
     }
     
-    // Обновляем единицы измерения
+    // Обновляем единицы измерения и шкалу Бофорта
     this.updateWindUnitsAndBeaufort();
+    
+    // Принудительно обновляем все элементы при смене языка
+    this.forceUpdateAllElements();
+  }
+  
+  // Принудительное обновление всех элементов
+  forceUpdateAllElements() {
+    const lang = window.lang || 'ru';
+    
+    // Обновляем видимость
+    const visibilityElement = document.getElementById('weatherVisibility');
+    if (visibilityElement && visibilityElement.textContent !== '--') {
+      const visibilityValue = visibilityElement.textContent.match(/^(\d+)/);
+      if (visibilityValue) {
+        const unit = lang === 'en' ? 'm' : 'м';
+        visibilityElement.textContent = `${visibilityValue[1]} ${unit}`;
+      }
+    }
+    
+    // Обновляем ветер с шкалой Бофорта
+    const currentWind = document.getElementById('weatherWind');
+    if (currentWind && currentWind.textContent.includes('(')) {
+      const windSpeed = currentWind.textContent.match(/^([\d.]+)/);
+      if (windSpeed) {
+        const windDescription = this.getBeaufortDescription(parseFloat(windSpeed[1]));
+        const windUnit = lang === 'en' ? 'm/s' : 'м/с';
+        currentWind.textContent = `${windSpeed[1]} ${windUnit} (${windDescription})`;
+      }
+    }
+    
+    // Обновляем прогноз ветра
+    ['Morning', 'Day', 'Evening', 'Night'].forEach(period => {
+      const forecastWind = document.getElementById(`forecastWind${period}`);
+      if (forecastWind && forecastWind.textContent.includes('(')) {
+        const windSpeed = forecastWind.textContent.match(/^([\d.]+)/);
+        if (windSpeed) {
+          const windDescription = this.getBeaufortDescription(parseFloat(windSpeed[1]));
+          const windUnit = lang === 'en' ? 'm/s' : 'м/с';
+          forecastWind.textContent = `${windSpeed[1]} ${windUnit} (${windDescription})`;
+        }
+      }
+    });
   }
   
   // Обновление языка для текущей погоды
@@ -521,35 +573,8 @@ class WeatherService {
   
   // Обновление единиц ветра и шкалы Бофорта
   updateWindUnitsAndBeaufort() {
-    const lang = window.lang || 'ru';
-    
-    // Обновляем текущую погоду
-    const currentWind = document.getElementById('weatherWind');
-    if (currentWind && currentWind.textContent.includes('(')) {
-      const windSpeed = currentWind.textContent.match(/^([\d.]+)/)[1];
-      const windDescription = this.getBeaufortDescription(parseFloat(windSpeed));
-      const windUnit = lang === 'en' ? 'm/s' : 'м/с';
-      currentWind.textContent = `${windSpeed} ${windUnit} (${windDescription})`;
-    }
-    
-    // Обновляем прогноз
-    ['Morning', 'Day', 'Evening', 'Night'].forEach(period => {
-      const forecastWind = document.getElementById(`forecastWind${period}`);
-      if (forecastWind && forecastWind.textContent.includes('(')) {
-        const windSpeed = forecastWind.textContent.match(/^([\d.]+)/)[1];
-        const windDescription = this.getBeaufortDescription(parseFloat(windSpeed));
-        const windUnit = lang === 'en' ? 'm/s' : 'м/с';
-        forecastWind.textContent = `${windSpeed} ${windUnit} (${windDescription})`;
-      }
-    });
-    
-    // Обновляем единицы видимости
-    const visibilityElement = document.getElementById('weatherVisibility');
-    if (visibilityElement && visibilityElement.textContent.includes('м') || visibilityElement.textContent.includes('m')) {
-      const visibilityValue = visibilityElement.textContent.match(/^(\d+)/)[1];
-      const unit = lang === 'en' ? 'm' : 'м';
-      visibilityElement.textContent = `${visibilityValue} ${unit}`;
-    }
+    // Теперь вся логика перенесена в forceUpdateAllElements
+    this.forceUpdateAllElements();
   }
 }
 
