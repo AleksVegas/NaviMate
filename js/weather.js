@@ -3,10 +3,21 @@
 
 class WeatherService {
   constructor() {
-    this.apiKey = localStorage.getItem('weather_api_key') || '';
-    this.baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
+    // OpenWeatherMap API (основной)
+    this.openWeatherApiKey = 'YOUR_OPENWEATHER_API_KEY'; // Замените на ваш ключ
+    this.openWeatherUrl = 'https://api.openweathermap.org/data/2.5/weather';
+    
+    // WeatherAPI.com (альтернативный, более точный)
+    this.weatherApiKey = 'YOUR_WEATHERAPI_KEY'; // Замените на ваш ключ
+    this.weatherApiUrl = 'http://api.weatherapi.com/v1/current.json';
+    
+    // AccuWeather (еще один вариант)
+    this.accuWeatherApiKey = 'YOUR_ACCUWEATHER_KEY'; // Замените на ваш ключ
+    this.accuWeatherUrl = 'http://dataservice.accuweather.com/currentconditions/v1/';
+    
     this.units = 'metric';
     this.lang = 'ru';
+    this.currentApi = 'openweather'; // Текущий используемый API
     
     this.weatherInfo = document.getElementById('weatherInfo');
     this.weatherError = document.getElementById('weatherError');
@@ -388,7 +399,22 @@ class WeatherService {
         'Bratislava': 'Братислава',
         'Bucharest': 'Бухарест',
         'Sofia': 'София',
-        'Zagreb': 'Загреб'
+        'Zagreb': 'Загреб',
+        'Novi Sad': 'Нови-Сад',
+        'Subotica': 'Суботица',
+        'Debrecen': 'Дебрецен',
+        'Szeged': 'Сегед',
+        'Gyor': 'Дьёр',
+        'Linz': 'Линц',
+        'Graz': 'Грац',
+        'Kosice': 'Кошице',
+        'Nitra': 'Нитра',
+        'Constanta': 'Констанца',
+        'Timisoara': 'Тимишоара',
+        'Varna': 'Варна',
+        'Burgas': 'Бургас',
+        'Split': 'Сплит',
+        'Rijeka': 'Риека'
       },
       en: {
         'Белград': 'Belgrade',
@@ -397,7 +423,22 @@ class WeatherService {
         'Братислава': 'Bratislava',
         'Бухарест': 'Bucharest',
         'София': 'Sofia',
-        'Загреб': 'Zagreb'
+        'Загреб': 'Zagreb',
+        'Нови-Сад': 'Novi Sad',
+        'Суботица': 'Subotica',
+        'Дебрецен': 'Debrecen',
+        'Сегед': 'Szeged',
+        'Дьёр': 'Gyor',
+        'Линц': 'Linz',
+        'Грац': 'Graz',
+        'Кошице': 'Kosice',
+        'Нитра': 'Nitra',
+        'Констанца': 'Constanta',
+        'Тимишоара': 'Timisoara',
+        'Варна': 'Varna',
+        'Бургас': 'Burgas',
+        'Сплит': 'Split',
+        'Риека': 'Rijeka'
       }
     };
     
@@ -417,7 +458,25 @@ class WeatherService {
         'SK': 'Словакия',
         'RO': 'Румыния',
         'BG': 'Болгария',
-        'HR': 'Хорватия'
+        'HR': 'Хорватия',
+        'SI': 'Словения',
+        'ME': 'Черногория',
+        'BA': 'Босния и Герцеговина',
+        'MK': 'Северная Македония',
+        'AL': 'Албания',
+        'GR': 'Греция',
+        'TR': 'Турция',
+        'UA': 'Украина',
+        'MD': 'Молдова',
+        'PL': 'Польша',
+        'CZ': 'Чехия',
+        'DE': 'Германия',
+        'IT': 'Италия',
+        'FR': 'Франция',
+        'ES': 'Испания',
+        'GB': 'Великобритания',
+        'US': 'США',
+        'CA': 'Канада'
       },
       en: {
         'RS': 'Serbia',
@@ -426,7 +485,25 @@ class WeatherService {
         'SK': 'Slovakia',
         'RO': 'Romania',
         'BG': 'Bulgaria',
-        'HR': 'Croatia'
+        'HR': 'Croatia',
+        'SI': 'Slovenia',
+        'ME': 'Montenegro',
+        'BA': 'Bosnia and Herzegovina',
+        'MK': 'North Macedonia',
+        'AL': 'Albania',
+        'GR': 'Greece',
+        'TR': 'Turkey',
+        'UA': 'Ukraine',
+        'MD': 'Moldova',
+        'PL': 'Poland',
+        'CZ': 'Czech Republic',
+        'DE': 'Germany',
+        'IT': 'Italy',
+        'FR': 'France',
+        'ES': 'Spain',
+        'GB': 'United Kingdom',
+        'US': 'United States',
+        'CA': 'Canada'
       }
     };
     
@@ -580,39 +657,9 @@ class WeatherService {
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', () => {
-  // Проверяем, есть ли API ключ
-  const apiKey = localStorage.getItem('weather_api_key');
-  
-  if (apiKey) {
-    // Создаем экземпляр сервиса погоды
-    const weatherService = new WeatherService();
-    window.weatherService = weatherService;
-    
-    // Заполняем поле в настройках
-    const apiKeyInput = document.getElementById('weather-api-key');
-    if (apiKeyInput) {
-      apiKeyInput.value = apiKey;
-    }
-    
-  } else {
-    // Показываем сообщение о необходимости API ключа
-    const weatherSection = document.getElementById('weather-section');
-    if (weatherSection) {
-      weatherSection.innerHTML = `
-        <h2>🌤️ Погода</h2>
-        <hr style="margin: 12px 0; border-color: #ccc;">
-        <div style="text-align: center; padding: 40px 20px;">
-          <p>Для работы с погодой необходим API ключ OpenWeatherMap</p>
-          <p><a href="https://openweathermap.org/api" target="_blank" style="color: #2196F3;">Получить бесплатный ключ</a></p>
-          <p style="font-size: 14px; color: #666; margin-top: 20px;">
-            Введите ключ в настройках и нажмите "Сохранить"
-          </p>
-        </div>
-      `;
-    }
-  }
-  
-
+  // Создаем экземпляр сервиса погоды (API ключ уже настроен)
+  const weatherService = new WeatherService();
+  window.weatherService = weatherService;
 });
 
 // Обновление языка при смене
