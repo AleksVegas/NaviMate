@@ -215,13 +215,13 @@ class WeatherService {
     const lang = window.lang || 'ru';
     
     if (lang === 'en') {
-      // Английские направления с стрелками
-      const directions = ['↑N', '↗NE', '→E', '↘SE', '↓S', '↙SW', '←W', '↖NW'];
+      // Английские направления с стрелками (куда дует ветер)
+      const directions = ['↓N', '↙NE', '←E', '↖SE', '↑S', '↗SW', '→W', '↘NW'];
       const index = Math.round(degrees / 45) % 8;
       return directions[index];
     } else {
-      // Русские направления с стрелками
-      const directions = ['↑С', '↗СВ', '→В', '↘ЮВ', '↓Ю', '↙ЮЗ', '←З', '↖СЗ'];
+      // Русские направления с стрелками (куда дует ветер)
+      const directions = ['↓С', '↙СВ', '←В', '↖ЮВ', '↑Ю', '↗ЮЗ', '→З', '↘СЗ'];
       const index = Math.round(degrees / 45) % 8;
       return directions[index];
     }
@@ -331,10 +331,25 @@ class WeatherService {
       humidityLabel.textContent = this.getTranslation('humidity');
     }
     
-    const pressureLabel = document.querySelector('.weather-item[data-type="pressure"] .weather-label');
-    if (pressureLabel) {
-      pressureLabel.textContent = this.getTranslation('pressure');
+    const visibilityLabel = document.querySelector('.weather-item[data-type="visibility"] .weather-label');
+    if (visibilityLabel) {
+      visibilityLabel.textContent = this.getTranslation('visibility');
     }
+    
+    const uvIndexLabel = document.querySelector('.weather-item[data-type="uvIndex"] .weather-label');
+    if (uvIndexLabel) {
+      uvIndexLabel.textContent = this.getTranslation('uvIndex');
+    }
+    
+    // Обновляем единицы измерения ветра
+    const windValues = document.querySelectorAll('.weather-value');
+    windValues.forEach(value => {
+      if (value.textContent.includes('м/с') || value.textContent.includes('m/s')) {
+        const lang = window.lang || 'ru';
+        const unit = lang === 'en' ? 'm/s' : 'м/с';
+        value.textContent = value.textContent.replace(/[м\/s\/]+/g, unit);
+      }
+    });
   }
 }
 

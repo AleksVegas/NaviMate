@@ -121,9 +121,13 @@
             <span class="weather-label" data-i18n="humidity">💧 Влажность:</span>
             <span class="weather-value" id="weatherHumidity">--%</span>
           </div>
-          <div class="weather-item" data-type="pressure">
-            <span class="weather-label" data-i18n="pressure">📊 Давление:</span>
-            <span class="weather-value" id="weatherPressure">-- гПа</span>
+          <div class="weather-item" data-type="visibility">
+            <span class="weather-label" data-i18n="visibility">👁️ Видимость:</span>
+            <span class="weather-value" id="weatherVisibility">-- км</span>
+          </div>
+          <div class="weather-item" data-type="uvIndex">
+            <span class="weather-label" data-i18n="uvIndex">☀️ УФ индекс:</span>
+            <span class="weather-value" id="weatherUvIndex">--</span>
           </div>
         </div>
         
@@ -171,7 +175,7 @@
   <hr style="margin: 12px 0; border-color: #ccc;">
 
   <!-- Переключатель темы -->
-  <div class="settings-row theme-row">
+  <div class="settings-row">
     <label for="toggle-theme-switch" data-i18n="themeLabel">🌗 Тема (день/ночь)</label>
     <label style="display:flex; align-items:center; gap:6px; margin-left:6px;">
       <input type="checkbox" id="theme-auto" /> Авто
