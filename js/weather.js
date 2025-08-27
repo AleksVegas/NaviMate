@@ -94,33 +94,29 @@ class WeatherService {
     }
   }
   
-  // Promise-обертка для получения геопозиции с фолбэками (для мобильных)
+  // Улучшенный флоу получения геопозиции с несколькими стратегиями
   getCurrentPosition() {
-    const tryOnce = (opts) => new Promise((resolve, reject) => {
+    const fastCached = { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 };
+    const hiWatch = { enableHighAccuracy: true, timeout: 30000, maximumAge: 0 };
+    const loWatch = { enableHighAccuracy: false, timeout: 35000, maximumAge: 600000 };
+
+    const once = (opts) => new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, opts);
     });
 
-    const watchOnce = (opts, msTimeout) => new Promise((resolve, reject) => {
+    const watchFor = (opts, msTimeout) => new Promise((resolve, reject) => {
       let watchId = null;
       const done = (fn) => (val) => { if (watchId != null) navigator.geolocation.clearWatch(watchId); clearTimeout(timer); fn(val); };
       const timer = setTimeout(done(reject), msTimeout || 15000, { code: 3, message: 'watchPosition timeout' });
       watchId = navigator.geolocation.watchPosition(done(resolve), done(reject), opts);
     });
 
-    const highAcc = { enableHighAccuracy: true, timeout: 25000, maximumAge: 0 };
-    const lowAcc  = { enableHighAccuracy: false, timeout: 35000, maximumAge: 0 };
-
-    return tryOnce(highAcc)
-      .catch(err => {
-        if (err && err.code === 3) { // timeout
-          return tryOnce(lowAcc);
-        }
-        throw err;
-      })
-      .catch(err => {
-        // Последний фолбэк: короткий watchPosition (полезно на некоторых iOS)
-        return watchOnce(lowAcc, 15000);
-      });
+    // 1) Быстрый cached (часто спасает на мобиле)
+    return once(fastCached)
+      // 2) Если не получилось — hi-accuracy watch 15 c
+      .catch(() => watchFor(hiWatch, 15000))
+      // 3) Если всё ещё нет — low-accuracy watch 15 c
+      .catch(() => watchFor(loWatch, 15000));
   }
   
   // Запрос к API OpenWeatherMap для текущей погоды
