@@ -674,6 +674,17 @@ class WeatherService {
     
     // Обновляем единицы измерения ветра и шкалу Бофорта
     this.updateWindUnitsAndBeaufort();
+    
+    // Обновляем описание УФ индекса под текущий язык (если значение уже показано)
+    const uvEl = document.getElementById('weatherUvIndex');
+    if (uvEl && uvEl.textContent && uvEl.textContent !== '--') {
+      const match = uvEl.textContent.match(/([\d.]+)/);
+      if (match) {
+        const uv = parseFloat(match[1]);
+        const desc = this.getUvDescription(uv);
+        uvEl.textContent = `${uv} (${desc})`;
+      }
+    }
   }
   
   // Обновление единиц ветра и шкалы Бофорта

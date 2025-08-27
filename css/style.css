@@ -880,6 +880,14 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 .weather-item {
   display: flex;
   align-items: center;
+  padding: 8px 10px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 6px;
+  background: rgba(255,255,255,0.6);
+}
+body.dark .weather-item {
+  border-color: rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.06);
 }
 .weather-item .weather-label { margin-right: 8px; }
 .weather-item .weather-value { margin-left: auto; }
