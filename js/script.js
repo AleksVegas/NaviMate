@@ -342,7 +342,7 @@ function calculate(index) {
       
       if (nearestZone.side === 'left') {
         // Левый борт: красный цвет, стрелка ПЕРЕД названием
-        const leftColor = document.body.classList.contains('dark') ? '#ff6b6b' : '#c0392b';
+        const leftColor = document.body.classList.contains('dark') ? '#ff6b6b' : '#d63031';
         waitingZoneText += ` | <span style="color: ${leftColor}; font-weight: 600; font-size: 1.1em;">${sideIcon} ${sideText}</span>`;
       } else {
         // Правый борт: зеленый цвет, стрелка ПОСЛЕ названия
