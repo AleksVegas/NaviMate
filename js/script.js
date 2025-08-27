@@ -139,7 +139,7 @@ const waitingSectionsUpstream = [
   { from: 1244.0, to: 1248.0, display: 1243.5, side: 'right' },
   { from: 1254.0, to: 1256.9, display: 1253.0, restricted: true, side: 'left' },
   { from: 1264.5, to: 1268.0, display: 1264.0, side: 'left' },
-  { from: 1281.2, to: 1282.5, display: 1281.0 },
+  { from: 1281.2, to: 1282.5, display: 1281.0, side: 'right' },
   { from: 1283.0, to: 1285.0, display: 1282.7, side: 'right' },
   { from: 1307.0, to: 1311.9, display: 1307.0, restricted: true, side: 'right' },
   { from: 1336.5, to: 1340.0, display: 1336.0, side: 'right' },
