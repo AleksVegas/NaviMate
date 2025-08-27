@@ -339,7 +339,7 @@ function calculate(index) {
     if (nearestZone.side) {
       const sideIcon = nearestZone.side === 'left' ? '⬅️' : '➡️';
       const sideText = nearestZone.side === 'left' ? t.leftSide : t.rightSide;
-      waitingZoneText += ` | <span style="color: #4CAF50; font-weight: 600; font-size: 1.1em;">${sideIcon} ${sideText}</span>`;
+      waitingZoneText += ` | <span style="color: #4CAF50; font-weight: 600; font-size: 1.1em;">${sideText} ${sideIcon}</span>`;
     }
     
     output += `<div>${waitingZoneText}</div>`;
