@@ -821,7 +821,7 @@ class WeatherService {
     }
 
     // Fallback generic
-    return res(M('Условия нормальные', 'Conditions are acceptable'), 'risk-low');
+    return res(M('На палубе приемлемо', 'Acceptable on deck'), 'risk-low');
   }
 }
 
