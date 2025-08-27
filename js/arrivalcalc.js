@@ -216,7 +216,7 @@ function calculateArrival() {
   const locksInfo = passedLocks.length > 0 ? "<br><strong>" + (t.lockDelays || 'Задержки на шлюзах') + ":</strong><br>" + passedLocks.join("<br>") : "";
 
 resultDiv.innerHTML = `
-🚢 <strong>${t.arrivalHeading || 'Расчёт времени прибытия'}:</strong> ${formattedArrival}<br>
+<strong>${t.arrivalHeading || 'Расчёт времени прибытия'}:</strong> ${formattedArrival}<br>
 ⏳ <strong>${t.workHours || 'Длительность перехода'}:</strong> ${travelHours.toFixed(2)} ${t.hourUnit || 'ч'}<br>
 📍 <strong>${t.distance || 'Расстояние'}:</strong> ${distance} ${t.kmUnit || 'км'}<br>
 ${locksInfo}${bordersInfo}
