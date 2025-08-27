@@ -327,7 +327,7 @@ function calculate(index) {
   let output = `
     <div><b>${t.meetingKm || '📍 Км встречи:'}</b> <b>${formatNumber(meeting_km)}</b></div>
     <div><b>${t.distanceToMeeting || '📏 Расстояние до встречи (км):'}</b> <b>${formatNumber(distance_to_meeting)}</b></div>
-    <div><b>${t.timeToMeeting || '⏱️ Время до встречи (мин):'}</b> <b>${formatNumber(time_to_meeting * 60)}</b></div>
+    <div><b>${t.timeToMeeting || '⏱️ Время до встречи (ч):'}</b> <b>${formatNumber(time_to_meeting)}</b></div>
   `;
 
   const nearestZone = findNearestWaitingZone(meeting_km);
