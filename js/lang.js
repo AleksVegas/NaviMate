@@ -641,39 +641,25 @@ function updateArrivalSection() {
 // --- При загрузке ---
 document.addEventListener("DOMContentLoaded", () => {
   const savedLang = localStorage.getItem("lang") || "ru";
+  setLanguage(savedLang);
   
-  // Небольшая задержка для полной загрузки DOM
-  setTimeout(() => {
-    setLanguage(savedLang);
-    
-    const langSelect = document.getElementById("language-select");
-    if (langSelect) {
-      langSelect.disabled = false;
-      langSelect.innerHTML = `
-        <option value="ru" ${savedLang === "ru" ? "selected" : ""}>Русский</option>
-        <option value="en" ${savedLang === "en" ? "selected" : ""}>English</option>
-      `;
-      langSelect.addEventListener("change", e => {
-        setLanguage(e.target.value);
-      });
-    }
-
-    // Обновляем блоки встречи после загрузки DOM
-    if (typeof updateMeetingBlocks === 'function') {
-      updateMeetingBlocks();
-    }
-    if (typeof updateArrivalSection === 'function') {
-      updateArrivalSection();
-    }
-    if (typeof updateCalculationResults === 'function') {
-      updateCalculationResults();
-    }
-    
-    // Дополнительная проверка для секции времени прибытия
-    setTimeout(() => {
-      if (typeof updateArrivalSection === 'function') {
-        updateArrivalSection();
-      }
-    }, 100);
-  }, 100);
+  const langSelect = document.getElementById("language-select");
+  if (langSelect) {
+    langSelect.disabled = false;
+    langSelect.value = savedLang;
+    langSelect.addEventListener("change", e => {
+      setLanguage(e.target.value);
+    });
+  }
+  
+  // Обновляем блоки встречи после загрузки DOM
+  if (typeof updateMeetingBlocks === 'function') {
+    updateMeetingBlocks();
+  }
+  if (typeof updateArrivalSection === 'function') {
+    updateArrivalSection();
+  }
+  if (typeof updateArrivalCalculations === 'function') {
+    updateArrivalCalculations();
+  }
 });

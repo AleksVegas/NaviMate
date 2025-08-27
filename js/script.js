@@ -54,6 +54,7 @@ function initTheme() {
 }
 
 if (localStorage.getItem("theme") === "dark") {
+  // класс уже установлен ранним скриптом; ничего не меняем тут
   document.body.classList.add("dark");
   document.documentElement.classList.add("dark");
 }
