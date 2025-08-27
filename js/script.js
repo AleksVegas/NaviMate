@@ -133,6 +133,30 @@ function formatNumber(n) {
 
 // Массив зон ожидания вверх по течению
 const waitingSectionsUpstream = [
+// Велико-Градиште - Мохач
+  { from: 1196.5, to: 1202.0, display: 1196.0, restricted: true },
+  { from: 1227.5, to: 1231.0, display: 1227.0 },
+  { from: 1244.0, to: 1248.0, display: 1243.5 },
+  { from: 1254.0, to: 1256.9, display: 1253.0, restricted: true },
+  { from: 1264.5, to: 1268.0, display: 1264.0 },
+  { from: 1281.2, to: 1282.5, display: 1281.0 },
+  { from: 1283.0, to: 1285.0, display: 1282.7 },
+  { from: 1307.0, to: 1311.9, display: 1307.0, restricted: true },
+  { from: 1336.5, to: 1340.0, display: 1336.0 },
+  { from: 1354.0, to: 1356.2, display: 1353.0 },
+  { from: 1364.5, to: 1368.5, display: 1363.0 },
+  { from: 1370.1, to: 1372.0, display: 1370.0 },
+  { from: 1372.5, to: 1377.0, display: 1372.2 },
+  { from: 1385.5, to: 1387.5, display: 1385.0 },
+  { from: 1389.0, to: 1390.9, display: 1388.0 },
+  { from: 1392.0, to: 1393.9, display: 1391.0 },
+  { from: 1394.5, to: 1396.9, display: 1394.0 },
+  { from: 1398.8, to: 1401.7, display: 1398.5 },
+  { from: 1402.0, to: 1403.0, display: 1401.8 },
+  { from: 1416.5, to: 1421.0, display: 1416.0 },
+  { from: 1423.5, to: 1425.5, display: 1423.0 },
+  { from: 1423.5, to: 1425.5, display: 1423.0 },
+  { from: 1427.5, to: 1430.5, display: 1427.0 },
   // Мохач - Будапешт
   { from: 1471.1, to: 1475.0, display: 1468.3 }, //1471.0
   { from: 1479.0, to: 1481.0, display: 1478.2 },
@@ -159,7 +183,7 @@ const waitingSectionsUpstream = [
   { from: 1787.2, to: 1788.7, display: 1786.8 },
   { from: 1790.7, to: 1792.0, display: 1790.0 },
   { from: 1793.2, to: 1794.0, display: 1792.5 },
-  { from: 1794.5, to: 1795.9, display: 1794.2, restricted: true }, //1795.0
+  { from: 1794.5, to: 1795.9, display: 1794.2, restricted: true }, 
   { from: 1796.1, to: 1797.8, display: 1796.0, restricted: true },
   { from: 1798.4, to: 1799.5, display: 1798.0 },
   { from: 1800.1, to: 1800.7, display: 1800.0 },
@@ -168,39 +192,39 @@ const waitingSectionsUpstream = [
   { from: 1807.0, to: 1808.0, display: 1805.0 },
   { from: 1863.5, to: 1864.5, display: 1863.0 },
   // Братислава - Вена
-{ from: 1870.7, to: 1871.3, display: 1870.5 },
-{ from: 1874.2, to: 1876.0, display: 1873.8 },
-{ from: 1877.3, to: 1878.2, display: 1877.2 },
-{ from: 1879.5, to: 1882.0, display: 1879.2 },
-{ from: 1884.2, to: 1887, display: 1884.0, restricted: true },
-{ from: 1890.0, to: 1891.0, display: 1889.8 },
-{ from: 1895.2, to: 1896.0, display: 1895.0 },
-{ from: 1901.9, to: 1903.1, display: 1901.7 },
-{ from: 1907.2, to: 1908.6, display: 1906.0 },
-{ from: 1909.5, to: 1910.0, display: 1909.2 },
+  { from: 1870.7, to: 1871.3, display: 1870.5 },
+  { from: 1874.2, to: 1876.0, display: 1873.8 },
+  { from: 1877.3, to: 1878.2, display: 1877.2 },
+  { from: 1879.5, to: 1882.0, display: 1879.2 },
+  { from: 1884.2, to: 1887, display: 1884.0, restricted: true },
+  { from: 1890.0, to: 1891.0, display: 1889.8 },
+  { from: 1895.2, to: 1896.0, display: 1895.0 },
+  { from: 1901.9, to: 1903.1, display: 1901.7 },
+  { from: 1907.2, to: 1908.6, display: 1906.0 },
+  { from: 1909.5, to: 1910.0, display: 1909.2 },
   // Вена - Линц 
-{ from: 1974.0, to: 1975.0, display: 1973.5 },
-{ from: 1975.2, to: 1977.0, display: 1975.0 },
-{ from: 1999.5, to: 2000.5, display: 1999.0 },
-{ from: 2003.3, to: 2003.8, display: 2003.2 },
-{ from: 2008.9, to: 2009.3, display: 2008.5 },
-{ from: 2010.0, to: 2011.0, display: 2009.7 },
-{ from: 2015.8, to: 2017.0, display: 2015.5 },
-{ from: 2017.5, to: 2018.5, display: 2017.2 },
-{ from: 2019.4, to: 2020.5, display: 2019.2 },
-{ from: 2020.7, to: 2023.0, display: 2020.5 },
-{ from: 2026.6, to: 2029.0, display: 2026.5 },
-{ from: 2031.7, to: 2032.7, display: 2031.5 },
-{ from: 2034.3, to: 2035.0, display: 2034.0 },
-{ from: 2055.2, to: 2056.2, display: 2055.0 },
-{ from: 2074.8, to: 2076.3, display: 2074.5 },
-{ from: 2077.5, to: 2078.5, display: 2077.0 },
-{ from: 2080.6, to: 2081.3, display: 2080.0 },
-{ from: 2084.0, to: 2085.0, display: 2083.5 },
-{ from: 2087.0, to: 2088.0, display: 2086.5 },
-{ from: 2116.2, to: 2117.5, display: 2116.0 },
-{ from: 2132.2, to: 2134.0, display: 2131.5 },
-];
+  { from: 1974.0, to: 1975.0, display: 1973.5 },
+  { from: 1975.2, to: 1977.0, display: 1975.0 },
+  { from: 1999.5, to: 2000.5, display: 1999.0 },
+  { from: 2003.3, to: 2003.8, display: 2003.2 },
+  { from: 2008.9, to: 2009.3, display: 2008.5 },
+  { from: 2010.0, to: 2011.0, display: 2009.7 },
+  { from: 2015.8, to: 2017.0, display: 2015.5 },
+  { from: 2017.5, to: 2018.5, display: 2017.2 },
+  { from: 2019.4, to: 2020.5, display: 2019.2 },
+  { from: 2020.7, to: 2023.0, display: 2020.5 },
+  { from: 2026.6, to: 2029.0, display: 2026.5 },
+  { from: 2031.7, to: 2032.7, display: 2031.5 },
+  { from: 2034.3, to: 2035.0, display: 2034.0 },
+  { from: 2055.2, to: 2056.2, display: 2055.0 },
+  { from: 2074.8, to: 2076.3, display: 2074.5 },
+  { from: 2077.5, to: 2078.5, display: 2077.0 },
+  { from: 2080.6, to: 2081.3, display: 2080.0 },
+  { from: 2084.0, to: 2085.0, display: 2083.5 },
+  { from: 2087.0, to: 2088.0, display: 2086.5 },
+  { from: 2116.2, to: 2117.5, display: 2116.0 },
+  { from: 2132.2, to: 2134.0, display: 2131.5 },
+  ];
 
 function findNearestWaitingZone(meetingKm) {
   for (let i = waitingSectionsUpstream.length - 1; i >= 0; i--) {
@@ -452,6 +476,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Перезагрузка при появлении интернета
 window.addEventListener('online', () => location.reload());
+
 
 
 
