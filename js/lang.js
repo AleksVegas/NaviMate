@@ -189,7 +189,9 @@ window.translations = {
     // --- Благодарность ---
     thanksText: "🙏 Спасибо, что используете <strong>NaviMate</strong>! Приложение активно развивается — всё только начинается.",
     calcShort: "Рассчитать",
-    share: "Поделиться"
+    share: "Поделиться",
+    calcHeadingText: "Расчёт встречи судов",
+    arrivalHeadingText: "Расчёт времени прибытия"
 
   },
 
@@ -381,7 +383,9 @@ window.translations = {
     // --- Thanks ---
     thanksText: "🙏 Thank you for using <strong>NaviMate</strong>! The app is actively developing — this is just the beginning.",
     calcShort: "Calculate",
-    share: "Share"
+    share: "Share",
+    calcHeadingText: "Meeting Calculation",
+    arrivalHeadingText: "Arrival Time Calculation"
   }
 };
 

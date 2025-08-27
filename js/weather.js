@@ -45,8 +45,17 @@ class WeatherService {
         this.fetchForecast(latitude, longitude)
       ]);
       
+      // Параллельно получаем УФ индекс (Open-Meteo)
+      const uvPromise = this.fetchUvIndex(latitude, longitude);
+      
       this.displayWeather(weatherData);
       this.displayForecast(forecastData);
+      
+      const uv = await uvPromise;
+      if (uv != null) {
+        document.getElementById('weatherUvIndex').textContent = String(uv);
+      }
+      
       this.hideError();
       
     } catch (error) {
@@ -128,6 +137,14 @@ class WeatherService {
     
     return await response.json();
   }
+
+  async fetchUvIndex(lat, lon) {
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=uv_index`;
+    const res = await fetch(url);
+    if (!res.ok) return null;
+    const json = await res.json();
+    return json && json.current && typeof json.current.uv_index !== 'undefined' ? json.current.uv_index : null;
+  }
   
   // Отображение погоды
   displayWeather(data) {
@@ -148,12 +165,19 @@ class WeatherService {
     document.getElementById('weatherWindDir').textContent = this.getWindDirection(data.wind.deg);
     document.getElementById('weatherHumidity').textContent = `${data.main.humidity}%`;
     
-    // Видимость (если есть) или заменяем на УФ индекс
-    if (data.visibility) {
-      const visibilityM = Math.round(data.visibility);
+    // Видимость (если есть)
+    if (data.visibility != null) {
+      const v = Math.max(0, Number(data.visibility));
       const lang = window.lang || 'ru';
-      const unit = lang === 'en' ? 'm' : 'м';
-      document.getElementById('weatherVisibility').textContent = `${visibilityM} ${unit}`;
+      if (v >= 1000) {
+        const km = (v / 1000).toFixed(v % 1000 === 0 ? 0 : 1);
+        const unit = lang === 'en' ? 'km' : 'км';
+        document.getElementById('weatherVisibility').textContent = `${km} ${unit}`;
+      } else {
+        const m = Math.round(v);
+        const unit = lang === 'en' ? 'm' : 'м';
+        document.getElementById('weatherVisibility').textContent = `${m} ${unit}`;
+      }
     } else {
       document.getElementById('weatherVisibility').textContent = '--';
     }
