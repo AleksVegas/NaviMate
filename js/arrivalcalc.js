@@ -65,22 +65,10 @@ const borderPoints = [
   { nameKey: "borderRomaniaTurnu", km: 931, defaultDelay: 0 },
   { nameKey: "borderSerbiaVeliko", km: 1050, defaultDelay: 2 },
   { nameKey: "borderSerbiaBezdan", km: 1433, defaultDelay: 2 },
-  { nameKey: "borderHungaryMohacs", km: 1446, defaultDelay: 4 },
+  { nameKey: "borderHungaryMohacs", km: 1446, defaultDelay: 2 },
   { nameKey: "borderCroatiaVukovar", km: 1385, defaultDelay: 0 },
   { nameKey: "borderAustriaVienna", km: 1930, defaultDelay: 0 },
 ];
-
-function getBorderDelayValue(border) {
-  const inputId = border.nameKey;
-  const input = document.getElementById(inputId);
-  const saved = parseFloat(localStorage.getItem('bd_' + inputId));
-  if (Number.isFinite(saved)) return saved;
-  if (input) {
-    const v = parseFloat(input.value);
-    if (Number.isFinite(v)) return v;
-  }
-  return border.defaultDelay;
-}
 
 let borderDelaysInitialized = false;
 let prevStartKm = null;
@@ -165,8 +153,11 @@ function calculateArrival() {
   );
 
   relevantBorders.forEach(border => {
-    // Получаем значение из источников с приоритетом
-    let delay = getBorderDelayValue(border);
+    // Получаем значение из соответствующего input
+    const inputId = border.nameKey;
+    const input = document.getElementById(inputId);
+    const saved = parseFloat(localStorage.getItem('bd_' + inputId));
+    let delay = Number.isFinite(saved) ? saved : (input ? parseFloat(input.value) || 0 : border.defaultDelay);
 
     // Вена: используем введённое значение без авто-минимума
     
@@ -185,7 +176,9 @@ function calculateArrival() {
 
     relevantBorders.forEach(border => {
       const inputId = border.nameKey;
-      let delay = getBorderDelayValue(border);
+      const input = document.getElementById(inputId);
+      const saved = parseFloat(localStorage.getItem('bd_' + inputId));
+      let delay = Number.isFinite(saved) ? saved : (input ? parseFloat(input.value) || 0 : border.defaultDelay);
       
       // Правило: Вена +1 час при движении вверх (если не введено больше)
       if (border.nameKey === 'borderAustriaVienna' && direction === 1 && delay < 1) {
