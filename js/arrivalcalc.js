@@ -7,66 +7,7 @@ function updateArrivalCalculations() {
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
   if (!isNaN(startKm) && !isNaN(endKm)) {
-    showBorderDelays(startKm, endKm); // обновляем таблицу с новым языком
     calculateArrival(); // ✅ пересчёт после смены языка
-  }
-}
-
-// Функция для отображения задержек на границах
-function showBorderDelays(startKm, endKm) {
-  const t = window.translations[window.lang || 'ru'] || {};
-  const direction = endKm > startKm ? 1 : -1;
-  
-  // Находим релевантные границы
-  const relevantBorders = borderPoints.filter(b =>
-    (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
-    (startKm > endKm && b.km <= startKm && b.km >= endKm)
-  );
-
-  // Создаем контейнер для задержек если его нет
-  let borderDelaysContainer = document.getElementById('borderDelaysContainer');
-  if (!borderDelaysContainer) {
-    borderDelaysContainer = document.createElement('div');
-    borderDelaysContainer.id = 'borderDelaysContainer';
-    borderDelaysContainer.className = 'border-delays-container';
-    
-    // Вставляем после полей ввода
-    const endKmInput = document.getElementById('endKmArrival');
-    if (endKmInput && endKmInput.parentNode) {
-      endKmInput.parentNode.insertBefore(borderDelaysContainer, endKmInput.nextSibling);
-    }
-  }
-
-  if (relevantBorders.length > 0) {
-    let bordersInfo = "<div class='border-delays-header'><strong>" + (t.borderDelays || 'Пограничные задержки') + ":</strong></div>";
-
-    relevantBorders.forEach(border => {
-      const inputId = border.nameKey;
-      const saved = parseFloat(localStorage.getItem('bd_' + inputId));
-      let delay = Number.isFinite(saved) ? saved : border.defaultDelay;
-      
-      // Правило: Вена +1 час при движении вверх (если не введено больше)
-      if (border.nameKey === 'borderAustriaVienna' && direction === 1 && delay < 1) {
-        delay = 1;
-      }
-      
-      // Ограничение: максимум 9 часов для всех портов
-      if (delay > 9) {
-        delay = 9;
-      }
-
-      const borderName = t[border.nameKey] || border.nameKey;
-      bordersInfo += `<div class="border-delay-item">
-        <span class="border-name">${borderName}</span>
-        <input type="number" class="border-delay-input" data-border="${inputId}" value="${delay}" min="0" max="9" step="0.5">
-        <span class="border-unit">${pluralizeHours(delay)}</span>
-      </div>`;
-    });
-    
-    borderDelaysContainer.innerHTML = bordersInfo;
-    borderDelaysContainer.style.display = 'block';
-  } else {
-    borderDelaysContainer.style.display = 'none';
   }
 }
 

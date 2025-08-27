@@ -652,8 +652,18 @@ class WeatherService {
     if (visibilityElement && visibilityElement.textContent !== '--') {
       const visibilityValue = visibilityElement.textContent.match(/^(\d+)/);
       if (visibilityValue) {
-        const unit = lang === 'en' ? 'm' : 'м';
-        visibilityElement.textContent = `${visibilityValue[1]} ${unit}`;
+        const v = parseInt(visibilityValue[1]);
+        if (v >= 10000) {
+          const unit = lang === 'en' ? 'km' : 'км';
+          visibilityElement.textContent = `>10 ${unit}`;
+        } else if (v >= 1000) {
+          const km = (v / 1000).toFixed(v % 1000 === 0 ? 0 : 1);
+          const unit = lang === 'en' ? 'km' : 'км';
+          visibilityElement.textContent = `${km} ${unit}`;
+        } else {
+          const unit = lang === 'en' ? 'm' : 'м';
+          visibilityElement.textContent = `${v} ${unit}`;
+        }
       }
     }
     
