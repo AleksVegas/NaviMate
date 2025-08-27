@@ -342,11 +342,11 @@ function calculate(index) {
       
       if (nearestZone.side === 'left') {
         // Левый борт: красный цвет, стрелка ПЕРЕД названием
-        const leftColor = document.body.classList.contains('dark') ? '#ff6b6b' : '#e74c3c';
+        const leftColor = document.body.classList.contains('dark') ? '#ff6b6b' : '#c0392b';
         waitingZoneText += ` | <span style="color: ${leftColor}; font-weight: 600; font-size: 1.1em;">${sideIcon} ${sideText}</span>`;
       } else {
         // Правый борт: зеленый цвет, стрелка ПОСЛЕ названия
-        const rightColor = document.body.classList.contains('dark') ? '#4CAF50' : '#27ae60';
+        const rightColor = document.body.classList.contains('dark') ? '#4CAF50' : '#16a085';
         waitingZoneText += ` | <span style="color: ${rightColor}; font-weight: 600; font-size: 1.1em;">${sideText} ${sideIcon}</span>`;
       }
     }
