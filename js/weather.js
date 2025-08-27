@@ -623,17 +623,21 @@ class WeatherService {
     
     // Обновляем местоположение
     const weatherLocation = document.getElementById('weatherLocation');
-    if (weatherLocation && weatherLocation.textContent.includes('📍')) {
-      const locationText = weatherLocation.textContent;
-      const cityMatch = locationText.match(/📍\s*(.+?),\s*(.+)/);
-      if (cityMatch) {
-        const cityNameOriginal = cityMatch[1];
-        const countryOriginal = cityMatch[2];
-        // если это ISO-код (2 буквы), переводим как код, иначе пробуем обратный перевод
-        const isIso = /^[A-Z]{2}$/.test(countryOriginal);
-        const translatedCity = this.translateCityName(cityNameOriginal);
-        const translatedCountry = isIso ? this.translateCountryName(countryOriginal) : this.translateCountryName(this.reverseCountryLookup(countryOriginal));
-        weatherLocation.textContent = `📍 ${translatedCity}, ${translatedCountry}`;
+    if (weatherLocation && weatherLocation.textContent) {
+      const txt = weatherLocation.textContent.trim();
+      const flagMatch = txt.match(/^(\p{RI}\p{RI})\s+(.*)$/u);
+      if (flagMatch) {
+        const flag = flagMatch[1];
+        const cityShown = flagMatch[2];
+        // Попытка обратного перевода города
+        const cityCodeMap = {
+          ru: { 'Belgrade':'Белград','Vienna':'Вена','Budapest':'Будапешт','Bratislava':'Братислава','Bucharest':'Бухарест','Sofia':'София','Zagreb':'Загреб','Novi Sad':'Нови-Сад' },
+          en: { 'Белград':'Belgrade','Вена':'Vienna','Будапешт':'Budapest','Братислава':'Bratislava','Бухарест':'Bucharest','София':'Sofia','Загреб':'Zagreb','Нови-Сад':'Novi Sad' }
+        };
+        const current = window.lang || 'ru';
+        const rev = current==='en'? cityCodeMap.en : cityCodeMap.ru;
+        const cityTranslated = this.translateCityName(rev[cityShown] || cityShown);
+        weatherLocation.textContent = `${flag} ${cityTranslated}`;
       }
     }
     

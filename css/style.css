@@ -881,7 +881,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
 }
 
 .weather-details {
-  flex: 1;
+  flex: 0 0 auto;
 }
 
 .weather-temp {
