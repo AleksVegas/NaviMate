@@ -5,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />  
   <meta name="description" data-i18n="metaDescription" content="Приложение для расчёта встречи и обгона судов. Удобно, быстро и просто для судоводителей на внутренних водных путях.">  
   <title>NaviMate</title>  
-  <script>(function(){try{var ls=localStorage;var savedLang=ls.getItem('lang')||'ru';document.documentElement.setAttribute('lang', savedLang);if(savedLang!=='ru'){document.documentElement.classList.add('i18n-hide');}}catch(e){}})();</script>
-  <script>(function(){try{var ls=localStorage;var theme=ls.getItem('theme');var auto=ls.getItem('theme_auto')==='1';var isDark=false;if(theme==='dark'){isDark=true;}else if(theme==='light'){isDark=false;}else if(auto){var h=(new Date()).getHours();isDark=(h>=20||h<=6);}if(isDark){document.documentElement.classList.add('dark');}}catch(e){}})();</script>
+  <script>(function(){try{var ls=localStorage;var theme=ls.getItem('theme');var auto=ls.getItem('theme_auto')==='1';var isDark=false;if(theme==='dark'){isDark=true;}else if(theme==='light'){isDark=false;}else if(auto){var h=(new Date()).getHours();isDark=(h>=20||h<=6);}if(isDark){document.documentElement.classList.add('dark');}var savedLang=ls.getItem('lang')||'ru';document.documentElement.setAttribute('lang', savedLang);}catch(e){}})();</script>
   <link rel="stylesheet" href="css/style.css" />  
   <link rel="manifest" href="manifest.json" />  
   <meta name="theme-color" content="#2f5597" />  

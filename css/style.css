@@ -1031,6 +1031,3 @@ body.dark .forecast-wind {
     grid-template-columns: 1fr;
   }
 }
-
-html.i18n-hide body { visibility: hidden; }
-html.i18n-hide nav, html.i18n-hide main, html.i18n-hide header, html.i18n-hide footer { visibility: hidden; }
