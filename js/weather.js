@@ -191,7 +191,12 @@ class WeatherService {
     const lang = window.lang || 'ru';
     const windUnit = lang === 'en' ? 'm/s' : 'м/с';
     document.getElementById('weatherWind').textContent = `${windSpeed} ${windUnit} (${windDescription})`;
-    document.getElementById('weatherWindDir').textContent = this.getWindDirection(data.wind.deg);
+    
+    // Сохраняем градусы для направления ветра в data-атрибуте
+    const windDirectionElement = document.getElementById('weatherWindDir');
+    windDirectionElement.setAttribute('data-degrees', data.wind.deg);
+    windDirectionElement.textContent = this.getWindDirection(data.wind.deg);
+    
     document.getElementById('weatherHumidity').textContent = `${data.main.humidity}%`;
     
     // Видимость (если есть)
@@ -679,12 +684,10 @@ class WeatherService {
     // Обновляем направление ветра
     const windDirectionElement = document.getElementById('weatherWindDir');
     if (windDirectionElement && windDirectionElement.textContent) {
-      // Получаем градусы из текущего направления (если есть)
-      const currentText = windDirectionElement.textContent;
-      const degreesMatch = currentText.match(/(\d+)/);
-      if (degreesMatch) {
-        const degrees = parseInt(degreesMatch[1]);
-        const newDirection = this.getWindDirection(degrees);
+      // Получаем градусы из data-атрибута
+      const degrees = windDirectionElement.getAttribute('data-degrees');
+      if (degrees) {
+        const newDirection = this.getWindDirection(parseInt(degrees));
         windDirectionElement.textContent = newDirection;
       }
     }
