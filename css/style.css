@@ -834,17 +834,37 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 }
 
 .weather-info { background: linear-gradient(135deg, #87CEEB, #98FB98); border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+/* Weather main layout */
 .weather-main { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; flex-wrap: nowrap; }
-.weather-deck { flex: 0 0 auto; max-width: 280px; min-width: 200px; margin-left: 20px; padding: 10px 14px; border: 1px solid rgba(0,0,0,0.08); border-radius: 10px; text-align: center; color: #244; background: rgba(255,255,255,0.65); }
-body.dark .weather-deck { border-color: rgba(255,255,255,0.15); color: #e0e0e0; background: rgba(0,0,0,0.2); }
+/* Desktop: center deck */
+@media (min-width: 1024px) {
+  .weather-main { justify-content: center; }
+  .weather-icon { margin-right: 16px; }
+  .weather-details { margin-right: 24px; }
+  .weather-deck { margin: 0 24px; }
+}
+/* Mobile: keep deck next to temperature */
+@media (max-width: 768px) {
+  .weather-deck { min-width: 180px; max-width: 220px; margin-left: 10px; }
+}
+
+/* Deck box */
+.weather-deck { flex: 0 0 auto; padding: 10px 14px; border: 1px solid rgba(0,0,0,0.1); border-radius: 10px; text-align: center; color: #244; background: rgba(255,255,255,0.85); }
+body.dark .weather-deck { border-color: rgba(255,255,255,0.18); color: #e0e0e0; background: rgba(0,0,0,0.25); }
 .weather-deck .deck-title { font-weight: 700; margin-bottom: 6px; }
 .weather-deck .deck-text { font-size: 14px; }
-/* Risk color overlays that still keep the underlying gradient harmony */
-.weather-deck.risk-low { background: linear-gradient(135deg, rgba(135,206,235,0.22), rgba(152,251,152,0.22)); }
-.weather-deck.risk-medium { background: linear-gradient(135deg, rgba(255,235,59,0.22), rgba(152,251,152,0.15)); }
-.weather-deck.risk-high { background: linear-gradient(135deg, rgba(255,152,0,0.22), rgba(255,235,59,0.15)); }
-.weather-deck.risk-very-high { background: linear-gradient(135deg, rgba(244,67,54,0.22), rgba(255,152,0,0.15)); }
-.weather-deck.risk-extreme { background: linear-gradient(135deg, rgba(156,39,176,0.22), rgba(244,67,54,0.15)); }
+
+/* Risk color backgrounds — более контрастные и не сливаются с основным градиентом */
+.weather-deck.risk-low { background: #dff5e3; border-color: #a8e0b5; }
+.weather-deck.risk-medium { background: #fff3cd; border-color: #ffe08a; }
+.weather-deck.risk-high { background: #ffe0b2; border-color: #ffb74d; }
+.weather-deck.risk-very-high { background: #ffcdd2; border-color: #ef9a9a; }
+.weather-deck.risk-extreme { background: #e1c5f2; border-color: #c39be6; }
+body.dark .weather-deck.risk-low { background: rgba(76,175,80,0.22); border-color: rgba(76,175,80,0.45); }
+body.dark .weather-deck.risk-medium { background: rgba(255,235,59,0.22); border-color: rgba(255,235,59,0.5); }
+body.dark .weather-deck.risk-high { background: rgba(255,152,0,0.22); border-color: rgba(255,152,0,0.5); }
+body.dark .weather-deck.risk-very-high { background: rgba(244,67,54,0.22); border-color: rgba(244,67,54,0.5); }
+body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border-color: rgba(156,39,176,0.5); }
 
 /* доп. отступ для строки ветра */
 .weather-item[data-type="wind"] .weather-value { margin-left: auto; padding-left: 12px; }

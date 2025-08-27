@@ -795,7 +795,7 @@ class WeatherService {
     }
 
     // UV 6–7
-    if (uvVal != null && uvVal >= 6 && uvVal <= 7 && (t == null || t < 30) && (h == null || h < 70) && !p) {
+    if (uvVal != null && uvVal >= 6 && uvVal <= 7 && (t == null || t <= 30) && (h == null || h < 70) && !p) {
       if (w != null && w > 10) {
         return res(M('Ожоги возможны, но ветер спасает', 'Sunburn possible, wind helps'), 'risk-medium');
       }
@@ -803,7 +803,7 @@ class WeatherService {
     }
 
     // UV 3–5
-    if (uvVal != null && uvVal >= 3 && uvVal <= 5 && (t == null || t < 30) && (h == null || h < 70) && !p) {
+    if (uvVal != null && uvVal >= 3 && uvVal <= 5 && (t == null || t <= 30) && (h == null || h < 70) && !p) {
       if (w != null && w > 20) {
         return res(M('Опасно: ветер + ожоги', 'Danger: wind + sunburn'), 'risk-very-high');
       }
@@ -811,7 +811,7 @@ class WeatherService {
     }
 
     // UV 0–2
-    if (uvVal != null && uvVal <= 2 && (t == null || t < 30) && !p) {
+    if (uvVal != null && uvVal <= 2 && (t == null || t <= 30) && !p) {
       if (w != null && w > 20) {
         return res(M('Опасно: сильный ветер', 'Danger: strong wind'), 'risk-high');
       }
