@@ -60,7 +60,7 @@ window.translations = {
 
     // --- Настройки ---
     settingsHeading: "⚙️ Настройки",
-    themeLabel: "🌗 Тема (день/ночь)",
+    themeLabel: "🌗 Тема",
     lightTheme: "Светлая",
     darkTheme: "Тёмная",
     langLabel: "🌍 Язык:",
