@@ -225,7 +225,8 @@ class WeatherService {
     const cityName = this.translateCityName(data.name);
     const countryCode = data.sys.country;
     const flag = this.getFlagEmoji(countryCode);
-    document.getElementById('weatherLocation').textContent = `${flag} ${cityName}`;
+    const locationText = `${flag} ${cityName}`;
+    document.getElementById('weatherLocation').textContent = locationText;
     
     // После базовых параметров — предварительная оценка без UV (если он ещё не получен)
     const prelim = this.evaluateDeckRisk(undefined, data.main.temp, windSpeed, data.main.humidity, false);
@@ -572,6 +573,8 @@ class WeatherService {
   
   // Обновление языка
   updateLanguage() {
+    console.log('Weather updateLanguage called, lang:', window.lang);
+    
     // Обновляем кнопку
     this.getWeatherBtn.textContent = this.getTranslation('getWeather');
     
@@ -611,17 +614,20 @@ class WeatherService {
   
   // Обновление всех элементов погоды
   updateAllWeatherElements() {
+    console.log('updateAllWeatherElements called, lang:', window.lang);
+    
     // Обновляем описание погоды
     const weatherDesc = document.getElementById('weatherDesc');
     if (weatherDesc && weatherDesc.textContent) {
       const currentDesc = weatherDesc.textContent;
       const translatedDesc = this.translateWeatherDescription(currentDesc);
+      console.log('Weather desc:', currentDesc, '->', translatedDesc);
       if (translatedDesc !== currentDesc) {
         weatherDesc.textContent = translatedDesc;
       }
     }
     
-    // Обновляем местоположение
+    // Обновляем местоположение - упрощённая логика
     const weatherLocation = document.getElementById('weatherLocation');
     if (weatherLocation && weatherLocation.textContent) {
       const txt = weatherLocation.textContent.trim();
@@ -629,14 +635,9 @@ class WeatherService {
       if (flagMatch) {
         const flag = flagMatch[1];
         const cityShown = flagMatch[2];
-        // Попытка обратного перевода города
-        const cityCodeMap = {
-          ru: { 'Belgrade':'Белград','Vienna':'Вена','Budapest':'Будапешт','Bratislava':'Братислава','Bucharest':'Бухарест','Sofia':'София','Zagreb':'Загреб','Novi Sad':'Нови-Сад' },
-          en: { 'Белград':'Belgrade','Вена':'Vienna','Будапешт':'Budapest','Братислава':'Bratislava','Бухарест':'Bucharest','София':'Sofia','Загреб':'Zagreb','Нови-Сад':'Novi Sad' }
-        };
-        const current = window.lang || 'ru';
-        const rev = current==='en'? cityCodeMap.en : cityCodeMap.ru;
-        const cityTranslated = this.translateCityName(rev[cityShown] || cityShown);
+        // Простой перевод города
+        const cityTranslated = this.translateCityName(cityShown);
+        console.log('City translation:', cityShown, '->', cityTranslated);
         weatherLocation.textContent = `${flag} ${cityTranslated}`;
       }
     }

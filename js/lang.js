@@ -449,6 +449,9 @@ function setLanguage(selectedLang) {
     window.weatherService.updateLanguage();
   }
   
+  // Диспатчим событие для обновления погоды
+  document.dispatchEvent(new CustomEvent('languageChanged'));
+  
   // Показываем контент после применения переводов
   document.documentElement.classList.remove('i18n-hide');
 } 
