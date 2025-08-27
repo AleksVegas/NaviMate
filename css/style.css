@@ -594,7 +594,7 @@ input[type="datetime-local"][data-lang="en"] {
 }
 #theme-auto { 
   flex: 0 0 auto; 
-  margin-right: 8px;
+  margin-right: 4px;
 }
 
 /* Мобильная оптимизация настроек */

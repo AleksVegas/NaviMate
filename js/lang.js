@@ -60,7 +60,7 @@ window.translations = {
 
     // --- Настройки ---
     settingsHeading: "⚙️ Настройки",
-    themeLabel: "🌗 Тема",
+    themeLabel: "🌗 Тема:",
     lightTheme: "Светлая",
     darkTheme: "Тёмная",
     langLabel: "🌍 Язык:",
@@ -250,7 +250,7 @@ window.translations = {
 
     // --- Settings ---
     settingsHeading: "⚙️ Settings",
-    themeLabel: "🌗 Theme",
+    themeLabel: "🌗 Theme:",
     lightTheme: "Light",
     darkTheme: "Dark",
     langLabel: "🌍 Language:",
@@ -401,10 +401,13 @@ function setLanguage(selectedLang) {
   document.querySelectorAll("[data-i18n]").forEach(el => {
     const key = el.getAttribute("data-i18n");
     if (t[key]) {
-      if (["input","select","textarea"].includes(el.tagName.toLowerCase())) {
+      const tag = el.tagName.toLowerCase();
+      if (["input","select","textarea"].includes(tag)) {
         el.placeholder = t[key];
       } else {
-        el.innerHTML = t[key];
+        if (el.innerHTML !== t[key]) { // не перерисовываем без необходимости
+          el.innerHTML = t[key];
+        }
       }
     }
   });
