@@ -396,6 +396,7 @@ if (!window.translations[lang]) {
   localStorage.setItem("lang", lang);
 }
 window.lang = lang; // Делаем доступным глобально
+document.documentElement.setAttribute('lang', lang);
 
 
 // --- Переключение языка ---
@@ -403,6 +404,7 @@ function setLanguage(selectedLang) {
   lang = selectedLang;
   localStorage.setItem("lang", lang);
   window.lang = lang; // Делаем доступным глобально
+  document.documentElement.setAttribute('lang', lang);
 
   const t = window.translations[lang] || {};
   
@@ -445,15 +447,8 @@ function setLanguage(selectedLang) {
     window.weatherService.updateLanguage();
   }
   
-  // Обновляем селекторы языка
-  const langSelect = document.getElementById('language-select');
-  const headerLangSelect = document.getElementById('header-language-select');
-  if (langSelect) {
-    langSelect.value = lang;
-  }
-  if (headerLangSelect) {
-    headerLangSelect.value = lang;
-  }
+  // Показываем контент после применения переводов
+  document.documentElement.classList.remove('i18n-hide');
 } 
 
 
