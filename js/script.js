@@ -8,6 +8,7 @@ const themeAuto = document.getElementById('theme-auto');
 
 function toggleTheme() {
   document.body.classList.toggle("dark");
+  document.documentElement.classList.toggle("dark");
   const theme = document.body.classList.contains("dark") ? "dark" : "light";
   localStorage.setItem("theme", theme);
 
@@ -24,6 +25,7 @@ function toggleTheme() {
 
 function applyTheme(isDark) {
   document.body.classList.toggle('dark', isDark);
+  document.documentElement.classList.toggle('dark', isDark);
   localStorage.setItem('theme', isDark ? 'dark' : 'light');
   if (themeBtnHeader) themeBtnHeader.innerText = isDark ? '☀️' : '🌙';
   if (themeSwitch) themeSwitch.value = isDark ? 'dark' : 'light';
@@ -53,6 +55,7 @@ function initTheme() {
 
 if (localStorage.getItem("theme") === "dark") {
   document.body.classList.add("dark");
+  document.documentElement.classList.add("dark");
 }
 
 // Обновляем кнопку темы и переключатель при инициализации

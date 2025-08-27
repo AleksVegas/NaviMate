@@ -26,6 +26,7 @@ body {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	font-weight: 700;
   }
   
   #menu-toggle {
@@ -361,7 +362,7 @@ select {
 }
 
 /* Тёмная тема */
-body.dark {
+body.dark, html.dark {
   --bg: #121212;
   --text: #e0e0e0;
   --header-bg: #1f1f1f;
@@ -595,6 +596,14 @@ input[type="datetime-local"][data-lang="en"] {
 #theme-auto { 
   flex: 0 0 auto; 
   margin-right: 4px;
+}
+
+/* Сближаем чекбокс и слово Авто */
+label[for="toggle-theme-switch"] + label input#theme-auto {
+  margin-right: 2px;
+}
+label[for="toggle-theme-switch"] + label {
+  gap: 4px;
 }
 
 /* Мобильная оптимизация настроек */
