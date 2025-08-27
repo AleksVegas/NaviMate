@@ -573,8 +573,6 @@ class WeatherService {
   
   // Обновление языка
   updateLanguage() {
-    console.log('Weather updateLanguage called, lang:', window.lang);
-    
     // Обновляем кнопку
     this.getWeatherBtn.textContent = this.getTranslation('getWeather');
     
@@ -614,14 +612,11 @@ class WeatherService {
   
   // Обновление всех элементов погоды
   updateAllWeatherElements() {
-    console.log('updateAllWeatherElements called, lang:', window.lang);
-    
     // Обновляем описание погоды
     const weatherDesc = document.getElementById('weatherDesc');
     if (weatherDesc && weatherDesc.textContent) {
       const currentDesc = weatherDesc.textContent;
       const translatedDesc = this.translateWeatherDescription(currentDesc);
-      console.log('Weather desc:', currentDesc, '->', translatedDesc);
       if (translatedDesc !== currentDesc) {
         weatherDesc.textContent = translatedDesc;
       }
@@ -637,7 +632,6 @@ class WeatherService {
         const cityShown = flagMatch[2];
         // Простой перевод города
         const cityTranslated = this.translateCityName(cityShown);
-        console.log('City translation:', cityShown, '->', cityTranslated);
         weatherLocation.textContent = `${flag} ${cityTranslated}`;
       }
     }
