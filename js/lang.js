@@ -61,6 +61,7 @@ window.translations = {
     // --- Настройки ---
     settingsHeading: "⚙️ Настройки",
     themeLabel: "🌗 Тема:",
+    themeLabelText: "Тема",
     lightTheme: "Светлая",
     darkTheme: "Тёмная",
     langLabel: "🌍 Язык:",
@@ -116,6 +117,7 @@ window.translations = {
     
     // --- Раздел: Погода ---
     weatherHeading: "🌤️ Погода",
+    weatherHeadingText: "Погода",
     getWeather: "Получить погоду по GPS",
     gettingWeather: "Получение...",
     weatherHint: "Нажмите кнопку, чтобы получить погоду в вашей позиции",
@@ -251,6 +253,7 @@ window.translations = {
     // --- Settings ---
     settingsHeading: "⚙️ Settings",
     themeLabel: "🌗 Theme:",
+    themeLabelText: "Theme",
     lightTheme: "Light",
     darkTheme: "Dark",
     langLabel: "🌍 Language:",
@@ -306,6 +309,7 @@ window.translations = {
     
     // --- Section: Weather ---
     weatherHeading: "🌤️ Weather",
+    weatherHeadingText: "Weather",
     getWeather: "Get weather by GPS",
     gettingWeather: "Getting...",
     weatherHint: "Click the button to get weather at your location",
