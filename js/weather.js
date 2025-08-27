@@ -94,15 +94,33 @@ class WeatherService {
     }
   }
   
-  // Promise-обертка для getCurrentPosition
+  // Promise-обертка для получения геопозиции с фолбэками (для мобильных)
   getCurrentPosition() {
-    return new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject, {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 300000 // 5 минут
-      });
+    const tryOnce = (opts) => new Promise((resolve, reject) => {
+      navigator.geolocation.getCurrentPosition(resolve, reject, opts);
     });
+
+    const watchOnce = (opts, msTimeout) => new Promise((resolve, reject) => {
+      let watchId = null;
+      const done = (fn) => (val) => { if (watchId != null) navigator.geolocation.clearWatch(watchId); clearTimeout(timer); fn(val); };
+      const timer = setTimeout(done(reject), msTimeout || 15000, { code: 3, message: 'watchPosition timeout' });
+      watchId = navigator.geolocation.watchPosition(done(resolve), done(reject), opts);
+    });
+
+    const highAcc = { enableHighAccuracy: true, timeout: 25000, maximumAge: 0 };
+    const lowAcc  = { enableHighAccuracy: false, timeout: 35000, maximumAge: 0 };
+
+    return tryOnce(highAcc)
+      .catch(err => {
+        if (err && err.code === 3) { // timeout
+          return tryOnce(lowAcc);
+        }
+        throw err;
+      })
+      .catch(err => {
+        // Последний фолбэк: короткий watchPosition (полезно на некоторых iOS)
+        return watchOnce(lowAcc, 15000);
+      });
   }
   
   // Запрос к API OpenWeatherMap для текущей погоды
