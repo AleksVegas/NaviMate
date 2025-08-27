@@ -844,10 +844,10 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 .weather-main { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; flex-wrap: nowrap; }
 /* Desktop: center deck */
 @media (min-width: 1024px) {
-  .weather-main { justify-content: center; }
-  .weather-icon { margin-right: 16px; }
-  .weather-details { margin-right: 24px; }
-  .weather-deck { margin: 0 24px; }
+  .weather-main { justify-content: flex-start; }
+  .weather-icon { margin-right: 12px; }
+  .weather-details { margin-right: 12px; }
+  .weather-deck { margin-left: 12px; }
 }
 /* Mobile: keep deck next to temperature */
 @media (max-width: 768px) {
