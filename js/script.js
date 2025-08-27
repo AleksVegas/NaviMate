@@ -333,7 +333,7 @@ function calculate(index) {
   const nearestZone = findNearestWaitingZone(meeting_km);
   if (nearestZone) {
     const kmUnit = t.kmUnit || (lang === 'en' ? ' km' : ' км');
-    let waitingZoneText = `<b>${t.waitingZone || '⚠️ Ближайшее место ожидания:'}</b> <b>${nearestZone.display}</b>${kmUnit}`;
+    let waitingZoneText = `<b>${t.waitingZone || '⚠️ Ближайшее место ожидания:'}</b> <b>${nearestZone.display}</b> ${kmUnit}`;
     
     // Добавляем информацию о борте если есть
     if (nearestZone.side) {
