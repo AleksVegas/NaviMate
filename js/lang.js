@@ -15,7 +15,7 @@ window.translations = {
     navAbout: "ℹ️ О приложении",
 
     // --- Раздел: Расчёт встречи ---
-    calcHeading: "Расчёт встречи судов",
+    calcHeading: "🚢 Расчёт встречи судов",
     enemyLabel: "Встречное судно {n}",
     ourLabel: "Наше судно",
     posLabel: "Позиция (км):",
@@ -43,7 +43,7 @@ window.translations = {
     phOurSpeed: "например: 12",
 
     // --- Раздел: Время прибытия ---
-    arrivalHeading: "Расчёт времени прибытия",
+    arrivalHeading: "🕒 Расчёт времени прибытия",
     startKm: "Начальный километр (км):",
     endKm: "Конечный километр (км):",
     speed: "Скорость (км/ч):",
@@ -68,7 +68,7 @@ window.translations = {
 
     // --- О приложении ---
     aboutHeading: "ℹ️ О приложении",
-    aboutText: "📱 NaviMate — цифровой помощник судоводителя на внутренних водных путях.",
+    aboutText: "<strong>📱 NaviMate</strong> — цифровой помощник судоводителя на внутренних водных путях.",
     toolsHeading: "🚢 Доступные инструменты",
     toolCalc: "🔁 Расчёт встречи судов",
     toolArrival: "🕒 Расчёт времени прибытия",
@@ -115,7 +115,7 @@ window.translations = {
     hourUnit: "ч",
     
     // --- Раздел: Погода ---
-    weatherHeading: "Погода",
+    weatherHeading: "🌤️ Погода",
     getWeather: "Получить погоду по GPS",
     gettingWeather: "Получение...",
     weatherHint: "Нажмите кнопку, чтобы получить погоду в вашей позиции",
@@ -207,7 +207,7 @@ window.translations = {
     navAbout: "ℹ️ About",
 
     // --- Section: Meeting ---
-    calcHeading: "Ship Meeting Calculation",
+    calcHeading: "🚢 Meeting Calculation",
     enemyLabel: "Opposite vessel {n}",
     ourLabel: "Our vessel",
     posLabel: "Position (km):",
@@ -234,7 +234,7 @@ window.translations = {
     phOurSpeed: "e.g., 12",
 
     // --- Section: Arrival ---
-    arrivalHeading: "Arrival Time Calculation",
+    arrivalHeading: "🕒 Arrival Time Calculation",
     startKm: "Start kilometer (km):",
     endKm: "End kilometer (km):",
     speed: "Speed (km/h):",
@@ -258,7 +258,7 @@ window.translations = {
 
     // --- About ---
     aboutHeading: "ℹ️ About",
-    aboutText: "📱 NaviMate — a digital navigation tool for inland waterway captains.",
+    aboutText: "<strong>📱 NaviMate</strong> — a digital navigation tool for inland waterway captains.",
     toolsHeading: "🚢 Available Tools",
     toolCalc: "🔁 Meeting Calculation",
     toolArrival: "🕒 Arrival Time Calculation",
@@ -305,7 +305,7 @@ window.translations = {
     hourUnit: "h",
     
     // --- Section: Weather ---
-    weatherHeading: "Weather",
+    weatherHeading: "🌤️ Weather",
     getWeather: "Get weather by GPS",
     gettingWeather: "Getting...",
     weatherHint: "Click the button to get weather at your location",

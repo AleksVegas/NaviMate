@@ -564,12 +564,14 @@ class WeatherService {
     const weatherLocation = document.getElementById('weatherLocation');
     if (weatherLocation && weatherLocation.textContent.includes('📍')) {
       const locationText = weatherLocation.textContent;
-      const cityMatch = locationText.match(/📍 (.+?), (.+)/);
+      const cityMatch = locationText.match(/📍\s*(.+?),\s*(.+)/);
       if (cityMatch) {
-        const cityName = cityMatch[1];
-        const countryCode = cityMatch[2];
-        const translatedCity = this.translateCityName(cityName);
-        const translatedCountry = this.translateCountryName(countryCode);
+        const cityNameOriginal = cityMatch[1];
+        const countryOriginal = cityMatch[2];
+        // если это ISO-код (2 буквы), переводим как код, иначе пробуем обратный перевод
+        const isIso = /^[A-Z]{2}$/.test(countryOriginal);
+        const translatedCity = this.translateCityName(cityNameOriginal);
+        const translatedCountry = isIso ? this.translateCountryName(countryOriginal) : this.translateCountryName(this.reverseCountryLookup(countryOriginal));
         weatherLocation.textContent = `📍 ${translatedCity}, ${translatedCountry}`;
       }
     }
@@ -650,6 +652,20 @@ class WeatherService {
   updateWindUnitsAndBeaufort() {
     // Теперь вся логика перенесена в forceUpdateAllElements
     this.forceUpdateAllElements();
+  }
+
+  reverseCountryLookup(localizedName) {
+    const maps = {
+      ru: {
+        'Сербия':'RS','Венгрия':'HU','Австрия':'AT','Словакия':'SK','Румыния':'RO','Болгария':'BG','Хорватия':'HR','Словения':'SI','Черногория':'ME','Босния и Герцеговина':'BA','Северная Македония':'MK','Албания':'AL','Греция':'GR','Турция':'TR','Украина':'UA','Молдова':'MD','Польша':'PL','Чехия':'CZ','Германия':'DE','Италия':'IT','Франция':'FR','Испания':'ES','Великобритания':'GB','США':'US','Канада':'CA'
+      },
+      en: {
+        'Serbia':'RS','Hungary':'HU','Austria':'AT','Slovakia':'SK','Romania':'RO','Bulgaria':'BG','Croatia':'HR','Slovenia':'SI','Montenegro':'ME','Bosnia and Herzegovina':'BA','North Macedonia':'MK','Albania':'AL','Greece':'GR','Turkey':'TR','Ukraine':'UA','Moldova':'MD','Poland':'PL','Czech Republic':'CZ','Germany':'DE','Italy':'IT','France':'FR','Spain':'ES','United Kingdom':'GB','United States':'US','Canada':'CA'
+      }
+    };
+    const current = window.lang || 'ru';
+    const map = maps[current] || maps.ru;
+    return map[localizedName] || localizedName;
   }
 }
 
