@@ -846,7 +846,7 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 @media (min-width: 1024px) {
   .weather-main { justify-content: flex-start; }
   .weather-icon { margin-right: 12px; }
-  .weather-details { margin-right: 12px; }
+  .weather-details { margin-right: 12px; flex: 0 0 auto; }
   .weather-deck { margin-left: 12px; }
 }
 /* Mobile: keep deck next to temperature */

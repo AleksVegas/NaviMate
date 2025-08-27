@@ -718,6 +718,17 @@ class WeatherService {
         uvEl.textContent = `${uv} (${desc})`;
       }
     }
+    // Локализуем текст палубы (если он в текущей локали не совпадает)
+    const deckText = document.getElementById('deckText');
+    if (deckText && deckText.textContent) {
+      // Принудительный пересчёт для текущего языка
+      const windVal = parseFloat((document.getElementById('weatherWind')?.textContent || '').match(/([\d.]+)/)?.[1] || 'NaN');
+      const humVal = parseFloat((document.getElementById('weatherHumidity')?.textContent || '').match(/([\d.]+)/)?.[1] || 'NaN');
+      const tempVal = parseFloat((document.getElementById('weatherTemp')?.textContent || '').match(/-?[\d.]+/)?.[0] || 'NaN');
+      const uvVal = parseFloat((uvEl?.textContent || '').match(/([\d.]+)/)?.[1] || 'NaN');
+      const deck = this.evaluateDeckRisk(isNaN(uvVal)?undefined:uvVal, isNaN(tempVal)?undefined:tempVal, isNaN(windVal)?undefined:windVal, isNaN(humVal)?undefined:humVal, false);
+      this.setDeckInfo(deck.message, deck.riskClass);
+    }
   }
   
   // Обновление единиц ветра и шкалы Бофорта
