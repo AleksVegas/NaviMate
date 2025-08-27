@@ -769,59 +769,59 @@ class WeatherService {
 
     // Highest priority conditions
     if (w != null && w > 25 && !p) {
-      return res(M('На палубе опасно из-за шторма/урагана', 'Danger on deck: storm/strong gale'), 'risk-extreme');
+      return res(M('Опасно: шторм/ураган', 'Danger: storm/gale'), 'risk-extreme');
     }
     if (t != null && t > 40 && (w == null || w < 10) && (h == null || h > 50) && !p) {
-      return res(M('На палубе крайне опасно!', 'Extremely dangerous on deck!'), 'risk-extreme');
+      return res(M('Крайне опасно', 'Extremely dangerous'), 'risk-extreme');
     }
     if (p) {
-      return res(M('На палубе опасно из-за дождя или шторма', 'Danger on deck: rain or storm'), 'risk-high');
+      return res(M('Опасно: дождь/шторм', 'Danger: rain/storm'), 'risk-high');
     }
 
     // UV 8+ very high
     if (uvVal != null && uvVal >= 8 && !p) {
-      return res(M('Очень высокий риск солнечных ожогов', 'Very high sunburn risk'), 'risk-very-high');
+      return res(M('Очень высокий риск ожогов', 'Very high sunburn risk'), 'risk-very-high');
     }
 
     // Temperature bands with humidity and wind
     if (t != null && t >= 35 && t < 40 && (w == null || w < 5) && (h != null && h > 50) && !p) {
-      return res(M('На палубе опасно для здоровья, перегрев', 'Health risk on deck: heat stress'), 'risk-very-high');
+      return res(M('Опасно: перегрев', 'Danger: heat stress'), 'risk-very-high');
     }
     if (t != null && t >= 30 && t < 35 && (w == null || w < 5) && (h != null && h > 60) && !p) {
-      return res(M('На палубе жарко, есть риск перегрева', 'Hot on deck, heat stress possible'), 'risk-high');
+      return res(M('Жарко, риск перегрева', 'Hot, heat stress risk'), 'risk-high');
     }
 
     // UV 6–7
     if (uvVal != null && uvVal >= 6 && uvVal <= 7 && (t == null || t < 30) && (h == null || h < 70) && !p) {
       if (w != null && w > 10) {
-        return res(M('Солнечные ожоги возможны, но ветер немного спасает', 'Sunburn possible, wind gives slight relief'), 'risk-medium');
+        return res(M('Ожоги возможны, но ветер спасает', 'Sunburn possible, wind helps'), 'risk-medium');
       }
-      return res(M('Высокий риск солнечных ожогов', 'High sunburn risk'), 'risk-high');
+      return res(M('Высокий риск ожогов', 'High sunburn risk'), 'risk-high');
     }
 
     // UV 3–5
     if (uvVal != null && uvVal >= 3 && uvVal <= 5 && (t == null || t < 30) && (h == null || h < 70) && !p) {
       if (w != null && w > 20) {
-        return res(M('На палубе опасно: ветер + солнечные ожоги', 'Danger: wind + sunburn risk'), 'risk-very-high');
+        return res(M('Опасно: ветер + ожоги', 'Danger: wind + sunburn'), 'risk-very-high');
       }
-      return res(M('Есть риск солнечных ожогов', 'Sunburn risk present'), 'risk-medium');
+      return res(M('Риск солнечных ожогов', 'Sunburn risk'), 'risk-medium');
     }
 
     // UV 0–2
     if (uvVal != null && uvVal <= 2 && (t == null || t < 30) && !p) {
       if (w != null && w > 20) {
-        return res(M('На палубе опасно из-за сильного ветра', 'Danger on deck: strong wind'), 'risk-high');
+        return res(M('Опасно: сильный ветер', 'Danger: strong wind'), 'risk-high');
       }
       if (w != null && w >= 10 && w <= 20 && (h == null || h < 70)) {
-        return res(M('На палубе свежо, но дует', 'Fresh on deck, but windy'), 'risk-medium');
+        return res(M('Свежо, но дует', 'Fresh, but windy'), 'risk-medium');
       }
       if ((w == null || w < 10) && (h == null || h < 70)) {
-        return res(M('На палубе комфортно', 'Comfortable on deck'), 'risk-low');
+        return res(M('Комфортно', 'Comfortable'), 'risk-low');
       }
     }
 
     // Fallback generic
-    return res(M('На палубе приемлемо', 'Acceptable on deck'), 'risk-low');
+    return res(M('Приемлемо', 'Acceptable'), 'risk-low');
   }
 }
 
