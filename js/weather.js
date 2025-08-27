@@ -57,10 +57,13 @@ class WeatherService {
         document.getElementById('weatherUvIndex').textContent = `${uv} (${desc})`;
       }
       
-      // Переоценка палубы с учётом UV и осадков из ближайшего прогноза
+      // Переоценка палубы с учётом UV и осадков из ближайшего прогноза и текущих
       let hasPrecip = false;
       try {
-        if (forecastData && forecastData.list && forecastData.list.length) {
+        if (weatherData && (weatherData.rain || weatherData.snow)) {
+          hasPrecip = true;
+        }
+        if (!hasPrecip && forecastData && forecastData.list && forecastData.list.length) {
           const f0 = forecastData.list[0];
           hasPrecip = !!(f0.rain || f0.snow);
         }
