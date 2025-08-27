@@ -65,7 +65,7 @@ const borderPoints = [
   { nameKey: "borderRomaniaTurnu", km: 931, defaultDelay: 0 },
   { nameKey: "borderSerbiaVeliko", km: 1050, defaultDelay: 2 },
   { nameKey: "borderSerbiaBezdan", km: 1433, defaultDelay: 2 },
-  { nameKey: "borderHungaryMohacs", km: 1446, defaultDelay: 2 },
+  { nameKey: "borderHungaryMohacs", km: 1446, defaultDelay: 4 },
   { nameKey: "borderCroatiaVukovar", km: 1385, defaultDelay: 0 },
   { nameKey: "borderAustriaVienna", km: 1930, defaultDelay: 0 },
 ];
