@@ -341,11 +341,13 @@ function calculate(index) {
       const sideText = nearestZone.side === 'left' ? t.leftSide : t.rightSide;
       
       if (nearestZone.side === 'left') {
-        // Левый борт: стрелка ПЕРЕД названием
-        waitingZoneText += ` | <span style="color: #4CAF50; font-weight: 600; font-size: 1.1em;">${sideIcon} ${sideText}</span>`;
+        // Левый борт: красный цвет, стрелка ПЕРЕД названием
+        const leftColor = document.body.classList.contains('dark') ? '#ff6b6b' : '#e74c3c';
+        waitingZoneText += ` | <span style="color: ${leftColor}; font-weight: 600; font-size: 1.1em;">${sideIcon} ${sideText}</span>`;
       } else {
-        // Правый борт: стрелка ПОСЛЕ названия
-        waitingZoneText += ` | <span style="color: #4CAF50; font-weight: 600; font-size: 1.1em;">${sideText} ${sideIcon}</span>`;
+        // Правый борт: зеленый цвет, стрелка ПОСЛЕ названия
+        const rightColor = document.body.classList.contains('dark') ? '#4CAF50' : '#27ae60';
+        waitingZoneText += ` | <span style="color: ${rightColor}; font-weight: 600; font-size: 1.1em;">${sideText} ${sideIcon}</span>`;
       }
     }
     
