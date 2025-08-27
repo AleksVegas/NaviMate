@@ -886,6 +886,10 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
   border-radius: 8px;
 }
 
+.weather-item .weather-label {
+  margin-right: 6px;
+}
+
 .weather-label {
   font-weight: 600;
   color: #555;

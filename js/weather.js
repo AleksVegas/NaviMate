@@ -169,7 +169,10 @@ class WeatherService {
     if (data.visibility != null) {
       const v = Math.max(0, Number(data.visibility));
       const lang = window.lang || 'ru';
-      if (v >= 1000) {
+      if (v >= 10000) {
+        const unit = lang === 'en' ? 'km' : 'км';
+        document.getElementById('weatherVisibility').textContent = `>10 ${unit}`;
+      } else if (v >= 1000) {
         const km = (v / 1000).toFixed(v % 1000 === 0 ? 0 : 1);
         const unit = lang === 'en' ? 'km' : 'км';
         document.getElementById('weatherVisibility').textContent = `${km} ${unit}`;
