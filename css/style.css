@@ -834,6 +834,12 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 }
 
 .weather-info { background: linear-gradient(135deg, #87CEEB, #98FB98); border-radius: 12px; padding: 20px; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+.weather-info { overflow: hidden; }
+.weather-main { flex-wrap: wrap; }
+@media (min-width: 769px) {
+  .weather-main { flex-wrap: nowrap; }
+}
+.weather-deck { max-width: min(420px, 80vw); }
 /* Weather main layout */
 .weather-main { display: flex; align-items: center; gap: 20px; margin-bottom: 20px; flex-wrap: nowrap; }
 /* Desktop: center deck */

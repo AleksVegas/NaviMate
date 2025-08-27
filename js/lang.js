@@ -191,7 +191,8 @@ window.translations = {
     calcShort: "Рассчитать",
     share: "Поделиться",
     calcHeadingText: "Расчёт встречи судов",
-    arrivalHeadingText: "Расчёт времени прибытия"
+    arrivalHeadingText: "Расчёт времени прибытия",
+    deckTitle: "Условия на палубе"
 
   },
 
@@ -385,7 +386,8 @@ window.translations = {
     calcShort: "Calculate",
     share: "Share",
     calcHeadingText: "Meeting Calculation",
-    arrivalHeadingText: "Arrival Time Calculation"
+    arrivalHeadingText: "Arrival Time Calculation",
+    deckTitle: "Deck conditions"
   }
 };
 
