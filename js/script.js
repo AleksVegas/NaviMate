@@ -317,7 +317,7 @@ function calculate(index) {
 
   const meeting_km = (op * es + ep * os) / (os + es);
   const distance_to_meeting = Math.abs(meeting_km - op);
-  const time_to_meeting = Math.abs(ep - op) / (os + es) * 60;
+  const time_to_meeting = Math.abs(ep - op) / (os + es); // в часах
 
   // Получаем переводы из глобального объекта
   const translations = window.translations || {};
@@ -327,21 +327,22 @@ function calculate(index) {
   let output = `
     <div><b>${t.meetingKm || '📍 Км встречи:'}</b> <b>${formatNumber(meeting_km)}</b></div>
     <div><b>${t.distanceToMeeting || '📏 Расстояние до встречи (км):'}</b> <b>${formatNumber(distance_to_meeting)}</b></div>
-    <div><b>${t.timeToMeeting || '⏱️ Время до встречи (мин):'}</b> <b>${formatNumber(time_to_meeting)}</b></div>
+    <div><b>${t.timeToMeeting || '⏱️ Время до встречи (мин):'}</b> <b>${formatNumber(time_to_meeting * 60)}</b></div>
   `;
 
   const nearestZone = findNearestWaitingZone(meeting_km);
   if (nearestZone) {
     const kmUnit = t.kmUnit || (lang === 'en' ? ' km' : ' км');
-    let waitingZoneText = `${t.waitingZone || '⚠️ Ближайшее место ожидания:'} <b>${nearestZone.display}</b> ${kmUnit}`;
+    let waitingZoneText = `${t.waitingZone || '⚠️ Ближайшее место ожидания:'} <b>${nearestZone.display}</b>${kmUnit}`;
     
     // Добавляем информацию о борте если есть
     if (nearestZone.side) {
+      const sideIcon = nearestZone.side === 'left' ? '⬅️' : '➡️';
       const sideText = nearestZone.side === 'left' ? t.leftSide : t.rightSide;
-      waitingZoneText += ` (${sideText})`;
+      waitingZoneText += `<br><span style="color: #2f5597; font-weight: 500;">${sideIcon} ${sideText}</span>`;
     }
     
-    output += `<div><b>${waitingZoneText}</b></div>`;
+    output += `<div>${waitingZoneText}</div>`;
     if (nearestZone.restricted) {
       const restrictedText = t.restricted || '⛔ Расхождение и обгон запрещен с {from} по {to} км';
       output += `<div>${restrictedText.replace("{from}", nearestZone.from).replace("{to}", nearestZone.to)}</div>`;
