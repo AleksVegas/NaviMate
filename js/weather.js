@@ -650,20 +650,42 @@ class WeatherService {
     // Обновляем видимость
     const visibilityElement = document.getElementById('weatherVisibility');
     if (visibilityElement && visibilityElement.textContent !== '--') {
-      const visibilityValue = visibilityElement.textContent.match(/^(\d+)/);
-      if (visibilityValue) {
-        const v = parseInt(visibilityValue[1]);
-        if (v >= 10000) {
-          const unit = lang === 'en' ? 'km' : 'км';
-          visibilityElement.textContent = `>10 ${unit}`;
-        } else if (v >= 1000) {
-          const km = (v / 1000).toFixed(v % 1000 === 0 ? 0 : 1);
-          const unit = lang === 'en' ? 'km' : 'км';
-          visibilityElement.textContent = `${km} ${unit}`;
-        } else {
-          const unit = lang === 'en' ? 'm' : 'м';
-          visibilityElement.textContent = `${v} ${unit}`;
+      const currentText = visibilityElement.textContent;
+      
+      // Проверяем если это уже ">10 км" или ">10 km"
+      if (currentText.includes('>10')) {
+        const unit = lang === 'en' ? 'km' : 'км';
+        visibilityElement.textContent = `>10 ${unit}`;
+      } else {
+        // Парсим число из текста
+        const visibilityValue = currentText.match(/^(\d+)/);
+        if (visibilityValue) {
+          const v = parseInt(visibilityValue[1]);
+          if (v >= 10000) {
+            const unit = lang === 'en' ? 'km' : 'км';
+            visibilityElement.textContent = `>10 ${unit}`;
+          } else if (v >= 1000) {
+            const km = (v / 1000).toFixed(v % 1000 === 0 ? 0 : 1);
+            const unit = lang === 'en' ? 'km' : 'км';
+            visibilityElement.textContent = `${km} ${unit}`;
+          } else {
+            const unit = lang === 'en' ? 'm' : 'м';
+            visibilityElement.textContent = `${v} ${unit}`;
+          }
         }
+      }
+    }
+    
+    // Обновляем направление ветра
+    const windDirectionElement = document.getElementById('weatherWindDir');
+    if (windDirectionElement && windDirectionElement.textContent) {
+      // Получаем градусы из текущего направления (если есть)
+      const currentText = windDirectionElement.textContent;
+      const degreesMatch = currentText.match(/(\d+)/);
+      if (degreesMatch) {
+        const degrees = parseInt(degreesMatch[1]);
+        const newDirection = this.getWindDirection(degrees);
+        windDirectionElement.textContent = newDirection;
       }
     }
     
