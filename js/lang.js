@@ -33,6 +33,8 @@ window.translations = {
     waitingZone: "⚠️ Ближайшее место ожидания:",
     restricted: "⛔ Расхождение и обгон запрещен с {from} по {to} км",
     kmUnit: " км",
+    leftSide: "левый борт",
+    rightSide: "правый борт",
 
     phStartKm: "Например, 1640",
     phEndKm: "Например, 2130",
@@ -230,6 +232,8 @@ window.translations = {
     waitingZone: "⚠️ Nearest waiting area:",
     restricted: "⛔ Passing/overtaking prohibited from {from} to {to} km",
     kmUnit: " km",
+    leftSide: "left side",
+    rightSide: "right side",
     phStartKm: "E.g., 1640",
     phEndKm: "E.g., 2130",
     phSpeed: "E.g., 12",
