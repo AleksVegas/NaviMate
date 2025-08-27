@@ -57,6 +57,17 @@ class WeatherService {
         document.getElementById('weatherUvIndex').textContent = `${uv} (${desc})`;
       }
       
+      // Переоценка палубы с учётом UV и осадков из ближайшего прогноза
+      let hasPrecip = false;
+      try {
+        if (forecastData && forecastData.list && forecastData.list.length) {
+          const f0 = forecastData.list[0];
+          hasPrecip = !!(f0.rain || f0.snow);
+        }
+      } catch(e) {}
+      const deck = this.evaluateDeckRisk(uv, weatherData.main.temp, weatherData.wind.speed, weatherData.main.humidity, hasPrecip);
+      this.setDeckInfo(deck.message, deck.riskClass);
+      
       this.hideError();
       
     } catch (error) {
@@ -198,6 +209,10 @@ class WeatherService {
     const countryCode = data.sys.country;
     const flag = this.getFlagEmoji(countryCode);
     document.getElementById('weatherLocation').textContent = `${flag} ${cityName}`;
+    
+    // После базовых параметров — предварительная оценка без UV (если он ещё не получен)
+    const prelim = this.evaluateDeckRisk(undefined, data.main.temp, windSpeed, data.main.humidity, false);
+    this.setDeckInfo(prelim.message, prelim.riskClass);
     
     // Показываем информацию
     this.weatherInfo.style.display = 'block';
@@ -727,6 +742,86 @@ class WeatherService {
     const base = 127397; // 'A' -> 🇦 offset
     const chars = code.toUpperCase().split('').map(c => String.fromCodePoint(base + c.charCodeAt(0))).join('');
     return chars;
+  }
+
+  setDeckInfo(message, riskClass) {
+    const box = document.getElementById('weatherDeck');
+    const text = document.getElementById('deckText');
+    if (!box || !text) return;
+    box.classList.remove('risk-low','risk-medium','risk-high','risk-very-high','risk-extreme');
+    if (riskClass) box.classList.add(riskClass);
+    text.textContent = message || '—';
+  }
+
+  evaluateDeckRisk(uv, tempC, windMs, humidityPct, hasPrecip) {
+    const lang = window.lang || 'ru';
+    const M = (ru, en) => (lang === 'en' ? en : ru);
+
+    // Normalize inputs
+    const uvVal = (typeof uv === 'number' && !isNaN(uv)) ? uv : null;
+    const t = typeof tempC === 'number' ? tempC : null;
+    const w = typeof windMs === 'number' ? windMs : null;
+    const h = typeof humidityPct === 'number' ? humidityPct : null;
+    const p = !!hasPrecip;
+
+    // Helper to pick
+    const res = (msg, cls) => ({ message: msg, riskClass: cls });
+
+    // Highest priority conditions
+    if (w != null && w > 25 && !p) {
+      return res(M('На палубе опасно из-за шторма/урагана', 'Danger on deck: storm/strong gale'), 'risk-extreme');
+    }
+    if (t != null && t > 40 && (w == null || w < 10) && (h == null || h > 50) && !p) {
+      return res(M('На палубе крайне опасно!', 'Extremely dangerous on deck!'), 'risk-extreme');
+    }
+    if (p) {
+      return res(M('На палубе опасно из-за дождя или шторма', 'Danger on deck: rain or storm'), 'risk-high');
+    }
+
+    // UV 8+ very high
+    if (uvVal != null && uvVal >= 8 && !p) {
+      return res(M('Очень высокий риск солнечных ожогов', 'Very high sunburn risk'), 'risk-very-high');
+    }
+
+    // Temperature bands with humidity and wind
+    if (t != null && t >= 35 && t < 40 && (w == null || w < 5) && (h != null && h > 50) && !p) {
+      return res(M('На палубе опасно для здоровья, перегрев', 'Health risk on deck: heat stress'), 'risk-very-high');
+    }
+    if (t != null && t >= 30 && t < 35 && (w == null || w < 5) && (h != null && h > 60) && !p) {
+      return res(M('На палубе жарко, есть риск перегрева', 'Hot on deck, heat stress possible'), 'risk-high');
+    }
+
+    // UV 6–7
+    if (uvVal != null && uvVal >= 6 && uvVal <= 7 && (t == null || t < 30) && (h == null || h < 70) && !p) {
+      if (w != null && w > 10) {
+        return res(M('Солнечные ожоги возможны, но ветер немного спасает', 'Sunburn possible, wind gives slight relief'), 'risk-medium');
+      }
+      return res(M('Высокий риск солнечных ожогов', 'High sunburn risk'), 'risk-high');
+    }
+
+    // UV 3–5
+    if (uvVal != null && uvVal >= 3 && uvVal <= 5 && (t == null || t < 30) && (h == null || h < 70) && !p) {
+      if (w != null && w > 20) {
+        return res(M('На палубе опасно: ветер + солнечные ожоги', 'Danger: wind + sunburn risk'), 'risk-very-high');
+      }
+      return res(M('Есть риск солнечных ожогов', 'Sunburn risk present'), 'risk-medium');
+    }
+
+    // UV 0–2
+    if (uvVal != null && uvVal <= 2 && (t == null || t < 30) && !p) {
+      if (w != null && w > 20) {
+        return res(M('На палубе опасно из-за сильного ветра', 'Danger on deck: strong wind'), 'risk-high');
+      }
+      if (w != null && w >= 10 && w <= 20 && (h == null || h < 70)) {
+        return res(M('На палубе свежо, но дует', 'Fresh on deck, but windy'), 'risk-medium');
+      }
+      if ((w == null || w < 10) && (h == null || h < 70)) {
+        return res(M('На палубе комфортно', 'Comfortable on deck'), 'risk-low');
+      }
+    }
+
+    // Fallback generic
+    return res(M('Условия нормальные', 'Conditions are acceptable'), 'risk-low');
   }
 }
 
