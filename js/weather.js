@@ -3,8 +3,8 @@
 
 class WeatherService {
   constructor() {
-    // OpenWeatherMap API (основной) - ЗАМЕНИТЕ НА ВАШ РЕАЛЬНЫЙ API КЛЮЧ!
-    this.apiKey = 'd8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8'; // ← Замените на ваш ключ с openweathermap.org
+    // OpenWeatherMap API (основной)
+    this.apiKey = (typeof window !== 'undefined' && window.OPENWEATHER_API_KEY) ? window.OPENWEATHER_API_KEY : 'd8c8c8c8c8c8c8c8c8c8c8c8c8c8c8c8';
     this.baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
     this.forecastUrl = 'https://api.openweathermap.org/data/2.5/forecast';
     
