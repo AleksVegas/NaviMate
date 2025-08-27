@@ -879,16 +879,10 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 
 .weather-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  background: rgba(255,255,255,0.7);
-  border-radius: 8px;
 }
-
-.weather-item .weather-label {
-  margin-right: 6px;
-}
+.weather-item .weather-label { margin-right: 8px; }
+.weather-item .weather-value { margin-left: auto; }
 
 .weather-label {
   font-weight: 600;

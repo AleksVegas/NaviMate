@@ -53,7 +53,8 @@ class WeatherService {
       
       const uv = await uvPromise;
       if (uv != null) {
-        document.getElementById('weatherUvIndex').textContent = String(uv);
+        const desc = this.getUvDescription(uv);
+        document.getElementById('weatherUvIndex').textContent = `${uv} (${desc})`;
       }
       
       this.hideError();
@@ -693,6 +694,20 @@ class WeatherService {
     const current = window.lang || 'ru';
     const map = maps[current] || maps.ru;
     return map[localizedName] || localizedName;
+  }
+
+  getUvDescription(uv) {
+    const v = Number(uv);
+    const lang = window.lang || 'ru';
+    const ranges = [
+      { max: 2.9, ru: 'низкий', en: 'low' },
+      { max: 5.9, ru: 'умеренный', en: 'moderate' },
+      { max: 7.9, ru: 'высокий', en: 'high' },
+      { max: 10.9, ru: 'очень высокий', en: 'very high' },
+      { max: Infinity, ru: 'крайне высокий', en: 'extreme' }
+    ];
+    const item = ranges.find(r => v <= r.max) || ranges[0];
+    return lang === 'en' ? item.en : item.ru;
   }
 }
 
