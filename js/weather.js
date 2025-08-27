@@ -195,8 +195,9 @@ class WeatherService {
     
     // Местоположение
     const cityName = this.translateCityName(data.name);
-    const countryName = this.translateCountryName(data.sys.country);
-    document.getElementById('weatherLocation').textContent = `📍 ${cityName}, ${countryName}`;
+    const countryCode = data.sys.country;
+    const flag = this.getFlagEmoji(countryCode);
+    document.getElementById('weatherLocation').textContent = `${flag} ${cityName}`;
     
     // Показываем информацию
     this.weatherInfo.style.display = 'block';
@@ -719,6 +720,13 @@ class WeatherService {
     ];
     const item = ranges.find(r => v <= r.max) || ranges[0];
     return lang === 'en' ? item.en : item.ru;
+  }
+
+  getFlagEmoji(code) {
+    if (!code || code.length !== 2) return '';
+    const base = 127397; // 'A' -> 🇦 offset
+    const chars = code.toUpperCase().split('').map(c => String.fromCodePoint(base + c.charCodeAt(0))).join('');
+    return chars;
   }
 }
 
