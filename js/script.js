@@ -517,6 +517,7 @@ window.addEventListener('online', () => location.reload());
   if (!workSel || !block || !presetSel || !startTime || !customToggle) return;
 
   function presetsFor(hours){
+    if (hours === 12) return [ ['06:00-18:00','preset1206'] ];
     if (hours === 14) return [ ['05:00-19:00','preset1405'], ['06:00-20:00','preset1406'] ];
     if (hours === 16) return [ ['05:00-21:00','preset1605'], ['06:00-22:00','preset1606'] ];
     if (hours === 18) return [ ['04:00-22:00','preset1804'], ['05:00-23:00','preset1805'], ['06:00-00:00','preset1806'] ];
