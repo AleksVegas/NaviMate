@@ -266,7 +266,20 @@ function calculateArrival(fromButton){
       // Нужен следующий день
       const remainingHours = pureHours - availableToday;
       console.log(`DEBUG: Нужен следующий день для ${remainingHours} ч`);
-      const nextDayStart = new Date(startShift.getTime() + 24 * 3600 * 1000);
+      
+      // Если startShift уже перенесен на следующий день, используем его напрямую
+      // Если нет - переносим на следующий день
+      let nextDayStart;
+      if (startDate.getHours() >= 18) {
+        // startShift уже перенесен на следующий день
+        nextDayStart = startShift;
+        console.log(`DEBUG: startShift уже на следующий день: ${nextDayStart.toLocaleString('ru-RU')}`);
+      } else {
+        // startShift на текущий день, переносим на следующий
+        nextDayStart = new Date(startShift.getTime() + 24 * 3600 * 1000);
+        console.log(`DEBUG: Переносим startShift на следующий день: ${nextDayStart.toLocaleString('ru-RU')}`);
+      }
+      
       const result = new Date(nextDayStart.getTime() + remainingHours * 3600 * 1000);
       console.log(`DEBUG: Результат: ${result.toLocaleString('ru-RU')}`);
       return result;
@@ -430,7 +443,7 @@ function calculateRecommendedSpeed() {
       } else if (presetSel && presetSel.value) {
         const parts = presetSel.value.split('-');
         if (parts[0]) startStr = parts[0];
-        if (parts[1]) endStr = parts[0];
+        if (parts[1]) endStr = parts[1];
       } else if (startEl) {
         startStr = startEl.value || '06:00';
       }
