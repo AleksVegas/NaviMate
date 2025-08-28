@@ -851,7 +851,18 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
 }
 /* Mobile: keep deck next to temperature */
 @media (max-width: 768px) {
-  .weather-deck { min-width: 180px; max-width: 220px; margin-left: 10px; }
+  .weather-deck { 
+    min-width: 180px; 
+    max-width: 220px; 
+    margin-left: 10px; 
+    flex-shrink: 0; /* Предотвращаем сжатие */
+  }
+  .weather-desc {
+    max-width: 120px; /* Ограничиваем ширину описания */
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 }
 
 /* Deck box */
@@ -1029,6 +1040,13 @@ body.dark .weather-location {
   font-style: italic;
 }
 
+.forecast-gust {
+  font-size: 11px;
+  color: #888;
+  font-style: italic;
+  margin-top: 2px;
+}
+
 /* Темная тема для прогноза */
 body.dark .weather-forecast {
   background: linear-gradient(135deg, #424242, #616161);
@@ -1053,6 +1071,10 @@ body.dark .forecast-temp {
 
 body.dark .forecast-wind {
   color: #bdc3c7;
+}
+
+body.dark .forecast-gust {
+  color: #95a5a6;
 }
 
 /* Адаптивность для мобильных */

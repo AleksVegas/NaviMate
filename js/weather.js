@@ -192,6 +192,13 @@ class WeatherService {
     const windUnit = lang === 'en' ? 'm/s' : 'м/с';
     document.getElementById('weatherWind').textContent = `${windSpeed} ${windUnit} (${windDescription})`;
     
+    // Порывы ветра (если есть)
+    if (data.wind.gust) {
+      document.getElementById('weatherWindGust').textContent = `${data.wind.gust} ${windUnit}`;
+    } else {
+      document.getElementById('weatherWindGust').textContent = '--';
+    }
+    
     // Сохраняем градусы для направления ветра в data-атрибуте
     const windDirectionElement = document.getElementById('weatherWindDir');
     windDirectionElement.setAttribute('data-degrees', data.wind.deg);
@@ -281,6 +288,13 @@ class WeatherService {
           const windUnit = lang === 'en' ? 'm/s' : 'м/с';
           document.getElementById(`forecastWind${periodId}`).textContent = 
             `${windSpeed} ${windUnit} (${windDescription})`;
+          
+          // Добавляем порывы ветра (если есть)
+          if (forecast.wind.gust) {
+            document.getElementById(`forecastGust${periodId}`).textContent = `${forecast.wind.gust} ${windUnit}`;
+          } else {
+            document.getElementById(`forecastGust${periodId}`).textContent = '--';
+          }
         }
       }
     });
@@ -703,6 +717,16 @@ class WeatherService {
       }
     }
     
+    // Обновляем единицы измерения для порывов ветра
+    const currentWindGust = document.getElementById('weatherWindGust');
+    if (currentWindGust && currentWindGust.textContent !== '--') {
+      const gustSpeed = currentWindGust.textContent.match(/^([\d.]+)/);
+      if (gustSpeed) {
+        const windUnit = lang === 'en' ? 'm/s' : 'м/с';
+        currentWindGust.textContent = `${gustSpeed[1]} ${windUnit}`;
+      }
+    }
+    
     // Обновляем прогноз ветра
     ['Morning', 'Day', 'Evening', 'Night'].forEach(period => {
       const forecastWind = document.getElementById(`forecastWind${period}`);
@@ -712,6 +736,16 @@ class WeatherService {
           const windDescription = this.getBeaufortDescription(parseFloat(windSpeed[1]));
           const windUnit = lang === 'en' ? 'm/s' : 'м/с';
           forecastWind.textContent = `${windSpeed[1]} ${windUnit} (${windDescription})`;
+        }
+      }
+      
+      // Обновляем единицы измерения для порывов ветра
+      const forecastGust = document.getElementById(`forecastGust${period}`);
+      if (forecastGust && forecastGust.textContent !== '--') {
+        const gustSpeed = forecastGust.textContent.match(/^([\d.]+)/);
+        if (gustSpeed) {
+          const windUnit = lang === 'en' ? 'm/s' : 'м/с';
+          forecastGust.textContent = `${gustSpeed[1]} ${windUnit}`;
         }
       }
     });
@@ -737,6 +771,11 @@ class WeatherService {
     const uvIndexLabel = document.querySelector('.weather-item[data-type="uvIndex"] .weather-label');
     if (uvIndexLabel) {
       uvIndexLabel.textContent = this.getTranslation('uvIndex');
+    }
+    
+    const windGustLabel = document.querySelector('.weather-item[data-type="windGust"] .weather-label');
+    if (windGustLabel) {
+      windGustLabel.textContent = this.getTranslation('windGust');
     }
     
     // Обновляем единицы измерения ветра и шкалу Бофорта
