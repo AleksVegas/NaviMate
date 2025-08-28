@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест отладки погоды</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .debug-section { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; margin: 5px; }
+        .result { margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px; font-family: monospace; }
+        .error { color: #dc3545; }
+        .success { color: #28a745; }
+        .info { color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Тест отладки погоды</h1>
+    
+    <div class="debug-section">
+        <h3>1. Проверка API ключа</h3>
+        <button onclick="checkApiKey()">Проверить API ключ</button>
+        <div id="apiKeyResult" class="result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>2. Тестовый запрос погоды</h3>
+        <button onclick="testWeatherApi()">Тест API погоды</button>
+        <div id="weatherApiResult" class="result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>3. Проверка элементов DOM</h3>
+        <button onclick="checkDomElements()">Проверить DOM</button>
+        <div id="domResult" class="result"></div>
+    </div>
+    
+    <div class="debug-section">
+        <h3>4. Тест отображения порывов</h3>
+        <button onclick="testWindGustDisplay()">Тест отображения порывов</button>
+        <div id="gustResult" class="result"></div>
+    </div>
+
+    <script src="js/weather.js"></script>
+    <script>
+        function checkApiKey() {
+            const result = document.getElementById('apiKeyResult');
+            try {
+                const weather = new Weather();
+                if (weather.apiKey) {
+                    result.innerHTML = `<span class="success">✅ API ключ найден: ${weather.apiKey.substring(0, 8)}...</span>`;
+                } else {
+                    result.innerHTML = `<span class="error">❌ API ключ не найден</span>`;
+                }
+            } catch (e) {
+                result.innerHTML = `<span class="error">❌ Ошибка: ${e.message}</span>`;
+            }
+        }
+        
+        async function testWeatherApi() {
+            const result = document.getElementById('weatherApiResult');
+            result.innerHTML = '<span class="info">⏳ Тестируем API...</span>';
+            
+            try {
+                const weather = new Weather();
+                if (!weather.apiKey) {
+                    result.innerHTML = '<span class="error">❌ API ключ не найден</span>';
+                    return;
+                }
+                
+                // Тестовые координаты (Вена)
+                const lat = 48.2082;
+                const lon = 16.3738;
+                
+                const data = await weather.fetchWeather(lat, lon);
+                result.innerHTML = `
+                    <span class="success">✅ API ответ получен!</span><br>
+                    <strong>Город:</strong> ${data.name}<br>
+                    <strong>Температура:</strong> ${data.main.temp}°C<br>
+                    <strong>Ветер:</strong> ${data.wind.speed} м/с<br>
+                    <strong>Порывы:</strong> ${data.wind.gust ? data.wind.gust + ' м/с' : 'НЕТ ДАННЫХ'}<br>
+                    <strong>Направление:</strong> ${data.wind.deg}°<br>
+                    <br>
+                    <strong>Полный ответ API:</strong><br>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (e) {
+                result.innerHTML = `<span class="error">❌ Ошибка API: ${e.message}</span>`;
+            }
+        }
+        
+        function checkDomElements() {
+            const result = document.getElementById('domResult');
+            const elements = {
+                'weatherWind': document.getElementById('weatherWind'),
+                'weatherWindGust': document.getElementById('weatherWindGust'),
+                'weatherWindDir': document.getElementById('weatherWindDir'),
+                'weatherHumidity': document.getElementById('weatherHumidity'),
+                'weatherVisibility': document.getElementById('weatherVisibility'),
+                'weatherUvIndex': document.getElementById('weatherUvIndex')
+            };
+            
+            let html = '<strong>Проверка элементов DOM:</strong><br>';
+            Object.keys(elements).forEach(id => {
+                const element = elements[id];
+                if (element) {
+                    html += `<span class="success">✅ ${id}: найден</span><br>`;
+                } else {
+                    html += `<span class="error">❌ ${id}: НЕ найден</span><br>`;
+                }
+            });
+            
+            result.innerHTML = html;
+        }
+        
+        function testWindGustDisplay() {
+            const result = document.getElementById('gustResult');
+            const gustElement = document.getElementById('weatherWindGust');
+            
+            if (!gustElement) {
+                result.innerHTML = '<span class="error">❌ Элемент weatherWindGust не найден</span>';
+                return;
+            }
+            
+            // Тестируем отображение
+            gustElement.textContent = 'Порывы: 8.5 м/с';
+            result.innerHTML = `
+                <span class="success">✅ Тест отображения порывов</span><br>
+                <strong>Элемент:</strong> ${gustElement.outerHTML}<br>
+                <strong>Текст:</strong> "${gustElement.textContent}"<br>
+                <strong>Видимость:</strong> ${gustElement.style.display !== 'none' ? 'Видим' : 'Скрыт'}
+            `;
+        }
+    </script>
+</body>
+</html>
