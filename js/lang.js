@@ -35,6 +35,7 @@ window.translations = {
     kmUnit: " км",
     leftSide: "левый борт",
     rightSide: "правый борт",
+    soloOnly: "для одиночных судов",
 
     phStartKm: "Например, 1640",
     phEndKm: "Например, 2130",
@@ -234,6 +235,8 @@ window.translations = {
     kmUnit: " km",
     leftSide: "left side",
     rightSide: "right side",
+    soloOnly: "for single vessels",
+
     phStartKm: "E.g., 1640",
     phEndKm: "E.g., 2130",
     phSpeed: "E.g., 12",

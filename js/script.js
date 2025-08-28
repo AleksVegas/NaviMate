@@ -149,7 +149,7 @@ const waitingSectionsUpstream = [
   { from: 1372.5, to: 1377.0, display: 1372.2, side: 'right' },
   { from: 1385.5, to: 1387.5, display: 1385.0, side: 'right' },
   { from: 1389.0, to: 1390.9, display: 1388.0, side: 'right' },
-  { from: 1392.0, to: 1393.9, display: 1391.0, side: 'right' }, // только для одиночных судов
+  { from: 1392.0, to: 1393.9, display: 1391.0, side: 'right', solo: true }, // только для одиночных судов
   { from: 1394.5, to: 1396.9, display: 1394.0, side: 'right' },
   { from: 1398.8, to: 1401.7, display: 1398.5, side: 'left' },
   { from: 1402.0, to: 1403.0, display: 1401.8, side: 'left' },
@@ -170,6 +170,7 @@ const waitingSectionsUpstream = [
   { from: 1674.0, to: 1675.4, display: 1674.7 },
   { from: 1695.2, to: 1695.7, display: 1694 },
   { from: 1696.4, to: 1696.7, display: 1696.0 },
+  { from: 1697.7, to: 1699.0, display: 1697.5, side: 'right', solo: true },
   { from: 1700.1, to: 1701.2, display: 1699.5 },
   { from: 1710.1, to: 1712.1, display: 1710.0, restricted: true },
   { from: 1716.1, to: 1716.5, display: 1716.0 },
@@ -343,11 +344,11 @@ function calculate(index) {
       if (nearestZone.side === 'left') {
         // Левый борт: красный цвет, стрелка ПЕРЕД названием
         const leftColor = document.body.classList.contains('dark') ? '#ff6b6b' : '#d63031';
-        waitingZoneText += ` | <span style="color: ${leftColor}; font-weight: 600; font-size: 1.1em;">${sideIcon} ${sideText}</span>`;
+        waitingZoneText += ` | <span style="color: ${leftColor}; font-weight: 600; font-size: 1.1em;">${sideIcon} ${sideText}${nearestZone.solo ? ` • ${t.soloOnly}` : ''}</span>`;
       } else {
         // Правый борт: зеленый цвет, стрелка ПОСЛЕ названия
         const rightColor = document.body.classList.contains('dark') ? '#4CAF50' : '#16a085';
-        waitingZoneText += ` | <span style="color: ${rightColor}; font-weight: 600; font-size: 1.1em;">${sideText} ${sideIcon}</span>`;
+        waitingZoneText += ` | <span style="color: ${rightColor}; font-weight: 600; font-size: 1.1em;">${sideText}${nearestZone.solo ? ` • ${t.soloOnly}` : ''} ${sideIcon}</span>`;
       }
     }
     
