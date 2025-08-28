@@ -73,7 +73,7 @@ let borderDelaysInitialized = false;
 let prevStartKm = null;
 let prevEndKm = null;
 
-function calculateArrival() {
+function calculateArrival(fromButton){
   const t = window.translations[window.lang || 'ru'] || {};
   const startKm = parseFloat(document.getElementById("startKmArrival").value);
   const endKm = parseFloat(document.getElementById("endKmArrival").value);
@@ -82,24 +82,13 @@ function calculateArrival() {
   const workHours = parseFloat(document.getElementById("workHoursArrival").value);
   const resultDiv = document.getElementById("resultArrival");
 
-  // Проверяем, изменились ли значения
-  if (prevStartKm === startKm && prevEndKm === endKm && borderDelaysInitialized) {
-    // Если значения не изменились, но нужно пересчитать из-за других параметров
-    if (speed && startTimeStr && workHours) {
-      // Продолжаем расчет
-    } else {
-      return;
-    }
-  }
-
-  prevStartKm = startKm;
-  prevEndKm = endKm;
-  borderDelaysInitialized = false;
-
-
-
   if (isNaN(startKm) || isNaN(endKm) || isNaN(speed) || !startTimeStr) {
-    resultDiv.innerHTML = t.errorData;
+    if (fromButton) {
+      resultDiv.innerHTML = t.errorData;
+    } else {
+      // при автообновлениях молчим
+      resultDiv.innerHTML = '';
+    }
     return;
   }
   if (speed < 0.1 || speed > 70) {

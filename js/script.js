@@ -545,23 +545,24 @@ window.addEventListener('online', () => location.reload());
   function syncVisibility(){
     const hours = parseInt(workSel.value,10);
     block.style.display = (hours===14||hours===16||hours===18) ? '' : 'none';
-    const startLabel = document.getElementById('dayModeStartLabel');
-    const endLabel = document.getElementById('dayModeEndLabel');
-    const endTime = document.getElementById('dayModeEndTime');
+    const times = document.getElementById('dayModeTimes');
+    const label = document.getElementById('dayModeLabel');
     if (block.style.display==='none') return;
     populatePresets();
-    // show start/end only if custom
-    const show = customToggle.checked;
-    startTime.style.display = show?'':'none';
-    endTime.style.display = show?'':'none';
-    startLabel.style.display = show?'':'none';
-    endLabel.style.display = show?'':'none';
-    if (!customToggle.checked && presetSel.value){
+    const showCustom = customToggle.checked;
+    // hide preset when custom
+    presetSel.style.display = showCustom ? 'none' : '';
+    // show times block only when custom
+    times.style.display = showCustom ? '' : 'none';
+    if (!showCustom && presetSel.value){
       const [s,e] = presetSel.value.split('-');
       startTime.value = s;
-      endTime.value = e;
+      document.getElementById('dayModeEndTime').value = e;
     }
   }
+  
+  // also hide dayModeLabel when custom as requested
+  customToggle.addEventListener('change', ()=>{ syncVisibility(); save(); autoRecalcArrival(); });
 
   // persist
   function load(){

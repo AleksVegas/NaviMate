@@ -55,26 +55,32 @@
     <select id="workHoursArrival">
       <option value="12" data-i18n="work12">12 часов</option>
       <option value="14" data-i18n="work14">14 часов</option>
-      <option value="16" data-i18n="work16" selected>16 часов</option>
+      <option value="16" data-i18n="work16">16 часов</option>
       <option value="18" data-i18n="work18">18 часов</option>
-      <option value="24" data-i18n="work24">24 часа (нон-стоп)</option>
+      <option value="24" data-i18n="work24" selected>24 часа (нон-стоп)</option>
     </select>
 
     <div id="dayModeBlock" style="display:none; margin-top: 10px;">
-      <label data-i18n="dayModeLabel">Режим дня:</label>
-      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+      <label data-i18n="dayModeLabel" id="dayModeLabel">Режим дня:</label>
+      <div style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
         <select id="dayModePresetSelect"></select>
-        <label><input type="checkbox" id="dayModeCustomToggle"> <span data-i18n="dayModeCustom">Свой режим</span></label>
-        <label data-i18n="dayModeStart" style="display:none;" id="dayModeStartLabel">Начало смены:</label>
-        <input type="time" id="dayModeStartTime" value="06:00" style="display:none;">
-        <label data-i18n="dayModeEnd" style="display:none;" id="dayModeEndLabel">Конец смены:</label>
-        <input type="time" id="dayModeEndTime" value="20:00" style="display:none;">
+        <label style="margin-right:16px;"><input type="checkbox" id="dayModeCustomToggle"> <span data-i18n="dayModeCustom">Свой режим</span></label>
+        <div id="dayModeTimes" style="display:none; margin-left:24px; display:flex; flex-direction:column; gap:6px;">
+          <div>
+            <label data-i18n="dayModeStart" id="dayModeStartLabel">Начало смены:</label>
+            <input type="time" id="dayModeStartTime" value="06:00">
+          </div>
+          <div>
+            <label data-i18n="dayModeEnd" id="dayModeEndLabel">Конец смены:</label>
+            <input type="time" id="dayModeEndTime" value="20:00">
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="arrival-actions">
       <div class="left-actions">
-        <button class="calc-btn" onclick="calculateArrival()" data-i18n="btnArrival">Рассчитать время прибытия</button>
+        <button class="calc-btn" onclick="calculateArrival(true)" data-i18n="btnArrival">Рассчитать время прибытия</button>
         <button class="btn-clear" id="btn-clear-arrival" data-i18n="clearAll">Очистить</button>
       </div>
       <button class="calc-btn" id="btn-share-arrival">Поделиться</button>
