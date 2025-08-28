@@ -193,9 +193,12 @@ class WeatherService {
     document.getElementById('weatherWind').textContent = `${windSpeed} ${windUnit} (${windDescription})`;
     
     // Порывы ветра (если есть)
+    console.log('DEBUG: Проверяем порывы ветра:', data.wind);
     if (data.wind.gust) {
+      console.log('DEBUG: Порывы найдены:', data.wind.gust);
       document.getElementById('weatherWindGust').textContent = `${data.wind.gust} ${windUnit}`;
     } else {
+      console.log('DEBUG: Порывы НЕ найдены в API');
       document.getElementById('weatherWindGust').textContent = '--';
     }
     
@@ -765,12 +768,7 @@ class WeatherService {
       uvIndexLabel.textContent = this.getTranslation('uvIndex');
     }
     
-    // Обновляем лейблы для ветра
-    const windSpeedLabel = document.querySelector('.weather-item[data-type="wind"] .wind-speed .wind-label');
-    if (windSpeedLabel) {
-      windSpeedLabel.textContent = this.getTranslation('windSpeedLabel');
-    }
-    
+    // Обновляем лейбл для порывов ветра
     const windGustLabel = document.querySelector('.weather-item[data-type="wind"] .wind-gust .wind-label');
     if (windGustLabel) {
       windGustLabel.textContent = this.getTranslation('windGustLabel');
