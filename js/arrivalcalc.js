@@ -210,7 +210,53 @@ function calculateArrival() {
     travelHours += restTime;
   }
 
-  const arrivalTime = new Date(startTime.getTime() + travelHours * 3600 * 1000);
+  // Укладываем чистое время в смены
+  function computeArrivalWithShifts(startDate, pureHours, workHours){
+    const block = document.getElementById('dayModeBlock');
+    if (!block || block.style.display==='none' || workHours===24 || workHours===12) {
+      return new Date(startDate.getTime() + pureHours * 3600 * 1000);
+    }
+    const startStr = (document.getElementById('dayModeStartTime')?.value)||'06:00';
+    const [sh, sm] = startStr.split(':').map(v=>parseInt(v,10)||0);
+
+    function shiftWindowFor(date){
+      const d0 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), sh, sm, 0, 0);
+      const d1 = new Date(d0.getTime() + workHours*3600*1000);
+      if (d1.getDate() !== d0.getDate()) {
+        // crosses midnight: window is [d0..endOfDay] + [startOfNext..d1]
+        return [d0, d1];
+      } else {
+        return [d0, d1];
+      }
+    }
+
+    let remaining = pureHours;
+    let cursor = new Date(startDate);
+
+    while (remaining > 1e-9) {
+      const [ws, we] = shiftWindowFor(cursor);
+      if (cursor < ws) {
+        // wait until shift starts
+        cursor = ws;
+      }
+      // amount we can work in this window
+      const available = Math.max(0, (we - cursor) / 3600000);
+      if (available <= 1e-9) {
+        // move to next day start
+        cursor = new Date(ws.getTime() + 24*3600*1000);
+        continue;
+      }
+      const take = Math.min(available, remaining);
+      cursor = new Date(cursor.getTime() + take*3600*1000);
+      remaining -= take;
+      if (remaining > 1e-9) {
+        // jump to next day's shift start
+        cursor = new Date(ws.getTime() + 24*3600*1000);
+      }
+    }
+    return cursor;
+  }
+  const arrivalTime = computeArrivalWithShifts(startTime, travelHours, workHours);
   const formattedArrival = arrivalTime.toLocaleString((window.lang || 'ru') === 'ru' ? "ru-RU" : "en-US", {
     day: "2-digit",
     month: "2-digit",

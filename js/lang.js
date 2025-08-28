@@ -195,8 +195,20 @@ window.translations = {
     share: "Поделиться",
     calcHeadingText: "Расчёт встречи судов",
     arrivalHeadingText: "Расчёт времени прибытия",
-    deckTitle: "Условия на палубе"
+    deckTitle: "Условия на палубе",
 
+    // --- Режим дня ---
+    dayModeLabel: "Режим дня:",
+    dayModePreset: "Предустановки:",
+    dayModeCustom: "Свой режим",
+    dayModeStart: "Начало смены:",
+    preset1406: "06:00–20:00",
+    preset1405: "05:00–19:00",
+    preset1606: "06:00–22:00",
+    preset1605: "05:00–21:00",
+    preset1806: "06:00–00:00",
+    preset1805: "05:00–23:00",
+    preset1804: "04:00–22:00",
   },
 
   en: {
@@ -394,7 +406,20 @@ window.translations = {
     share: "Share",
     calcHeadingText: "Meeting Calculation",
     arrivalHeadingText: "Arrival Time Calculation",
-    deckTitle: "Deck conditions"
+    deckTitle: "Deck conditions",
+
+    // --- Day mode ---
+    dayModeLabel: "Day mode:",
+    dayModePreset: "Presets:",
+    dayModeCustom: "Custom",
+    dayModeStart: "Shift start:",
+    preset1406: "06:00–20:00",
+    preset1405: "05:00–19:00",
+    preset1606: "06:00–22:00",
+    preset1605: "05:00–21:00",
+    preset1806: "06:00–00:00",
+    preset1805: "05:00–23:00",
+    preset1804: "04:00–22:00",
   }
 };
 

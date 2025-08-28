@@ -60,6 +60,19 @@
       <option value="24" data-i18n="work24" selected>24 часа (нон-стоп)</option>
     </select>
 
+    <div id="dayModeBlock" style="display:none; margin-top: 10px;">
+      <label data-i18n="dayModeLabel">Режим дня:</label>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap;">
+        <label data-i18n="dayModePreset">Предустановки:</label>
+        <select id="dayModePresetSelect">
+          <!-- options injected based on workHours -->
+        </select>
+        <label data-i18n="dayModeStart">Начало смены:</label>
+        <input type="time" id="dayModeStartTime" value="06:00">
+        <label><input type="checkbox" id="dayModeCustomToggle"> <span data-i18n="dayModeCustom">Свой режим</span></label>
+      </div>
+    </div>
+
     <div class="arrival-actions">
       <div class="left-actions">
         <button class="calc-btn" onclick="calculateArrival()" data-i18n="btnArrival">Рассчитать время прибытия</button>

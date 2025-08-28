@@ -507,6 +507,92 @@ document.addEventListener("DOMContentLoaded", () => {
 // Перезагрузка при появлении интернета
 window.addEventListener('online', () => location.reload());
 
+// Day Mode logic for arrival section
+(function(){
+  const workSel = document.getElementById('workHoursArrival');
+  const block = document.getElementById('dayModeBlock');
+  const presetSel = document.getElementById('dayModePresetSelect');
+  const startTime = document.getElementById('dayModeStartTime');
+  const customToggle = document.getElementById('dayModeCustomToggle');
+  if (!workSel || !block || !presetSel || !startTime || !customToggle) return;
+
+  function presetsFor(hours){
+    if (hours === 14) return [ ['06:00-20:00','preset1406'], ['05:00-19:00','preset1405'] ];
+    if (hours === 16) return [ ['06:00-22:00','preset1606'], ['05:00-21:00','preset1605'] ];
+    if (hours === 18) return [ ['06:00-00:00','preset1806'], ['05:00-23:00','preset1805'], ['04:00-22:00','preset1804'] ];
+    return [];
+  }
+
+  function applyI18nOption(opt, key){
+    const t = (window.translations?.[window.lang||'ru'])||{};
+    opt.textContent = t[key] || opt.value;
+  }
+
+  function populatePresets(){
+    const hours = parseInt(workSel.value,10);
+    presetSel.innerHTML = '';
+    const list = presetsFor(hours);
+    list.forEach(([label, key])=>{
+      const o = document.createElement('option');
+      o.value = label;
+      applyI18nOption(o, key);
+      presetSel.appendChild(o);
+    });
+  }
+
+  function syncVisibility(){
+    const hours = parseInt(workSel.value,10);
+    block.style.display = (hours===14||hours===16||hours===18) ? '' : 'none';
+    if (block.style.display==='none') return;
+    populatePresets();
+    // default start from preset unless custom enabled
+    if (!customToggle.checked && presetSel.value){
+      const s = presetSel.value.split('-')[0];
+      startTime.value = s;
+    }
+  }
+
+  // persist
+  function load(){
+    const ls = localStorage;
+    const v = ls.getItem('dayModeStart'); if (v) startTime.value = v;
+    const c = ls.getItem('dayModeCustom')==='1'; customToggle.checked = c;
+    const p = ls.getItem('dayModePreset'); if (p) presetSel.value = p;
+  }
+  function save(){
+    const ls = localStorage;
+    ls.setItem('dayModeStart', startTime.value);
+    ls.setItem('dayModeCustom', customToggle.checked?'1':'0');
+    ls.setItem('dayModePreset', presetSel.value||'');
+  }
+
+  // events
+  workSel.addEventListener('change', ()=>{ syncVisibility(); save(); autoRecalcArrival(); });
+  presetSel.addEventListener('change', ()=>{ if (!customToggle.checked && presetSel.value){ startTime.value = presetSel.value.split('-')[0]; } save(); autoRecalcArrival(); });
+  startTime.addEventListener('change', ()=>{ save(); autoRecalcArrival(); });
+  customToggle.addEventListener('change', ()=>{ save(); autoRecalcArrival(); });
+
+  // helper for arrival auto-recalc
+  window.autoRecalcArrival = function(){
+    const resultDiv = document.getElementById('resultArrival');
+    if (resultDiv && resultDiv.innerHTML.trim() !== '') {
+      if (typeof calculateArrival === 'function') calculateArrival();
+    }
+  }
+
+  document.addEventListener('languageChanged', ()=>{
+    // reapply preset labels
+    Array.from(presetSel.options).forEach(opt=>{
+      const key = opt.value==='06:00-20:00'?'preset1406': opt.value==='05:00-19:00'?'preset1405': opt.value==='06:00-22:00'?'preset1606': opt.value==='05:00-21:00'?'preset1605': opt.value==='06:00-00:00'?'preset1806': opt.value==='05:00-23:00'?'preset1805': 'preset1804';
+      applyI18nOption(opt, key);
+    });
+  });
+
+  // init
+  load();
+  syncVisibility();
+})();
+
 
 
 
