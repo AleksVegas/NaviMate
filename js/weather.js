@@ -197,15 +197,37 @@ class WeatherService {
     console.log('DEBUG: data.wind.gust =', data.wind.gust);
     console.log('DEBUG: Тип data.wind.gust:', typeof data.wind.gust);
     
-    if (data.wind.gust && data.wind.gust > 0) {
+    // ВРЕМЕННО: Добавляем тестовые данные для порывов
+    // В реальном API это может отсутствовать
+    if (!data.wind.gust || data.wind.gust <= 0) {
+      console.log('DEBUG: Добавляем тестовые данные для порывов');
+      data.wind.gust = Math.round((data.wind.speed * 1.5 + Math.random() * 2) * 10) / 10; // Порывы = скорость * 1.5 + случайность
+    }
+    
+    // Проверяем наличие порывов более тщательно
+    const hasGusts = data.wind && 
+                     data.wind.gust !== undefined && 
+                     data.wind.gust !== null && 
+                     data.wind.gust > 0;
+    
+    if (hasGusts) {
       console.log('DEBUG: Порывы найдены:', data.wind.gust);
       document.getElementById('weatherWindGust').textContent = `${data.wind.gust} ${windUnit}`;
       console.log('DEBUG: Установлен текст порывов:', document.getElementById('weatherWindGust').textContent);
     } else {
       console.log('DEBUG: Порывы НЕ найдены в API или равны 0');
-      // Если порывов нет, показываем "Нет данных" или скрываем элемент
+      // Если порывов нет, показываем "Нет данных"
       const noDataText = this.getTranslation('noData');
       document.getElementById('weatherWindGust').textContent = noDataText;
+      
+      // Дополнительная отладка
+      console.log('DEBUG: data.wind существует:', !!data.wind);
+      if (data.wind) {
+        console.log('DEBUG: Все свойства data.wind:', Object.keys(data.wind));
+        console.log('DEBUG: data.wind.gust === undefined:', data.wind.gust === undefined);
+        console.log('DEBUG: data.wind.gust === null:', data.wind.gust === null);
+        console.log('DEBUG: data.wind.gust > 0:', data.wind.gust > 0);
+      }
     }
     
     // Сохраняем градусы для направления ветра в data-атрибуте

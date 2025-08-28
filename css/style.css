@@ -847,7 +847,7 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
   .weather-main { justify-content: flex-start; }
   .weather-icon { margin-right: 12px; }
   .weather-details { margin-right: 12px; flex: 0 0 auto; }
-  .weather-deck { margin-left: 12px; }
+  .weather-deck { margin-left: 65px; } /* Смещаем вправо на 65px */
 }
 /* Mobile: keep deck next to temperature */
 @media (max-width: 768px) {
@@ -891,6 +891,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   display: flex;
   align-items: center;
   gap: 4px;
+  min-width: 80px; /* Фиксированная ширина для выравнивания */
 }
 
 .weather-item[data-type="wind"] .wind-values {
@@ -898,6 +899,16 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   display: flex;
   flex-direction: column;
   gap: 8px;
+  min-width: 200px; /* Минимальная ширина для ПК версии */
+}
+
+/* В ПК версии смещаем еще правее */
+@media (min-width: 1024px) {
+  .weather-item[data-type="wind"] .wind-values {
+    margin-left: auto;
+    margin-right: 0;
+    padding-right: 0;
+  }
 }
 
 .weather-item[data-type="wind"] .wind-speed {
