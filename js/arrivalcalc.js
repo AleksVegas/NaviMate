@@ -511,12 +511,12 @@ function calculateRecommendedSpeed() {
     return sum;
   }
 
-  // Для расчета рекомендуемой скорости используем общее время между стартом и прибытием
-  const totalTimeHours = (desiredArrival - startTime) / 3600000;
+  // Для расчета рекомендуемой скорости используем время активного движения
+  // Это время между началом движения (следующая смена) и прибытием
   const availableHours = computeWorkingHoursBetween(startTime, desiredArrival, workHours);
   
-  // Используем общее время для расчета скорости (это логично для планирования)
-  const effectiveTravelHours = totalTimeHours - (totalLockDelay + borderDelayTotal);
+  // Время активного движения = доступные рабочие часы минус задержки
+  const effectiveTravelHours = availableHours - (totalLockDelay + borderDelayTotal);
 
   if (effectiveTravelHours <= 0) {
     resultDiv.innerHTML = t.errorData;
@@ -545,9 +545,9 @@ function calculateRecommendedSpeed() {
   
   // Добавляем информацию о времени и рабочих часах
   message += `<br><br>📊 <strong>Детали расчета:</strong>`;
-  message += `<br>⏱️ Общее время: ${totalTimeHours.toFixed(2)} ч`;
   message += `<br>💼 Доступно рабочих часов: ${availableHours.toFixed(2)} ч`;
   message += `<br>🔒 Задержки (шлюзы + границы): ${(totalLockDelay + borderDelayTotal).toFixed(2)} ч`;
+  message += `<br>⏱️ Время активного движения: ${effectiveTravelHours.toFixed(2)} ч`;
   
   // Добавляем предупреждение, если рабочих часов недостаточно
   if (availableHours < effectiveTravelHours) {
