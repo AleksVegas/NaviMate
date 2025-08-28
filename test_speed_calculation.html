@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест расчета рекомендуемой скорости</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-case { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
+        .input { margin: 10px 0; }
+        label { display: inline-block; width: 200px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .result { margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px; }
+        .expected { color: #28a745; font-weight: bold; }
+        .actual { color: #dc3545; font-weight: bold; }
+        .info { color: #17a2b8; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Тест расчета рекомендуемой скорости</h1>
+    
+    <div class="test-case">
+        <h3>Тест: Расчет рекомендуемой скорости с учетом графика</h3>
+        <div class="input">
+            <label>Начальный км:</label>
+            <input type="number" id="startKm" value="1640">
+        </div>
+        <div class="input">
+            <label>Конечный км:</label>
+            <input type="number" id="endKm" value="1660">
+        </div>
+        <div class="input">
+            <label>Время старта:</label>
+            <input type="datetime-local" id="startTime" value="2025-08-28T20:42">
+        </div>
+        <div class="input">
+            <label>Желаемое время прибытия:</label>
+            <input type="datetime-local" id="desiredArrival" value="2025-08-29T07:00">
+        </div>
+        <div class="input">
+            <label>Рабочие часы:</label>
+            <select id="workHours">
+                <option value="12" selected>12 часов</option>
+                <option value="14">14 часов</option>
+                <option value="16">16 часов</option>
+                <option value="18">18 часов</option>
+                <option value="24">24 часа</option>
+            </select>
+        </div>
+        <button onclick="testSpeedCalculation()">Рассчитать скорость</button>
+        <div id="result" class="result"></div>
+    </div>
+
+    <script src="js/arrivalcalc.js"></script>
+    <script>
+        function testSpeedCalculation() {
+            const startKm = parseInt(document.getElementById('startKm').value);
+            const endKm = parseInt(document.getElementById('endKm').value);
+            const startTimeStr = document.getElementById('startTime').value;
+            const desiredArrivalStr = document.getElementById('desiredArrival').value;
+            const workHours = parseInt(document.getElementById('workHours').value);
+            
+            const startTime = new Date(startTimeStr);
+            const desiredArrival = new Date(desiredArrivalStr);
+            const distance = endKm - startKm;
+            
+            console.log('=== ТЕСТ РАСЧЕТА СКОРОСТИ ===');
+            console.log(`Старт: ${startTime.toLocaleString('ru-RU')}`);
+            console.log(`Прибытие: ${desiredArrival.toLocaleString('ru-RU')}`);
+            console.log(`Расстояние: ${distance} км`);
+            console.log(`Рабочие часы: ${workHours}`);
+            
+            // Рассчитываем общее время
+            const totalTimeHours = (desiredArrival - startTime) / 3600000;
+            
+            // Рассчитываем доступные рабочие часы
+            const availableHours = computeWorkingHoursBetween(startTime, desiredArrival, workHours);
+            
+            // Рассчитываем рекомендуемую скорость
+            const requiredSpeed = distance / totalTimeHours;
+            
+            const result = document.getElementById('result');
+            result.innerHTML = `
+                <div><strong>Входные данные:</strong></div>
+                <div>Старт: ${startTime.toLocaleString('ru-RU')}</div>
+                <div>Прибытие: ${desiredArrival.toLocaleString('ru-RU')}</div>
+                <div>Расстояние: ${distance} км</div>
+                <div>Рабочие часы: ${workHours}</div>
+                <br>
+                <div><strong>Расчеты:</strong></div>
+                <div class="info">Общее время: ${totalTimeHours.toFixed(2)} ч</div>
+                <div class="info">Доступно рабочих часов: ${availableHours.toFixed(2)} ч</div>
+                <div class="actual">Рекомендуемая скорость: ${requiredSpeed.toFixed(2)} км/ч</div>
+                <br>
+                <div><strong>Анализ:</strong></div>
+                <div>${availableHours >= totalTimeHours ? '✅ Достаточно рабочих часов' : '❌ Недостаточно рабочих часов'}</div>
+                <div>${requiredSpeed >= 0.1 && requiredSpeed <= 100 ? '✅ Скорость в допустимых пределах' : '❌ Скорость вне допустимых пределов'}</div>
+            `;
+        }
+    </script>
+</body>
+</html>
