@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Тест исправления бага прибытия</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .test-case { margin: 20px 0; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
+        .input { margin: 10px 0; }
+        label { display: inline-block; width: 200px; }
+        button { padding: 10px 20px; background: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .result { margin-top: 15px; padding: 10px; background: #f8f9fa; border-radius: 4px; }
+        .expected { color: #28a745; font-weight: bold; }
+        .actual { color: #dc3545; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Тест исправления бага прибытия</h1>
+    
+    <div class="test-case">
+        <h3>Тест 1: Старт после 18:00 (12-часовой день)</h3>
+        <div class="input">
+            <label>Начальный км:</label>
+            <input type="number" id="startKm1" value="1640">
+        </div>
+        <div class="input">
+            <label>Конечный км:</label>
+            <input type="number" id="endKm1" value="1660">
+        </div>
+        <div class="input">
+            <label>Скорость (км/ч):</label>
+            <input type="number" id="speed1" value="10">
+        </div>
+        <div class="input">
+            <label>Время старта:</label>
+            <input type="datetime-local" id="startTime1" value="2025-08-28T20:42">
+        </div>
+        <div class="input">
+            <label>Рабочие часы:</label>
+            <select id="workHours1">
+                <option value="12" selected>12 часов</option>
+                <option value="14">14 часов</option>
+                <option value="16">16 часов</option>
+                <option value="18">18 часов</option>
+                <option value="24">24 часа</option>
+            </select>
+        </div>
+        <button onclick="testCase1()">Тестировать</button>
+        <div id="result1" class="result"></div>
+    </div>
+
+    <div class="test-case">
+        <h3>Тест 2: Старт до 06:00 (12-часовой день)</h3>
+        <div class="input">
+            <label>Начальный км:</label>
+            <input type="number" id="startKm2" value="1640">
+        </div>
+        <div class="input">
+            <label>Конечный км:</label>
+            <input type="number" id="endKm2" value="1660">
+        </div>
+        <div class="input">
+            <label>Скорость (км/ч):</label>
+            <input type="number" id="speed2" value="10">
+        </div>
+        <div class="input">
+            <label>Время старта:</label>
+            <input type="datetime-local" id="startTime2" value="2025-08-28T00:00">
+        </div>
+        <div class="input">
+            <label>Рабочие часы:</label>
+            <select id="workHours2">
+                <option value="12" selected>12 часов</option>
+                <option value="14">14 часов</option>
+                <option value="16">16 часов</option>
+                <option value="18">18 часов</option>
+                <option value="24">24 часа</option>
+            </select>
+        </div>
+        <button onclick="testCase2()">Тестировать</button>
+        <div id="result2" class="result"></div>
+    </div>
+
+    <script src="js/arrivalcalc.js"></script>
+    <script>
+        function testCase1() {
+            const startKm = parseInt(document.getElementById('startKm1').value);
+            const endKm = parseInt(document.getElementById('endKm1').value);
+            const speed = parseInt(document.getElementById('speed1').value);
+            const startTimeStr = document.getElementById('startTime1').value;
+            const workHours = parseInt(document.getElementById('workHours1').value);
+            
+            const startTime = new Date(startTimeStr);
+            const distance = endKm - startKm;
+            const travelHours = distance / speed;
+            
+            console.log('=== ТЕСТ 1: Старт после 18:00 ===');
+            console.log(`Старт: ${startTime.toLocaleString('ru-RU')}`);
+            console.log(`Расстояние: ${distance} км`);
+            console.log(`Скорость: ${speed} км/ч`);
+            console.log(`Время в пути: ${travelHours} ч`);
+            console.log(`Рабочие часы: ${workHours}`);
+            
+            const arrivalTime = computeArrivalWithShifts(startTime, travelHours, workHours);
+            
+            const result = document.getElementById('result1');
+            result.innerHTML = `
+                <div><strong>Входные данные:</strong></div>
+                <div>Старт: ${startTime.toLocaleString('ru-RU')}</div>
+                <div>Расстояние: ${distance} км</div>
+                <div>Скорость: ${speed} км/ч</div>
+                <div>Время в пути: ${travelHours.toFixed(2)} ч</div>
+                <div>Рабочие часы: ${workHours}</div>
+                <br>
+                <div><strong>Результат:</strong></div>
+                <div class="actual">Время прибытия: ${arrivalTime.toLocaleString('ru-RU')}</div>
+                <br>
+                <div><strong>Ожидаемый результат:</strong></div>
+                <div class="expected">Время прибытия: 29.08.2025, 08:00</div>
+                <br>
+                <div><strong>Статус:</strong> ${arrivalTime.getHours() === 8 && arrivalTime.getDate() === 29 ? '✅ ПРОШЕЛ' : '❌ НЕ ПРОШЕЛ'}</div>
+            `;
+        }
+        
+        function testCase2() {
+            const startKm = parseInt(document.getElementById('startKm2').value);
+            const endKm = parseInt(document.getElementById('endKm2').value);
+            const speed = parseInt(document.getElementById('speed2').value);
+            const startTimeStr = document.getElementById('startTime2').value;
+            const workHours = parseInt(document.getElementById('workHours2').value);
+            
+            const startTime = new Date(startTimeStr);
+            const distance = endKm - startKm;
+            const travelHours = distance / speed;
+            
+            console.log('=== ТЕСТ 2: Старт до 06:00 ===');
+            console.log(`Старт: ${startTime.toLocaleString('ru-RU')}`);
+            console.log(`Расстояние: ${distance} км`);
+            console.log(`Скорость: ${speed} км/ч`);
+            console.log(`Время в пути: ${travelHours} ч`);
+            console.log(`Рабочие часы: ${workHours}`);
+            
+            const arrivalTime = computeArrivalWithShifts(startTime, travelHours, workHours);
+            
+            const result = document.getElementById('result2');
+            result.innerHTML = `
+                <div><strong>Входные данные:</strong></div>
+                <div>Старт: ${startTime.toLocaleString('ru-RU')}</div>
+                <div>Расстояние: ${distance} км</div>
+                <div>Скорость: ${speed} км/ч</div>
+                <div>Время в пути: ${travelHours.toFixed(2)} ч</div>
+                <div>Рабочие часы: ${workHours}</div>
+                <br>
+                <div><strong>Результат:</strong></div>
+                <div class="actual">Время прибытия: ${arrivalTime.toLocaleString('ru-RU')}</div>
+                <br>
+                <div><strong>Ожидаемый результат:</strong></div>
+                <div class="expected">Время прибытия: 28.08.2025, 08:00</div>
+                <br>
+                <div><strong>Статус:</strong> ${arrivalTime.getHours() === 8 && arrivalTime.getDate() === 28 ? '✅ ПРОШЕЛ' : '❌ НЕ ПРОШЕЛ'}</div>
+            `;
+        }
+    </script>
+</body>
+</html>
