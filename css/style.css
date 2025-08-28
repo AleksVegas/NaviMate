@@ -901,6 +901,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   align-items: center;
   gap: 4px;
   min-width: 80px; /* Фиксированная ширина для выравнивания */
+  margin-right: 15px; /* Сдвигаем левее */
 }
 
 .weather-item[data-type="wind"] .wind-values {
@@ -908,7 +909,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   display: flex;
   flex-direction: column;
   gap: 8px;
-  min-width: 150px; /* Возвращаем исходную ширину */
+  min-width: 220px; /* Еще больше увеличиваем ширину для длинных значений */
 }
 
 /* В ПК версии смещаем еще правее */

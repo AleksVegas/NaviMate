@@ -673,17 +673,26 @@ class WeatherService {
       }
     }
     
-    // Обновляем местоположение - упрощённая логика
+    // Обновляем местоположение - учитываем что там уже есть страна
     const weatherLocation = document.getElementById('weatherLocation');
     if (weatherLocation && weatherLocation.textContent) {
       const txt = weatherLocation.textContent.trim();
-      const flagMatch = txt.match(/^(\p{RI}\p{RI})\s+(.*)$/u);
+      const flagMatch = txt.match(/^(\p{RI}\p{RI})\s+(.*?)(?:,\s*(.*))?$/u);
       if (flagMatch) {
         const flag = flagMatch[1];
         const cityShown = flagMatch[2];
-        // Простой перевод города
+        const countryShown = flagMatch[3];
+        
+        // Переводим город
         const cityTranslated = this.translateCityName(cityShown);
-        weatherLocation.textContent = `${flag} ${cityTranslated}`;
+        
+        // Если есть страна, переводим и её
+        if (countryShown) {
+          const countryTranslated = this.translateCountryName(this.reverseCountryLookup(countryShown));
+          weatherLocation.textContent = `${flag} ${cityTranslated}, ${countryTranslated}`;
+        } else {
+          weatherLocation.textContent = `${flag} ${cityTranslated}`;
+        }
       }
     }
     
