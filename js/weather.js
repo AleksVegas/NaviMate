@@ -268,7 +268,8 @@ class WeatherService {
     const cityName = this.translateCityName(data.name);
     const countryCode = data.sys.country;
     const flag = this.getFlagEmoji(countryCode);
-    const locationText = `${flag} ${cityName}`;
+    const countryName = this.translateCountryName(countryCode);
+    const locationText = `${flag} ${cityName}, ${countryName}`;
     document.getElementById('weatherLocation').textContent = locationText;
     
     // После базовых параметров — предварительная оценка без UV (если он ещё не получен)
@@ -762,7 +763,7 @@ class WeatherService {
         }
       }
       
-      // Обновляем единицы измерения для порывов ветра
+          // Обновляем единицы измерения для порывов ветра
       const forecastGust = document.getElementById(`forecastGust${period}`);
       if (forecastGust && forecastGust.textContent !== '--') {
         const gustSpeed = forecastGust.textContent.match(/^([\d.]+)/);
@@ -804,6 +805,16 @@ class WeatherService {
     
     // Обновляем единицы измерения ветра и шкалу Бофорта
     this.updateWindUnitsAndBeaufort();
+    
+    // Обновляем единицы измерения для порывов ветра
+    const windGustElement = document.getElementById('weatherWindGust');
+    if (windGustElement && windGustElement.textContent !== '--' && windGustElement.textContent !== this.getTranslation('noData')) {
+      const gustSpeed = windGustElement.textContent.match(/^([\d.]+)/);
+      if (gustSpeed) {
+        const windUnit = lang === 'en' ? 'm/s' : 'м/с';
+        windGustElement.textContent = `${gustSpeed[1]} ${windUnit}`;
+      }
+    }
     
     // Обновляем описание УФ индекса под текущий язык (если значение уже показано)
     const uvEl = document.getElementById('weatherUvIndex');

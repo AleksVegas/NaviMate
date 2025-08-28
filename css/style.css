@@ -862,14 +862,13 @@ body.dark input[type="datetime-local"]::-moz-focus-inner {
     min-width: 140px;
   }
   
-  /* На мобильных увеличиваем минимальную ширину блоков */
+  /* На мобильных возвращаем исходную ширину */
   .weather-item {
-    min-width: 280px;
+    min-width: 200px;
   }
   
   .weather-item[data-type="wind"] .wind-values {
-    min-width: 200px;
-    max-width: 250px;
+    min-width: 150px;
   }
 }
 
@@ -909,8 +908,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   display: flex;
   flex-direction: column;
   gap: 8px;
-  min-width: 180px; /* Оптимальная ширина для значений */
-  max-width: 220px; /* Максимальная ширина */
+  min-width: 150px; /* Возвращаем исходную ширину */
 }
 
 /* В ПК версии смещаем еще правее */
@@ -927,10 +925,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   align-items: center;
   justify-content: flex-end;
   margin-right: 0; /* Убираем правый отступ */
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 100%;
+  word-wrap: break-word; /* Разрешаем перенос длинных слов */
 }
 
 .weather-item[data-type="wind"] .wind-gust {
@@ -949,10 +944,8 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
 .weather-item[data-type="wind"] .wind-value {
   font-weight: 500;
   color: #333;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 100%;
+  word-wrap: break-word; /* Разрешаем перенос длинных слов */
+  hyphens: auto; /* Автоматическая расстановка переносов */
 }
 
 body.dark .weather-item[data-type="wind"] .wind-label {
@@ -987,7 +980,7 @@ body.dark .weather-item[data-type="wind"] .wind-value {
 
 .weather-details-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 15px;
   margin-bottom: 20px;
 }
@@ -999,7 +992,7 @@ body.dark .weather-item[data-type="wind"] .wind-value {
   border: 1px solid rgba(0,0,0,0.08);
   border-radius: 6px;
   background: rgba(255,255,255,0.6);
-  min-width: 250px; /* Минимальная ширина для всех блоков */
+  min-width: 200px; /* Возвращаем исходную ширину */
 }
 body.dark .weather-item {
   border-color: rgba(255,255,255,0.12);
