@@ -887,12 +887,17 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   padding-left: 12px; 
 }
 
+.weather-item[data-type="wind"] .weather-label {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .weather-item[data-type="wind"] .wind-values {
   margin-left: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
-  align-items: flex-end; /* Выравниваем по правому краю */
 }
 
 .weather-item[data-type="wind"] .wind-speed {
@@ -905,7 +910,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-left: 20px; /* Отступ для "Порывы:" */
+  padding-left: 20px; /* Отступ для "Порывы:" */
 }
 
 .weather-item[data-type="wind"] .wind-label {

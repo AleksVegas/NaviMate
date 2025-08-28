@@ -194,11 +194,15 @@ class WeatherService {
     
     // Порывы ветра (если есть)
     console.log('DEBUG: Проверяем порывы ветра:', data.wind);
-    if (data.wind.gust) {
+    console.log('DEBUG: data.wind.gust =', data.wind.gust);
+    console.log('DEBUG: Тип data.wind.gust:', typeof data.wind.gust);
+    
+    if (data.wind.gust && data.wind.gust > 0) {
       console.log('DEBUG: Порывы найдены:', data.wind.gust);
       document.getElementById('weatherWindGust').textContent = `${data.wind.gust} ${windUnit}`;
+      console.log('DEBUG: Установлен текст порывов:', document.getElementById('weatherWindGust').textContent);
     } else {
-      console.log('DEBUG: Порывы НЕ найдены в API');
+      console.log('DEBUG: Порывы НЕ найдены в API или равны 0');
       document.getElementById('weatherWindGust').textContent = '--';
     }
     
