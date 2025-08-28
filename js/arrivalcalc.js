@@ -511,11 +511,26 @@ function calculateRecommendedSpeed() {
     return sum;
   }
 
+  // Для расчета рекомендуемой скорости используем общее время, а не только рабочие часы
+  const totalTimeHours = (desiredArrival - startTime) / 3600000;
   const availableHours = computeWorkingHoursBetween(startTime, desiredArrival, workHours);
-  const effectiveTravelHours = availableHours - (totalLockDelay + borderDelayTotal);
+  
+  // Используем общее время для расчета скорости, но проверяем доступность рабочих часов
+  const effectiveTravelHours = totalTimeHours - (totalLockDelay + borderDelayTotal);
 
   if (effectiveTravelHours <= 0) {
     resultDiv.innerHTML = t.errorData;
+    return;
+  }
+  
+  // Проверяем, что у нас достаточно рабочих часов для выполнения задачи
+  if (availableHours < effectiveTravelHours) {
+    resultDiv.innerHTML = `
+❌ <strong>Ошибка:</strong> Недостаточно рабочих часов для выполнения задачи в указанное время.<br>
+📊 Доступно рабочих часов: ${availableHours.toFixed(2)} ч<br>
+⏱️ Требуется времени: ${effectiveTravelHours.toFixed(2)} ч<br>
+💡 Увеличьте время прибытия или измените график работы.
+    `;
     return;
   }
 
