@@ -522,17 +522,6 @@ function calculateRecommendedSpeed() {
     resultDiv.innerHTML = t.errorData;
     return;
   }
-  
-  // Проверяем, что у нас достаточно рабочих часов для выполнения задачи
-  if (availableHours < effectiveTravelHours) {
-    resultDiv.innerHTML = `
-❌ <strong>Ошибка:</strong> Недостаточно рабочих часов для выполнения задачи в указанное время.<br>
-📊 Доступно рабочих часов: ${availableHours.toFixed(2)} ч<br>
-⏱️ Требуется времени: ${effectiveTravelHours.toFixed(2)} ч<br>
-💡 Увеличьте время прибытия или измените график работы.
-    `;
-    return;
-  }
 
   const requiredSpeed = distance / effectiveTravelHours;
   if (requiredSpeed < 0.1 || requiredSpeed > 100) {
@@ -540,22 +529,8 @@ function calculateRecommendedSpeed() {
     return;
   }
 
-  // Формируем информативное сообщение
-  let message = `🚀 <strong>${t.btnSpeed}:</strong> ${requiredSpeed.toFixed(2)} км/ч`;
-  
-  // Добавляем информацию о времени и рабочих часах
-  message += `<br><br>📊 <strong>Детали расчета:</strong>`;
-  message += `<br>💼 Доступно рабочих часов: ${availableHours.toFixed(2)} ч`;
-  message += `<br>🔒 Задержки (шлюзы + границы): ${(totalLockDelay + borderDelayTotal).toFixed(2)} ч`;
-  message += `<br>⏱️ Время активного движения: ${effectiveTravelHours.toFixed(2)} ч`;
-  
-  // Добавляем предупреждение, если рабочих часов недостаточно
-  if (availableHours < effectiveTravelHours) {
-    message += `<br><br>⚠️ <strong>Внимание:</strong> Для выполнения задачи в указанное время потребуется движение вне рабочих часов.`;
-    message += `<br>💡 Рекомендуется увеличить время прибытия или изменить график работы.`;
-  }
-  
-  resultDiv.innerHTML = message;
+  // Простой вывод только скорости
+  resultDiv.innerHTML = `🚀 <strong>${t.btnSpeed}:</strong> ${requiredSpeed.toFixed(2)} км/ч`;
 }
 
 
