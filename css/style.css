@@ -881,23 +881,15 @@ body.dark .weather-deck.risk-high { background: rgba(255,152,0,0.22); border-col
 body.dark .weather-deck.risk-very-high { background: rgba(244,67,54,0.22); border-color: rgba(244,67,54,0.5); }
 body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border-color: rgba(156,39,176,0.5); }
 
-/* Стили для объединенного элемента ветра */
+/* Стили для элементов ветра */
 .weather-item[data-type="wind"] .weather-value { 
   margin-left: auto; 
   padding-left: 12px; 
 }
 
-.weather-item[data-type="wind"] .weather-gust {
-  margin-left: 8px;
-  padding-left: 8px;
-  border-left: 1px solid rgba(0,0,0,0.2);
-  color: #666;
-  font-size: 14px;
-}
-
-body.dark .weather-item[data-type="wind"] .weather-gust {
-  border-left-color: rgba(255,255,255,0.3);
-  color: #bdc3c7;
+.weather-item[data-type="windGust"] .weather-value { 
+  margin-left: auto; 
+  padding-left: 12px; 
 }
 
 .weather-icon {
