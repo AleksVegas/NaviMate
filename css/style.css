@@ -909,7 +909,8 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   display: flex;
   flex-direction: column;
   gap: 8px;
-  min-width: 220px; /* Еще больше увеличиваем ширину для длинных значений */
+  min-width: 180px; /* Оптимальная ширина */
+  max-width: 100%; /* Не выходить за границы родителя */
 }
 
 /* В ПК версии смещаем еще правее */
@@ -927,6 +928,8 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   justify-content: flex-end;
   margin-right: 0; /* Убираем правый отступ */
   word-wrap: break-word; /* Разрешаем перенос длинных слов */
+  max-width: 100%; /* Не выходить за границы */
+  overflow-wrap: break-word; /* Принудительный перенос */
 }
 
 .weather-item[data-type="wind"] .wind-gust {
@@ -934,6 +937,8 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   align-items: center;
   gap: 8px;
   padding-left: 20px; /* Отступ для "Порывы:" */
+  max-width: 100%; /* Не выходить за границы */
+  overflow-wrap: break-word; /* Принудительный перенос */
 }
 
 .weather-item[data-type="wind"] .wind-label {
@@ -947,6 +952,8 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   color: #333;
   word-wrap: break-word; /* Разрешаем перенос длинных слов */
   hyphens: auto; /* Автоматическая расстановка переносов */
+  max-width: 100%; /* Не выходить за границы */
+  overflow-wrap: break-word; /* Принудительный перенос */
 }
 
 body.dark .weather-item[data-type="wind"] .wind-label {

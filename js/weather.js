@@ -264,12 +264,11 @@ class WeatherService {
       document.getElementById('weatherUvIndex').textContent = '--';
     }
     
-    // Местоположение
+    // Местоположение - только город
     const cityName = this.translateCityName(data.name);
     const countryCode = data.sys.country;
     const flag = this.getFlagEmoji(countryCode);
-    const countryName = this.translateCountryName(countryCode);
-    const locationText = `${flag} ${cityName}, ${countryName}`;
+    const locationText = `${flag} ${cityName}`;
     document.getElementById('weatherLocation').textContent = locationText;
     
     // После базовых параметров — предварительная оценка без UV (если он ещё не получен)
@@ -673,7 +672,7 @@ class WeatherService {
       }
     }
     
-    // Обновляем местоположение - учитываем что там уже есть страна
+    // Обновляем местоположение - только город
     const weatherLocation = document.getElementById('weatherLocation');
     if (weatherLocation && weatherLocation.textContent) {
       const txt = weatherLocation.textContent.trim();
@@ -681,18 +680,10 @@ class WeatherService {
       if (flagMatch) {
         const flag = flagMatch[1];
         const cityShown = flagMatch[2];
-        const countryShown = flagMatch[3];
         
-        // Переводим город
+        // Переводим только город
         const cityTranslated = this.translateCityName(cityShown);
-        
-        // Если есть страна, переводим и её
-        if (countryShown) {
-          const countryTranslated = this.translateCountryName(this.reverseCountryLookup(countryShown));
-          weatherLocation.textContent = `${flag} ${cityTranslated}, ${countryTranslated}`;
-        } else {
-          weatherLocation.textContent = `${flag} ${cityTranslated}`;
-        }
+        weatherLocation.textContent = `${flag} ${cityTranslated}`;
       }
     }
     
