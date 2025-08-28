@@ -223,6 +223,33 @@ function calculateArrival(fromButton){
     const [sh, sm] = startStr.split(':').map(v=>parseInt(v,10)||0);
     const [eh, em] = endStr ? endStr.split(':').map(v=>parseInt(v,10)||0) : [null,null];
 
+    // Специальная логика для 12-часового рабочего дня
+    if (workHours === 12 && !custom && !presetSel?.value) {
+      const startShift = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 6, 0, 0, 0);
+      const endShift = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 18, 0, 0, 0);
+      
+      // Если старт после 18:00, переносим на следующий день 06:00
+      if (startDate.getHours() >= 18) {
+        startShift.setDate(startShift.getDate() + 1);
+        endShift.setDate(endShift.getDate() + 1);
+      }
+      
+      // Если старт до 06:00, ждем до 06:00
+      if (startDate.getHours() < 6) {
+        startShift.setDate(startDate.getDate());
+      }
+      
+      const availableToday = Math.max(0, (endShift - startDate) / 3600000);
+      if (availableToday >= pureHours) {
+        return new Date(startDate.getTime() + pureHours * 3600 * 1000);
+      }
+      
+      // Нужен следующий день
+      const remainingHours = pureHours - availableToday;
+      const nextDayStart = new Date(startShift.getTime() + 24 * 3600 * 1000);
+      return new Date(nextDayStart.getTime() + remainingHours * 3600 * 1000);
+    }
+
     function shiftWindowFor(date){
       const d0 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), sh, sm, 0, 0);
       let d1;
@@ -381,13 +408,40 @@ function calculateRecommendedSpeed() {
       } else if (presetSel && presetSel.value) {
         const parts = presetSel.value.split('-');
         if (parts[0]) startStr = parts[0];
-        if (parts[1]) endStr = parts[1];
+        if (parts[1]) endStr = parts[0];
       } else if (startEl) {
         startStr = startEl.value || '06:00';
       }
     }
     const [sh, sm] = startStr.split(':').map(v=>parseInt(v,10)||0);
     const [eh, em] = endStr ? endStr.split(':').map(v=>parseInt(v,10)||0) : [null,null];
+
+    // Специальная логика для 12-часового рабочего дня
+    if (workHours === 12 && !custom && !presetSel?.value) {
+      let cursor = new Date(start);
+      let sum = 0;
+      
+      while (cursor < end) {
+        const startShift = new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate(), 6, 0, 0, 0);
+        const endShift = new Date(cursor.getFullYear(), cursor.getMonth(), cursor.getDate(), 18, 0, 0, 0);
+        
+        if (cursor < startShift) {
+          cursor = startShift;
+        }
+        
+        const segmentEnd = endShift < end ? endShift : end;
+        if (cursor < segmentEnd) {
+          sum += (segmentEnd - cursor) / 3600000;
+          cursor = segmentEnd;
+        }
+        
+        if (cursor < end) {
+          // переходим к началу смены следующего дня
+          cursor = new Date(startShift.getTime() + 24 * 3600 * 1000);
+        }
+      }
+      return sum;
+    }
 
     function shiftWindowFor(date){
       const d0 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), sh, sm, 0, 0);
