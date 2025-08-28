@@ -193,10 +193,18 @@ class WeatherService {
     document.getElementById('weatherWind').textContent = `${windSpeed} ${windUnit} (${windDescription})`;
     
     // Порывы ветра (если есть)
+    console.log('DEBUG: Проверяем порывы ветра:', data.wind);
+    console.log('DEBUG: data.wind.gust =', data.wind.gust);
+    console.log('DEBUG: Доступные переводы:', window.translations);
+    console.log('DEBUG: Текущий язык:', window.lang);
     if (data.wind.gust) {
       const gustText = this.getTranslation('windGust');
+      console.log('DEBUG: Порывы найдены, текст:', gustText);
+      console.log('DEBUG: Элемент weatherWindGust:', document.getElementById('weatherWindGust'));
       document.getElementById('weatherWindGust').textContent = `${gustText} ${data.wind.gust} ${windUnit}`;
+      console.log('DEBUG: Установлен текст:', document.getElementById('weatherWindGust').textContent);
     } else {
+      console.log('DEBUG: Порывы НЕ найдены в API');
       document.getElementById('weatherWindGust').textContent = '';
     }
     
