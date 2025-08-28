@@ -347,33 +347,83 @@ function calculateRecommendedSpeed() {
     }
   });
 
-  // Используем значения из скрытых полей задержек
+  // Границы (со скрытых полей) + Вена +1ч вверх и максимум 9ч
   let borderDelayTotal = 0;
   const relevantBorders = borderPoints.filter(b =>
     (startKm < endKm && b.km >= startKm && b.km <= endKm) ||
     (startKm > endKm && b.km <= startKm && b.km >= endKm)
   );
-
   relevantBorders.forEach(border => {
     const inputId = border.nameKey;
     const input = document.getElementById(inputId);
-    const delay = input ? parseFloat(input.value) || 0 : border.defaultDelay;
-    if (delay > 0) {
-      borderDelayTotal += delay;
-    }
+    let delay = input ? parseFloat(input.value) || 0 : border.defaultDelay;
+    if (border.nameKey === 'borderAustriaVienna' && direction === 1 && delay < 1) delay = 1;
+    if (delay > 9) delay = 9;
+    if (delay > 0) borderDelayTotal += delay;
   });
 
-  const totalAvailableMs = desiredArrival - startTime;
-  let totalAvailableHours = totalAvailableMs / (1000 * 60 * 60);
+  // Посчитаем доступные рабочие часы в интервале [startTime, desiredArrival]
+  function computeWorkingHoursBetween(start, end, workHours) {
+    if (workHours === 24) return (end - start) / 3600000;
 
-  if (workHours < 24) {
-    const cycles = Math.floor(totalAvailableHours / 24);
-    const remainder = totalAvailableHours % 24;
-    totalAvailableHours = cycles * workHours + Math.min(remainder, workHours);
+    // Вычисляем окна как в computeArrivalWithShifts, используя текущие пресеты/кастом
+    const block = document.getElementById('dayModeBlock');
+    const custom = document.getElementById('dayModeCustomToggle')?.checked;
+    let startStr = '06:00';
+    let endStr = null;
+    const startEl = document.getElementById('dayModeStartTime');
+    const endEl = document.getElementById('dayModeEndTime');
+    const presetSel = document.getElementById('dayModePresetSelect');
+    if (block) {
+      if (custom && startEl && endEl) {
+        startStr = startEl.value || '06:00';
+        endStr = endEl.value || null;
+      } else if (presetSel && presetSel.value) {
+        const parts = presetSel.value.split('-');
+        if (parts[0]) startStr = parts[0];
+        if (parts[1]) endStr = parts[1];
+      } else if (startEl) {
+        startStr = startEl.value || '06:00';
+      }
+    }
+    const [sh, sm] = startStr.split(':').map(v=>parseInt(v,10)||0);
+    const [eh, em] = endStr ? endStr.split(':').map(v=>parseInt(v,10)||0) : [null,null];
+
+    function shiftWindowFor(date){
+      const d0 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), sh, sm, 0, 0);
+      let d1;
+      if (eh!==null){
+        d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), eh, em, 0, 0);
+        if (d1 <= d0) d1 = new Date(d1.getTime() + 24*3600*1000);
+      } else {
+        d1 = new Date(d0.getTime() + workHours*3600*1000);
+      }
+      return [d0, d1];
+    }
+
+    let cursor = new Date(start);
+    let sum = 0;
+    while (cursor < end) {
+      const [ws, we] = shiftWindowFor(cursor);
+      if (cursor < ws) {
+        // до начала окна — пропускаем ожидание
+        cursor = ws;
+      }
+      const segmentEnd = we < end ? we : end;
+      if (cursor < segmentEnd) {
+        sum += (segmentEnd - cursor) / 3600000;
+        cursor = segmentEnd;
+      }
+      if (cursor < end) {
+        // переходим к началу смены следующего дня
+        cursor = new Date(ws.getTime() + 24*3600*1000);
+      }
+    }
+    return sum;
   }
 
-  const totalDelay = totalLockDelay + borderDelayTotal;
-  const effectiveTravelHours = totalAvailableHours - totalDelay;
+  const availableHours = computeWorkingHoursBetween(startTime, desiredArrival, workHours);
+  const effectiveTravelHours = availableHours - (totalLockDelay + borderDelayTotal);
 
   if (effectiveTravelHours <= 0) {
     resultDiv.innerHTML = t.errorData;
@@ -387,8 +437,7 @@ function calculateRecommendedSpeed() {
   }
 
   resultDiv.innerHTML = `
-🚀 <strong>${t.btnSpeed}:</strong> ${requiredSpeed.toFixed(2)} км/ч<br>
-(${t.arrivalFeature2})
+🚀 <strong>${t.btnSpeed}:</strong> ${requiredSpeed.toFixed(2)} км/ч
   `;
 }
 
