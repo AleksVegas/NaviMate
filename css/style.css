@@ -904,6 +904,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: 20px; /* Отступ для "Порывы:" */
 }
 
 .weather-item[data-type="wind"] .wind-label {
