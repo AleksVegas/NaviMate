@@ -216,33 +216,36 @@ function calculateArrival() {
     if (!block || block.style.display==='none' || workHours===24 || workHours===12) {
       return new Date(startDate.getTime() + pureHours * 3600 * 1000);
     }
+    const custom = document.getElementById('dayModeCustomToggle')?.checked;
     const startStr = (document.getElementById('dayModeStartTime')?.value)||'06:00';
+    const endStr = (document.getElementById('dayModeEndTime')?.value)||null;
     const [sh, sm] = startStr.split(':').map(v=>parseInt(v,10)||0);
+    const [eh, em] = endStr ? endStr.split(':').map(v=>parseInt(v,10)||0) : [null,null];
 
     function shiftWindowFor(date){
       const d0 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), sh, sm, 0, 0);
-      const d1 = new Date(d0.getTime() + workHours*3600*1000);
-      if (d1.getDate() !== d0.getDate()) {
-        // crosses midnight: window is [d0..endOfDay] + [startOfNext..d1]
-        return [d0, d1];
+      let d1;
+      if (custom && eh!==null){
+        d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), eh, em, 0, 0);
+        // если конец раньше начала — значит через полночь
+        if (d1 <= d0) d1 = new Date(d1.getTime() + 24*3600*1000);
       } else {
-        return [d0, d1];
+        d1 = new Date(d0.getTime() + workHours*3600*1000);
       }
+      return [d0, d1];
     }
 
     let remaining = pureHours;
     let cursor = new Date(startDate);
 
     while (remaining > 1e-9) {
-      const [ws, we] = shiftWindowFor(cursor);
+      let [ws, we] = shiftWindowFor(cursor);
       if (cursor < ws) {
-        // wait until shift starts
         cursor = ws;
       }
-      // amount we can work in this window
       const available = Math.max(0, (we - cursor) / 3600000);
       if (available <= 1e-9) {
-        // move to next day start
+        // move to next day's start
         cursor = new Date(ws.getTime() + 24*3600*1000);
         continue;
       }
@@ -250,7 +253,7 @@ function calculateArrival() {
       cursor = new Date(cursor.getTime() + take*3600*1000);
       remaining -= take;
       if (remaining > 1e-9) {
-        // jump to next day's shift start
+        // jump to next day's start
         cursor = new Date(ws.getTime() + 24*3600*1000);
       }
     }

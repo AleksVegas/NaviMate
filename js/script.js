@@ -517,9 +517,9 @@ window.addEventListener('online', () => location.reload());
   if (!workSel || !block || !presetSel || !startTime || !customToggle) return;
 
   function presetsFor(hours){
-    if (hours === 14) return [ ['06:00-20:00','preset1406'], ['05:00-19:00','preset1405'] ];
-    if (hours === 16) return [ ['06:00-22:00','preset1606'], ['05:00-21:00','preset1605'] ];
-    if (hours === 18) return [ ['06:00-00:00','preset1806'], ['05:00-23:00','preset1805'], ['04:00-22:00','preset1804'] ];
+    if (hours === 14) return [ ['05:00-19:00','preset1405'], ['06:00-20:00','preset1406'] ];
+    if (hours === 16) return [ ['05:00-21:00','preset1605'], ['06:00-22:00','preset1606'] ];
+    if (hours === 18) return [ ['04:00-22:00','preset1804'], ['05:00-23:00','preset1805'], ['06:00-00:00','preset1806'] ];
     return [];
   }
 
@@ -538,17 +538,28 @@ window.addEventListener('online', () => location.reload());
       applyI18nOption(o, key);
       presetSel.appendChild(o);
     });
+    // default select first (earlier start)
+    if (presetSel.options.length) presetSel.selectedIndex = 0;
   }
 
   function syncVisibility(){
     const hours = parseInt(workSel.value,10);
     block.style.display = (hours===14||hours===16||hours===18) ? '' : 'none';
+    const startLabel = document.getElementById('dayModeStartLabel');
+    const endLabel = document.getElementById('dayModeEndLabel');
+    const endTime = document.getElementById('dayModeEndTime');
     if (block.style.display==='none') return;
     populatePresets();
-    // default start from preset unless custom enabled
+    // show start/end only if custom
+    const show = customToggle.checked;
+    startTime.style.display = show?'':'none';
+    endTime.style.display = show?'':'none';
+    startLabel.style.display = show?'':'none';
+    endLabel.style.display = show?'':'none';
     if (!customToggle.checked && presetSel.value){
-      const s = presetSel.value.split('-')[0];
+      const [s,e] = presetSel.value.split('-');
       startTime.value = s;
+      endTime.value = e;
     }
   }
 
@@ -556,21 +567,24 @@ window.addEventListener('online', () => location.reload());
   function load(){
     const ls = localStorage;
     const v = ls.getItem('dayModeStart'); if (v) startTime.value = v;
+    const ve = ls.getItem('dayModeEnd'); if (ve) document.getElementById('dayModeEndTime').value = ve;
     const c = ls.getItem('dayModeCustom')==='1'; customToggle.checked = c;
     const p = ls.getItem('dayModePreset'); if (p) presetSel.value = p;
   }
   function save(){
     const ls = localStorage;
     ls.setItem('dayModeStart', startTime.value);
+    ls.setItem('dayModeEnd', document.getElementById('dayModeEndTime').value);
     ls.setItem('dayModeCustom', customToggle.checked?'1':'0');
     ls.setItem('dayModePreset', presetSel.value||'');
   }
 
   // events
   workSel.addEventListener('change', ()=>{ syncVisibility(); save(); autoRecalcArrival(); });
-  presetSel.addEventListener('change', ()=>{ if (!customToggle.checked && presetSel.value){ startTime.value = presetSel.value.split('-')[0]; } save(); autoRecalcArrival(); });
+  presetSel.addEventListener('change', ()=>{ if (!customToggle.checked && presetSel.value){ const [s,e]= presetSel.value.split('-'); startTime.value = s; document.getElementById('dayModeEndTime').value = e; } save(); autoRecalcArrival(); });
   startTime.addEventListener('change', ()=>{ save(); autoRecalcArrival(); });
-  customToggle.addEventListener('change', ()=>{ save(); autoRecalcArrival(); });
+  document.getElementById('dayModeEndTime').addEventListener('change', ()=>{ save(); autoRecalcArrival(); });
+  customToggle.addEventListener('change', ()=>{ syncVisibility(); save(); autoRecalcArrival(); });
 
   // helper for arrival auto-recalc
   window.autoRecalcArrival = function(){
