@@ -245,15 +245,22 @@ function calculateArrival(fromButton){
       // Если старт до 06:00, ждем до 06:00
       if (startDate.getHours() < 6) {
         console.log('DEBUG: Старт до 06:00 - ждем до 06:00');
-        startShift.setDate(startDate.getDate());
+        // startShift уже установлен на сегодня 06:00, не меняем дату
       }
       
-      const availableToday = Math.max(0, (endShift - startDate) / 3600000);
+      // Если старт до 06:00, начинаем движение с 06:00
+      let effectiveStartTime = startDate;
+      if (startDate.getHours() < 6) {
+        effectiveStartTime = startShift;
+        console.log(`DEBUG: Эффективное время старта: ${effectiveStartTime.toLocaleString('ru-RU')}`);
+      }
+      
+      const availableToday = Math.max(0, (endShift - effectiveStartTime) / 3600000);
       console.log(`DEBUG: Доступно сегодня: ${availableToday} ч`);
       
       if (availableToday >= pureHours) {
         console.log('DEBUG: Достаточно времени сегодня');
-        return new Date(startDate.getTime() + pureHours * 3600 * 1000);
+        return new Date(effectiveStartTime.getTime() + pureHours * 3600 * 1000);
       }
       
       // Нужен следующий день
