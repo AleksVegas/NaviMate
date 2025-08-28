@@ -545,7 +545,7 @@ window.addEventListener('online', () => location.reload());
 
   function syncVisibility(){
     const hours = parseInt(workSel.value,10);
-    block.style.display = (hours===14||hours===16||hours===18) ? '' : 'none';
+    block.style.display = (hours !== 24) ? '' : 'none';
     const times = document.getElementById('dayModeTimes');
     const label = document.getElementById('dayModeLabel');
     if (block.style.display==='none') return;
@@ -599,7 +599,7 @@ window.addEventListener('online', () => location.reload());
   document.addEventListener('languageChanged', ()=>{
     // reapply preset labels
     Array.from(presetSel.options).forEach(opt=>{
-      const key = opt.value==='06:00-20:00'?'preset1406': opt.value==='05:00-19:00'?'preset1405': opt.value==='06:00-22:00'?'preset1606': opt.value==='05:00-21:00'?'preset1605': opt.value==='06:00-00:00'?'preset1806': opt.value==='05:00-23:00'?'preset1805': 'preset1804';
+      const key = opt.value==='06:00-18:00'?'preset1206': opt.value==='06:00-20:00'?'preset1406': opt.value==='05:00-19:00'?'preset1405': opt.value==='06:00-22:00'?'preset1606': opt.value==='05:00-21:00'?'preset1605': opt.value==='06:00-00:00'?'preset1806': opt.value==='05:00-23:00'?'preset1805': 'preset1804';
       applyI18nOption(opt, key);
     });
   });
