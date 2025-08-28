@@ -197,6 +197,8 @@ function calculateArrival(fromButton){
 
   // Укладываем чистое время в смены
   function computeArrivalWithShifts(startDate, pureHours, workHours){
+    console.log(`DEBUG: computeArrivalWithShifts вызвана с workHours=${workHours}`);
+    
     // 24 часа — без ограничений
     if (workHours === 24) return new Date(startDate.getTime() + pureHours * 3600 * 1000);
 
@@ -225,29 +227,42 @@ function calculateArrival(fromButton){
 
     // Специальная логика для 12-часового рабочего дня
     if (workHours === 12 && !custom && !presetSel?.value) {
+      console.log('DEBUG: Используется специальная логика для 12-часового рабочего дня');
       const startShift = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 6, 0, 0, 0);
       const endShift = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate(), 18, 0, 0, 0);
       
+      console.log(`DEBUG: Старт: ${startDate.toLocaleString('ru-RU')}`);
+      console.log(`DEBUG: Рабочие часы: 06:00 - 18:00`);
+      console.log(`DEBUG: Чистое время в пути: ${pureHours} ч`);
+      
       // Если старт после 18:00, переносим на следующий день 06:00
       if (startDate.getHours() >= 18) {
+        console.log('DEBUG: Старт после 18:00 - переносим на следующий день');
         startShift.setDate(startShift.getDate() + 1);
         endShift.setDate(endShift.getDate() + 1);
       }
       
       // Если старт до 06:00, ждем до 06:00
       if (startDate.getHours() < 6) {
+        console.log('DEBUG: Старт до 06:00 - ждем до 06:00');
         startShift.setDate(startDate.getDate());
       }
       
       const availableToday = Math.max(0, (endShift - startDate) / 3600000);
+      console.log(`DEBUG: Доступно сегодня: ${availableToday} ч`);
+      
       if (availableToday >= pureHours) {
+        console.log('DEBUG: Достаточно времени сегодня');
         return new Date(startDate.getTime() + pureHours * 3600 * 1000);
       }
       
       // Нужен следующий день
       const remainingHours = pureHours - availableToday;
+      console.log(`DEBUG: Нужен следующий день для ${remainingHours} ч`);
       const nextDayStart = new Date(startShift.getTime() + 24 * 3600 * 1000);
-      return new Date(nextDayStart.getTime() + remainingHours * 3600 * 1000);
+      const result = new Date(nextDayStart.getTime() + remainingHours * 3600 * 1000);
+      console.log(`DEBUG: Результат: ${result.toLocaleString('ru-RU')}`);
+      return result;
     }
 
     function shiftWindowFor(date){
