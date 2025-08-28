@@ -904,6 +904,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   align-items: flex-start !important; /* Выравнивание по верху для переноса */
   word-wrap: break-word !important; /* Принудительный перенос */
   overflow-wrap: break-word !important; /* Принудительный перенос */
+  flex-wrap: wrap !important; /* Разрешаем перенос элементов */
 }
 
 .weather-item[data-type="wind"] .weather-label {
@@ -923,6 +924,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   max-width: 100%; /* Не выходить за границы родителя */
   word-wrap: break-word !important; /* Принудительный перенос */
   overflow-wrap: break-word !important; /* Принудительный перенос */
+  flex-shrink: 1; /* Разрешаем сжатие */
 }
 
 /* В ПК версии смещаем еще правее */
@@ -943,6 +945,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   overflow-wrap: break-word !important; /* Принудительный перенос */
   white-space: normal !important; /* Разрешаем перенос строк */
   max-width: 100%;
+  flex-shrink: 1; /* Разрешаем сжатие */
 }
 
 .weather-item[data-type="wind"] .wind-gust {
@@ -954,6 +957,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   overflow-wrap: break-word !important; /* Принудительный перенос */
   white-space: normal !important; /* Разрешаем перенос строк */
   max-width: 100%;
+  flex-shrink: 1; /* Разрешаем сжатие */
 }
 
 .weather-item[data-type="wind"] .wind-label {
@@ -969,7 +973,8 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   overflow-wrap: break-word !important; /* Принудительный перенос */
   white-space: normal !important; /* Разрешаем перенос строк */
   max-width: 100%;
-  display: inline-block; /* Блок для лучшего контроля */
+  display: block; /* Блок для лучшего контроля */
+  text-align: right; /* Выравнивание по правому краю */
 }
 
 body.dark .weather-item[data-type="wind"] .wind-label {
@@ -978,6 +983,13 @@ body.dark .weather-item[data-type="wind"] .wind-label {
 
 body.dark .weather-item[data-type="wind"] .wind-value {
   color: #ecf0f1;
+}
+
+/* Темная тема для блока ветра */
+body.dark .weather-item[data-type="wind"] {
+  word-wrap: break-word !important;
+  overflow-wrap: break-word !important;
+  flex-wrap: wrap !important;
 }
 
 .weather-icon {
