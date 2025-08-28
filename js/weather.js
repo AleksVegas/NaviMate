@@ -203,7 +203,9 @@ class WeatherService {
       console.log('DEBUG: Установлен текст порывов:', document.getElementById('weatherWindGust').textContent);
     } else {
       console.log('DEBUG: Порывы НЕ найдены в API или равны 0');
-      document.getElementById('weatherWindGust').textContent = '--';
+      // Если порывов нет, показываем "Нет данных" или скрываем элемент
+      const noDataText = this.getTranslation('noData');
+      document.getElementById('weatherWindGust').textContent = noDataText;
     }
     
     // Сохраняем градусы для направления ветра в data-атрибуте

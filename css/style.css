@@ -904,6 +904,7 @@ body.dark .weather-deck.risk-extreme { background: rgba(156,39,176,0.22); border
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  margin-right: 0; /* Убираем правый отступ */
 }
 
 .weather-item[data-type="wind"] .wind-gust {
