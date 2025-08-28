@@ -133,12 +133,17 @@
         
         <div class="weather-details-grid">
           <div class="weather-item" data-type="wind">
-            <span class="weather-label" data-i18n="wind">Ветер:</span>
-            <span class="weather-value" id="weatherWind">-- м/с</span>
-          </div>
-          <div class="weather-item" data-type="windGust">
-            <span class="weather-label" data-i18n="windGust">Порывы:</span>
-            <span class="weather-value" id="weatherWindGust">-- м/с</span>
+            <span class="weather-label" data-i18n="wind">💨 Ветер:</span>
+            <div class="wind-values">
+              <div class="wind-speed">
+                <span class="wind-label" data-i18n="windSpeedLabel">Скорость:</span>
+                <span class="wind-value" id="weatherWind">-- м/с</span>
+              </div>
+              <div class="wind-gust">
+                <span class="wind-label" data-i18n="windGustLabel">Порывы:</span>
+                <span class="wind-value" id="weatherWindGust">-- м/с</span>
+              </div>
+            </div>
           </div>
           <div class="weather-item" data-type="windDirection">
             <span class="weather-label" data-i18n="windDirection">Направление:</span>
