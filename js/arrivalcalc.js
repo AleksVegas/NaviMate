@@ -521,10 +521,10 @@ window.addEventListener('DOMContentLoaded', () => {
         if (el) el.value = '';
         localStorage.removeItem('arr_' + id);
       });
-      // reset work hours to default 16
+      // reset work hours to default 24
       const wh = document.getElementById('workHoursArrival');
-      if (wh) wh.value = '16';
-      localStorage.setItem('arr_workHoursArrival', '16');
+      if (wh) wh.value = '24';
+      localStorage.setItem('arr_workHoursArrival', '24');
       // clear border delays
       const inputs = document.querySelectorAll('.border-delay-input');
       inputs.forEach(inp => {
