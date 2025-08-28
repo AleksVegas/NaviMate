@@ -59,6 +59,7 @@ window.translations = {
     borderDelays: "Пограничные задержки",
     lockDelays: "Задержки на шлюзах",
     delay: "задержка",
+    durationTransit: "Длительность перехода",
     
 
     // --- Настройки ---
@@ -272,6 +273,7 @@ window.translations = {
     borderDelays: "Border delays",
     lockDelays: "Lock delays",
     delay: "delay",
+    durationTransit: "Transit duration",
 
     // --- Settings ---
     settingsHeading: "⚙️ Settings",

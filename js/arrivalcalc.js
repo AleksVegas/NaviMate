@@ -193,28 +193,40 @@ function calculateArrival(fromButton){
     });
   }
 
-  if (workHours < 24) {
-    const fullShifts = Math.floor(travelHours / workHours);
-    const restTime = fullShifts * (24 - workHours);
-    travelHours += restTime;
-  }
+  // Отдых по сменам будет учтён в computeArrivalWithShifts
 
   // Укладываем чистое время в смены
   function computeArrivalWithShifts(startDate, pureHours, workHours){
+    // 24 часа — без ограничений
+    if (workHours === 24) return new Date(startDate.getTime() + pureHours * 3600 * 1000);
+
     const block = document.getElementById('dayModeBlock');
-    if (!block || block.style.display==='none' || workHours===24 || workHours===12) {
-      return new Date(startDate.getTime() + pureHours * 3600 * 1000);
-    }
     const custom = document.getElementById('dayModeCustomToggle')?.checked;
-    const startStr = (document.getElementById('dayModeStartTime')?.value)||'06:00';
-    const endStr = (document.getElementById('dayModeEndTime')?.value)||null;
+    // Используем значения из UI, если доступны; иначе дефолт 06:00 и конец = начало + workHours
+    let startStr = '06:00';
+    let endStr = null;
+    const startEl = document.getElementById('dayModeStartTime');
+    const endEl = document.getElementById('dayModeEndTime');
+    const presetSel = document.getElementById('dayModePresetSelect');
+    if (block) {
+      if (custom && startEl && endEl) {
+        startStr = startEl.value || '06:00';
+        endStr = endEl.value || null;
+      } else if (presetSel && presetSel.value) {
+        const parts = presetSel.value.split('-');
+        if (parts[0]) startStr = parts[0];
+        if (parts[1]) endStr = parts[1];
+      } else if (startEl) {
+        startStr = startEl.value || '06:00';
+      }
+    }
     const [sh, sm] = startStr.split(':').map(v=>parseInt(v,10)||0);
     const [eh, em] = endStr ? endStr.split(':').map(v=>parseInt(v,10)||0) : [null,null];
 
     function shiftWindowFor(date){
       const d0 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), sh, sm, 0, 0);
       let d1;
-      if (custom && eh!==null){
+      if (eh!==null){
         d1 = new Date(date.getFullYear(), date.getMonth(), date.getDate(), eh, em, 0, 0);
         // если конец раньше начала — значит через полночь
         if (d1 <= d0) d1 = new Date(d1.getTime() + 24*3600*1000);
@@ -261,7 +273,7 @@ function calculateArrival(fromButton){
 
 resultDiv.innerHTML = `
 <strong>${t.arrivalHeading || 'Расчёт времени прибытия'}:</strong> ${formattedArrival}<br>
-⏳ <strong>${t.workHours || 'Длительность перехода'}:</strong> ${travelHours.toFixed(2)} ${t.hourUnit || 'ч'}<br>
+⏳ <strong>${t.durationTransit || 'Длительность перехода'}:</strong> ${travelHours.toFixed(2)} ${t.hourUnit || 'ч'}<br>
 📍 <strong>${t.distance || 'Расстояние'}:</strong> ${distance} ${t.kmUnit || 'км'}<br>
 ${locksInfo}${bordersInfo}
 `;
