@@ -1,6 +1,6 @@
 # 🌊 NaviMate - Цифровой помощник судоводителя
 
-**RU/EN** | [English](#english) | [Русский](#russian)
+**RU/EN**
 
 ---
 
@@ -80,6 +80,30 @@
 Спасибо, что используете **NaviMate**! Приложение активно развивается — всё только начинается.
 
 ---
+## 📱 Установка / Installation
+
+### PWA (Progressive Web App)
+1. Откройте приложение в браузере / Open the app in your browser
+2. Нажмите "Установить" / Click "Install" in browser menu
+3. Приложение появится на рабочем столе / App will appear on your desktop
+
+### Веб-версия / Web Version
+- Просто откройте в браузере / Just open in your browser
+- Работает на всех устройствах / Works on all devices
+- Автоматически адаптируется / Automatically adapts
+
+---
+
+## 🔧 Технологии / Technologies
+
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **CSS Framework**: Custom responsive design
+- **APIs**: OpenWeatherMap, Geolocation
+- **Storage**: LocalStorage, Service Worker
+- **Design**: Material Design principles, Dark/Light themes
+- **Compatibility**: All modern browsers, mobile-first approach
+
+---
 
 ## 🇬🇧 English
 
@@ -157,26 +181,3 @@
 Thank you for using **NaviMate**! The app is actively developing — this is just the beginning.
 
 ---
-
-## 📱 Установка / Installation
-
-### PWA (Progressive Web App)
-1. Откройте приложение в браузере / Open the app in your browser
-2. Нажмите "Установить" / Click "Install" in browser menu
-3. Приложение появится на рабочем столе / App will appear on your desktop
-
-### Веб-версия / Web Version
-- Просто откройте в браузере / Just open in your browser
-- Работает на всех устройствах / Works on all devices
-- Автоматически адаптируется / Automatically adapts
-
----
-
-## 🔧 Технологии / Technologies
-
-- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **CSS Framework**: Custom responsive design
-- **APIs**: OpenWeatherMap, Geolocation
-- **Storage**: LocalStorage, Service Worker
-- **Design**: Material Design principles, Dark/Light themes
-- **Compatibility**: All modern browsers, mobile-first approach
