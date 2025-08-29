@@ -1,93 +1,184 @@
-<h3>RU/EN</h3>
- <h2 data-i18n="aboutHeading">ℹ️ О приложении</h2>
-  <hr style="margin: 12px 0; border-color: #ccc;">
-  
-  <p data-i18n="aboutText"><strong>📱 NaviMate</strong> — цифровой помощник судоводителя на внутренних водных путях.</p>  
-  
-  <h3 data-i18n="toolsHeading">🚢 Доступные инструменты</h3> 
-  <h4 data-i18n="toolCalc">🔁 Расчёт встречи судов</h4>
-  <ul>
-    <li data-i18n="aboutFeature1"><strong>Главная особенность</strong> — мгновенный расчёт <strong>километра встречи</strong>, что в разы упрощает и ускоряет навигационные задачи.</li>
-    <li data-i18n="aboutFeature2">Показывает км встречи, расстояние до неё и ориентировочное время до встречи.</li>
-    <li data-i18n="aboutFeature3">Поддержка нескольких одновременных расчётов.</li>
-    <li data-i18n="aboutFeature4">Быстрое копирование данных нашего судна (позиция и скорость) из первого блока.</li>
-    <li data-i18n="aboutFeature5">Уведомления об ошибках ввода и граничных значениях.</li>
-    <li data-i18n="aboutFeature6">Поддержка <strong>тёмной и светлой темы</strong> интерфейса.</li>
-  </ul>  
-  
-  <h4 data-i18n="toolArrival">🕒 Расчёт времени прибытия</h4>
-  <ul>
-    <li data-i18n="arrivalFeature1">Позволяет рассчитать <strong>время прибытия</strong> и <strong>необходимую скорость</strong> для заданного времени.</li>
-    <li data-i18n="arrivalFeature2">Учитываются расстояние, скорость, задержки на шлюзах и границах, а также рабочие часы судна.</li>
-    <li data-i18n="arrivalFeature3">Автоматически определяется направление движения.</li>
-  </ul>  
-  
-  <h4 data-i18n="toolLocks">⚓ Шлюзы и 🛃 границы</h4>
-  <ul>
-    <li data-i18n="lockFeature1">Автоматически учитываются все ключевые шлюзы от <strong>Железных Ворот до Ашаха</strong>.</li>
-    <li data-i18n="lockFeature2">Пограничные переходы определяются по маршруту, с возможностью ручного редактирования задержек.</li>
-  </ul> 
-  
-  <h4 data-i18n="toolPrivacy">🔐 Приватность и оффлайн-режим</h4>
-  <ul>
-    <li data-i18n="privacyFeature1">Все расчёты выполняются <strong>локально в вашем браузере</strong>.</li>
-    <li data-i18n="privacyFeature2">Данные <strong>не сохраняются</strong> и <strong>не передаются</strong> на сервер.</li>
-    <li data-i18n="privacyFeature3">Приложение работает <strong>без подключения к интернету</strong> после первого открытия.</li>
-  </ul>  
-  
-  <h4 data-i18n="plansHeading">💡 В планах</h4>
-  <ul>
-    <li data-i18n="planFeature1">Определение ближайших мест ожидания для вверх идущих судов (для особых участков).</li>
-    <li data-i18n="planFeature2">Определение рекомендуемого борта расхождения.</li>
-    <li data-i18n="planFeature3">Добавление информации об уровнях воды</li>
-    <li data-i18n="planFeature4">Страница поддержки проекта</li>
-  </ul> 
+# 🌊 NaviMate - Цифровой помощник судоводителя
 
-  <p data-i18n="thanksText">🙏 Спасибо, что используете <strong>NaviMate</strong>! Приложение активно развивается — всё только начинается.</p>
+**RU/EN** | [English](#english) | [Русский](#russian)
 
+---
 
- <h2 data-i18n="aboutHeading">ℹ️ About</h2>
-  <hr style="margin: 12px 0; border-color: #ccc;">
-  
-  <p data-i18n="aboutText"><strong>📱 NaviMate</strong> — a digital navigation tool for inland waterway captains.</p>  
-  
-  <h3 data-i18n="toolsHeading">🚢 Available Tools</h3> 
-  <h4 data-i18n="toolCalc">🔁 Meeting Calculation</h4>
-  <ul>
-    <li data-i18n="aboutFeature1"><strong>Main feature</strong> — instant calculation of <strong>meeting kilometer</strong>, greatly simplifying and speeding up navigation tasks.</li>
-    <li data-i18n="aboutFeature2">Shows meeting km, distance to it, and estimated time to meet.</li>
-    <li data-i18n="aboutFeature3">Supports multiple simultaneous calculations.</li>
-    <li data-i18n="aboutFeature4">Quickly copy our ship's data (position and speed) from the first block.</li>
-    <li data-i18n="aboutFeature5">Error notifications and boundary values.</li>
-    <li data-i18n="aboutFeature6">Supports <strong>dark and light</strong> themes.</li>
-  </ul>  
-  
-  <h4 data-i18n="toolArrival">🕒 Arrival Time Calculation</h4>
-  <ul>
-    <li data-i18n="arrivalFeature1">Allows calculating <strong>arrival time</strong> and <strong>required speed</strong> for a given time.</li>
-    <li data-i18n="arrivalFeature2">Takes into account distance, speed, delays at locks and borders, and ship working hours.</li>
-    <li data-i18n="arrivalFeature3">Direction of movement is determined automatically.</li>
-  </ul>  
-  
-  <h4 data-i18n="toolLocks">⚓ Locks and 🛃 Borders</h4>
-  <ul>
-    <li data-i18n="lockFeature1">Automatically accounts for all key locks from <strong>Iron Gates to Asah</strong>.</li>
-    <li data-i18n="lockFeature2">Border crossings are determined along the route, with the option to manually edit delays.</li>
-  </ul> 
-  
-  <h4 data-i18n="toolPrivacy">🔐 Privacy and Offline Mode</h4>
-  <ul>
-    <li data-i18n="privacyFeature1">All calculations are performed <strong>locally in your browser</strong>.</li>
-    <li data-i18n="privacyFeature2">Data <strong>is not saved</strong> and <strong>not transmitted</strong> to the server.</li>
-    <li data-i18n="privacyFeature3">The app works <strong>offline</strong> after first opening.</li>
-  </ul>  
-  
-  <h4 data-i18n="plansHeading">💡 Roadmap</h4>
-  <ul>
-    <li data-i18n="planFeature1">Determining the nearest waiting points for upstream vessels (for special sections).</li>
-    <li data-i18n="planFeature2">Determining the recommended passing side.</li>
-    <li data-i18n="planFeature3">Adding information about water levels</li>
-    <li data-i18n="planFeature4">Project support page</li>
-  </ul> 
+## 🇷🇺 Русский
 
-  <p data-i18n="thanksText">🙏 Thank you for using  <strong>NaviMate</strong>! The app is actively developing — this is just the beginning.</p>
+### ℹ️ О приложении
+
+**📱 NaviMate** — современный цифровой помощник судоводителя на внутренних водных путях Европы. Приложение предоставляет комплексные инструменты для навигации, планирования маршрутов и мониторинга погодных условий.
+
+### 🚢 Основные инструменты
+
+#### 🔁 Расчёт встречи судов
+- **Главная особенность** — мгновенный расчёт **километра встречи**, что в разы упрощает и ускоряет навигационные задачи
+- Показывает км встречи, расстояние до неё и ориентировочное время до встречи
+- Поддержка нескольких одновременных расчётов
+- Быстрое копирование данных нашего судна (позиция и скорость) из первого блока
+- Уведомления об ошибках ввода и граничных значениях
+- **Адаптивный интерфейс** для мобильных и ПК устройств
+
+#### 🕒 Расчёт времени прибытия
+- Позволяет рассчитать **время прибытия** и **необходимую скорость** для заданного времени
+- **Учитывает рабочие смены судна** — автоматически рассчитывает время с учетом графика работы (например, 06:00-18:00)
+- Учитываются расстояние, скорость, задержки на шлюзах и границах
+- Автоматически определяется направление движения
+- **Расчёт рекомендованной скорости** — показывает оптимальную скорость для прибытия в заданное время с учетом рабочих часов
+
+#### 🌤️ Погода и условия на палубе
+- **Получение погоды по GPS** — текущие условия в реальном времени
+- **Детальная информация о ветре**:
+  - Скорость ветра с описанием по шкале Бофорта
+  - **Порывы ветра** (если доступны через API)
+  - Направление ветра
+- **Условия на палубе** — автоматическая оценка комфортности работы на палубе
+- **Прогноз погоды** на следующий день (утро, день, вечер, ночь)
+- **UV индекс** для оценки солнечной активности
+- **Адаптивный дизайн** — корректное отображение на всех устройствах
+
+#### ⚓ Шлюзы и 🛃 границы
+- Автоматически учитываются все ключевые шлюзы от **Железных Ворот до Ашаха**
+- Пограничные переходы определяются по маршруту, с возможностью ручного редактирования задержек
+- **База данных задержек** для основных пограничных пунктов
+
+#### 🌍 Многоязычность
+- **Полная поддержка русского и английского языков**
+- Автоматическое переключение языка для всех элементов интерфейса
+- Локализованные названия городов и стран
+- Адаптивные единицы измерения (м/с, км/ч, °C)
+
+#### 🎨 Интерфейс и темы
+- **Тёмная и светлая тема** с автоматическим переключением
+- **Адаптивный дизайн** — оптимизирован для мобильных и ПК устройств
+- **Современный UI/UX** с интуитивным управлением
+- **Responsive layout** — корректное отображение на всех размерах экранов
+
+#### 🔐 Приватность и оффлайн-режим
+- Все расчёты выполняются **локально в вашем браузере**
+- Данные **не сохраняются** и **не передаются** на сервер
+- Приложение работает **без подключения к интернету** после первого открытия
+- **Погодные данные** загружаются только при необходимости
+
+### 💡 В планах развития
+- Определение ближайших мест ожидания для вверх идущих судов (для особых участков)
+- Определение рекомендуемого борта расхождения
+- Добавление информации об уровнях воды
+- **Расширенная метеорология** — прогноз на несколько дней, морские условия
+- **Интеграция с навигационными системами** судов
+- Страница поддержки проекта
+
+### 🚀 Технические особенности
+- **PWA (Progressive Web App)** — работает как нативное приложение
+- **Service Worker** для оффлайн функциональности
+- **Responsive CSS Grid и Flexbox** для адаптивного дизайна
+- **OpenWeatherMap API** для метеоданных
+- **Геолокация** для точного определения позиции
+- **Локальное хранение** настроек и предпочтений
+
+### 🙏 Благодарности
+Спасибо, что используете **NaviMate**! Приложение активно развивается — всё только начинается.
+
+---
+
+## 🇬🇧 English
+
+### ℹ️ About
+
+**📱 NaviMate** — a modern digital navigation assistant for inland waterway captains in Europe. The application provides comprehensive tools for navigation, route planning, and weather monitoring.
+
+### 🚢 Available Tools
+
+#### 🔁 Meeting Calculation
+- **Main feature** — instant calculation of **meeting kilometer**, greatly simplifying and speeding up navigation tasks
+- Shows meeting km, distance to it, and estimated time to meet
+- Supports multiple simultaneous calculations
+- Quickly copy our ship's data (position and speed) from the first block
+- Error notifications and boundary values
+- **Adaptive interface** for mobile and PC devices
+
+#### 🕒 Arrival Time Calculation
+- Allows calculating **arrival time** and **required speed** for a given time
+- **Accounts for ship working shifts** — automatically calculates time considering work schedule (e.g., 06:00-18:00)
+- Takes into account distance, speed, delays at locks and borders
+- Direction of movement is determined automatically
+- **Recommended speed calculation** — shows optimal speed for arrival at specified time considering working hours
+
+#### 🌤️ Weather and Deck Conditions
+- **Get weather by GPS** — real-time current conditions
+- **Detailed wind information**:
+  - Wind speed with Beaufort scale description
+  - **Wind gusts** (if available via API)
+  - Wind direction
+- **Deck conditions** — automatic assessment of deck work comfort
+- **Weather forecast** for the next day (morning, day, evening, night)
+- **UV index** for solar activity assessment
+- **Adaptive design** — proper display on all devices
+
+#### ⚓ Locks and 🛃 Borders
+- Automatically accounts for all key locks from **Iron Gates to Asah**
+- Border crossings are determined along the route, with the option to manually edit delays
+- **Delay database** for major border checkpoints
+
+#### 🌍 Multilingual Support
+- **Full support for Russian and English languages**
+- Automatic language switching for all interface elements
+- Localized city and country names
+- Adaptive units of measurement (m/s, km/h, °C)
+
+#### 🎨 Interface and Themes
+- **Dark and light themes** with automatic switching
+- **Adaptive design** — optimized for mobile and PC devices
+- **Modern UI/UX** with intuitive controls
+- **Responsive layout** — proper display on all screen sizes
+
+#### 🔐 Privacy and Offline Mode
+- All calculations are performed **locally in your browser**
+- Data **is not saved** and **not transmitted** to the server
+- The app works **offline** after first opening
+- **Weather data** is loaded only when needed
+
+### 💡 Development Roadmap
+- Determining the nearest waiting points for upstream vessels (for special sections)
+- Determining the recommended passing side
+- Adding information about water levels
+- **Extended meteorology** — multi-day forecast, maritime conditions
+- **Integration with ship navigation systems**
+- Project support page
+
+### 🚀 Technical Features
+- **PWA (Progressive Web App)** — works like a native application
+- **Service Worker** for offline functionality
+- **Responsive CSS Grid and Flexbox** for adaptive design
+- **OpenWeatherMap API** for weather data
+- **Geolocation** for accurate position determination
+- **Local storage** for settings and preferences
+
+### 🙏 Acknowledgments
+Thank you for using **NaviMate**! The app is actively developing — this is just the beginning.
+
+---
+
+## 📱 Установка / Installation
+
+### PWA (Progressive Web App)
+1. Откройте приложение в браузере / Open the app in your browser
+2. Нажмите "Установить" / Click "Install" in browser menu
+3. Приложение появится на рабочем столе / App will appear on your desktop
+
+### Веб-версия / Web Version
+- Просто откройте в браузере / Just open in your browser
+- Работает на всех устройствах / Works on all devices
+- Автоматически адаптируется / Automatically adapts
+
+---
+
+## 🔧 Технологии / Technologies
+
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **CSS Framework**: Custom responsive design
+- **APIs**: OpenWeatherMap, Geolocation
+- **Storage**: LocalStorage, Service Worker
+- **Design**: Material Design principles, Dark/Light themes
+- **Compatibility**: All modern browsers, mobile-first approach
